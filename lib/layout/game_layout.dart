@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:minecraft2d_game/global/world_data.dart';
 import 'package:minecraft2d_game/layout/controller_widget.dart';
 import 'package:minecraft2d_game/main_game.dart';
 
@@ -13,7 +14,7 @@ class GameLayout extends StatelessWidget {
       children: [
 
         //This is the maing game
-        GameWidget(game: MainGame()),
+        GameWidget(game: MainGame(worldData: WorldData())),
 
         //Every coming here will be in the HUD
         const ControllerWidget(),
