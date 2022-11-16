@@ -18,14 +18,14 @@ class _ControllerButtonWidgetState extends State<ControllerButtonWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GestureDetector(
-        onTapDown: (_){ //Redraw the widget when pressed 
-          setState(() {
+        onTapDown: (_){  
+          setState(() { //Redraw the widget when pressed
             isPressed = true;
             widget.onPressed();
           });
         },
         onTapUp: (_){
-          setState(() {
+          setState(() { //Redraw the widget when pressed
             isPressed = false;
           });
         },
