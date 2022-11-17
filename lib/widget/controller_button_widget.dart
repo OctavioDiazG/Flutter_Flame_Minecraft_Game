@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:minecraft2d_game/global/global_game_reference.dart';
+import 'package:minecraft2d_game/global/player_data.dart';
 
 class ControllerButtonWidget extends StatefulWidget {
   final String path; //the path where my asset is located
@@ -14,7 +17,7 @@ class _ControllerButtonWidgetState extends State<ControllerButtonWidget> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-
+ 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GestureDetector(
@@ -27,6 +30,7 @@ class _ControllerButtonWidgetState extends State<ControllerButtonWidget> {
         onTapUp: (_){
           setState(() { //Redraw the widget when pressed
             isPressed = false;
+            GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState = ComponentMotionState.idle;
           });
         },
         child: Opacity(

@@ -31,6 +31,7 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.2
   flame: ^1.4.0
+  get:
   flutter:
     sdk: flutter
 
@@ -67,6 +68,7 @@ flutter:
     - assets/images/sprite_sheets/blocks/
     - assets/images/sprite_sheets/item/
     - assets/images/sprite_sheets/mobs/
+    - assets/images/sprite_sheets/own_imports/
     - assets/images/sprite_sheets/player/
 
   # An image asset can refer to one or more resolution-specific "variants", see
