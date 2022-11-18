@@ -8,6 +8,7 @@ class PlayerComponent extends SpriteAnimationComponent{
 
 
   final double speed = 5;
+  bool isFacingRight = true;
 
   @override
   Future<void> onLoad() async {
@@ -17,25 +18,34 @@ class PlayerComponent extends SpriteAnimationComponent{
       srcSize: Vector2(50,45), //the number of pixels it will be cut the spriteSheet
     );
 
-    animation = playerSpriteSheet.createAnimation(row: 0, stepTime: 0.12); //set the animation row->what row it will take from the spritesheet. stepTime->time between the sprites 
+    animation = playerSpriteSheet.createAnimation(row: 0, stepTime: 0.13); //set the animation row->what row it will take from the spritesheet. stepTime->time between the sprites 
     size = Vector2(100,100);
     position = Vector2(100,400); //position in the world
   }
 
   @override
-  void update(double dt)
-  {
+  void update(double dt) {
     super.update(dt);
+    movementLogic();
 
+  }
+
+  void movementLogic() {
     //Moving Left
     if(GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingLeft){
       position.x -= speed; //moving the player to the Left * speed
+      if (isFacingRight) {
+        flipHorizontallyAroundCenter();
+        isFacingRight = false;
+      }
     }
     //Moving Right
     if(GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingRight){
       position.x += speed; //moving the player to the Right * speed
+      if (!isFacingRight) {
+        flipHorizontallyAroundCenter();
+        isFacingRight = true;
+      }
     }
-
   }
- 
 }
