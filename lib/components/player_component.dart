@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
+import 'package:flutter/material.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
 
@@ -47,6 +48,7 @@ class PlayerComponent extends SpriteAnimationComponent{
     animation = idleAnimation;//set the animation row->what row it will take from the spritesheet. stepTime->time between the sprites 
     size = Vector2(100,100);
     position = Vector2(100,400); //position in the world
+    
   }
 
   @override
