@@ -19,7 +19,7 @@ class _ControllerButtonWidgetState extends State<ControllerButtonWidget> {
     Size screenSize = MediaQuery.of(context).size;
  
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: GestureDetector(
         onTapDown: (_){  
           setState(() { //Redraw the widget when pressed
