@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
@@ -12,7 +10,7 @@ class PlayerComponent extends SpriteAnimationComponent{
   //final double stepTime = 0.15; maybe use it later
   final double speed = 5;
   bool isFacingRight = true;
-  bool isNotJumping = true;
+  bool isNotJumping = true; //JUMP ANIM
 
   // Movement Animation
   late SpriteSheet playerWalkingSpritesheet;
@@ -44,7 +42,7 @@ class PlayerComponent extends SpriteAnimationComponent{
     playerJumpSpritesheet = SpriteSheet(
       image: await Flame.images.load('sprite_sheets/own_imports/RougeHeroJump.png'), 
       srcSize: Vector2(50,45), //check the pixel numer of the cut 
-    );
+    ); //JUMP ANIM
 
     animation = idleAnimation;//set the animation row->what row it will take from the spritesheet. stepTime->time between the sprites 
     size = Vector2(100,100);
@@ -83,7 +81,7 @@ class PlayerComponent extends SpriteAnimationComponent{
     }
     //Jump
     if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.jump) {
-      animation = jumpAnimation;
+      animation = jumpAnimation; //JUMP ANIM
     }
   }
 }
