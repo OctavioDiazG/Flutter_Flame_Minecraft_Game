@@ -14,7 +14,7 @@ class PlayerComponent extends SpriteAnimationComponent{
   Future<void> onLoad() async {
     super.onLoad();
     SpriteSheet playerSpriteSheet = SpriteSheet(
-      image: await Flame.images.load('sprite_sheets/own_imports/RougeHero.png'), //tells flutter where to grab the spriteSheet
+      image: await Flame.images.load('sprite_sheets/own_imports/RougeHeroWalk.png'), //tells flutter where to grab the spriteSheet
       srcSize: Vector2(50,45), //the number of pixels it will be cut the spriteSheet
     );
 
