@@ -25,6 +25,13 @@ class ChunkGenerationMethods{
           chunk[5][index] = Blocks.grass;
         });
       }
+      if(indexOfRow >= 6){
+        //[null, null, null, null]
+        rowOfBlocks.asMap().forEach((int index, Blocks? blocks) { 
+          chunk[indexOfRow][index] = Blocks.dirt;
+        });
+      }
+
      });
 
     return chunk;

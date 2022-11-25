@@ -29,6 +29,8 @@ class PlayerComponent extends SpriteAnimationComponent{
   Future<void> onLoad() async {
     super.onLoad();
 
+    priority = 3;
+
     // WalkingSprite
     playerWalkingSpritesheet = SpriteSheet(
       image: await Flame.images.load('sprite_sheets/own_imports/RougeHeroWalk.png'), //tells flutter where to grab the spriteSheet

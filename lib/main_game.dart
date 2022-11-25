@@ -24,7 +24,17 @@ class MainGame extends FlameGame{
     super.onLoad();
     print(ChunkGenerationMethods.instance.generateChunk()); //ERASE
     add(playerComponent);
-    add(BlockComponent(block: Blocks.grass, blockIndex: Vector2(2, 1)));
+    renderChunk(ChunkGenerationMethods.instance.generateChunk());
+  }
+
+  void renderChunk(List<List<Blocks?>> chunk){
+    chunk.asMap().forEach((int yIndex, List<Blocks?> rowOfBlocks) { 
+      rowOfBlocks.asMap().forEach((int xIndex, Blocks? block) { 
+        if (block != null) {
+          add(BlockComponent(block: block, blockIndex: Vector2(xIndex.toDouble(), yIndex.toDouble())));
+        }
+      });
+    });
   }
 
 
