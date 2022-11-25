@@ -24,7 +24,7 @@ class MainGame extends FlameGame{
     super.onLoad();
     print(ChunkGenerationMethods.instance.generateChunk()); //ERASE
     add(playerComponent);
-    add(BlockComponent(block: Blocks.grass));
+    add(BlockComponent(block: Blocks.grass, blockIndex: Vector2(2, 1)));
   }
 
 
