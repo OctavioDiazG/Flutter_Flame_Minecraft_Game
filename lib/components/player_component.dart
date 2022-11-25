@@ -1,9 +1,9 @@
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
-import 'package:flutter/material.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
+import 'package:minecraft2d_game/utils/game_methods.dart';
 
 class PlayerComponent extends SpriteAnimationComponent{
 
@@ -31,6 +31,8 @@ class PlayerComponent extends SpriteAnimationComponent{
 
     priority = 3;
 
+    anchor = Anchor.bottomCenter;  
+
     // WalkingSprite
     playerWalkingSpritesheet = SpriteSheet(
       image: await Flame.images.load('sprite_sheets/own_imports/RougeHeroWalk.png'), //tells flutter where to grab the spriteSheet
@@ -48,8 +50,8 @@ class PlayerComponent extends SpriteAnimationComponent{
     ); //JUMP ANIM
 
     animation = idleAnimation;//set the animation row->what row it will take from the spritesheet. stepTime->time between the sprites 
-    size = Vector2(100,100);
-    position = Vector2(100,400); //position in the world
+    
+    position = Vector2(100,475 ); //position in the world
     
   }
 
@@ -87,5 +89,12 @@ class PlayerComponent extends SpriteAnimationComponent{
     if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.jump) {
       animation = jumpAnimation; //JUMP ANIM
     }
+  }
+
+  @override
+  void onGameResize(Vector2 newGameSize) {
+    // TODO: implement onGameResize
+    super.onGameResize(newGameSize);
+    size = GameMethods.instance.blockSize * 1.5;
   }
 }
