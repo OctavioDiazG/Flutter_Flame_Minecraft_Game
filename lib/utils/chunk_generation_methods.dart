@@ -1,5 +1,9 @@
+import 'dart:developer';
+
+import 'package:fast_noise/fast_noise.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
+import 'package:minecraft2d_game/utils/game_methods.dart';
 
 class ChunkGenerationMethods{
 
@@ -17,24 +21,33 @@ class ChunkGenerationMethods{
   List<List<Blocks?>> generateChunk(){
     List<List<Blocks?>> chunk = generateNullChunk();
 
-    //the 5th y level will be grass
-    chunk.asMap().forEach((int indexOfRow, List<Blocks?> rowOfBlocks ) {
-      if(indexOfRow == 5){
-        //[null, null, null, null]
-        rowOfBlocks.asMap().forEach((int index, Blocks? blocks) { 
-          chunk[5][index] = Blocks.grass;
-        });
-      }
-      if(indexOfRow >= 6){
-        //[null, null, null, null]
-        rowOfBlocks.asMap().forEach((int index, Blocks? blocks) { 
-          chunk[indexOfRow][index] = Blocks.dirt;
-        });
-      }
+    List<List<double>> rawNoise = noise2(
+      chunkWidth, 
+      1, 
+      noiseType: NoiseType.Perlin, 
+      frequency: 0.05,
+      seed: 7686987,
+    );
 
-     });
+    //log(getYValuesFromRawNoise(rawNoise).toString());
+    List<int> yValues = getYValuesFromRawNoise(rawNoise);
+
+    yValues.asMap().forEach((int index, int value) {
+      chunk[value + GameMethods.instance.freeArea][index] = Blocks.grass;
+    });
+
 
     return chunk;
+  }
+
+  List<int> getYValuesFromRawNoise (List<List<double>> rawNoise){
+    List<int> yValues = [];
+
+    rawNoise.asMap().forEach((int index, List<double> value) {
+      yValues.add((value[0] * 10).toInt().abs());
+     });
+
+    return yValues;
   }
 }
 

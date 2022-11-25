@@ -51,7 +51,7 @@ class PlayerComponent extends SpriteAnimationComponent{
 
     animation = idleAnimation;//set the animation row->what row it will take from the spritesheet. stepTime->time between the sprites 
     
-    position = Vector2(100,475 ); //position in the world
+    position = Vector2(100,675); //position in the world
     
   }
 
