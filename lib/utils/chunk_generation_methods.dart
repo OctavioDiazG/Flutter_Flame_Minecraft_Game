@@ -1,7 +1,6 @@
-import 'dart:developer';
 import 'dart:math';
-
 import 'package:fast_noise/fast_noise.dart';
+import 'package:minecraft2d_game/resources/bioms.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
@@ -20,6 +19,9 @@ class ChunkGenerationMethods{
   }
 
   List<List<Blocks?>> generateChunk(){
+
+      Biomes biome = Random().nextBool()? Biomes.desert : Biomes.birchForest;
+
     List<List<Blocks?>> chunk = generateNullChunk();
 
     List<List<double>> rawNoise = noise2(
@@ -30,29 +32,28 @@ class ChunkGenerationMethods{
       seed: 7686987,
     );
 
-    //log(getYValuesFromRawNoise(rawNoise).toString());
     List<int> yValues = getYValuesFromRawNoise(rawNoise);
 
-    chunk = generatePrimarySoil(chunk, yValues, Blocks.grass);
+    chunk = generatePrimarySoil(chunk, yValues, biome);
 
-    chunk = generateSecondarySoil(chunk, yValues, Blocks.dirt);
+    chunk = generateSecondarySoil(chunk, yValues, biome);
 
     chunk = generateStone(chunk);
 
     return chunk;
   }
 
-  List<List<Blocks?>> generatePrimarySoil(List<List<Blocks?>> chunk, List<int> yValues, Blocks block){
+  List<List<Blocks?>> generatePrimarySoil(List<List<Blocks?>> chunk, List<int> yValues, Biomes biome){
     yValues.asMap().forEach((int index, int value) {
-      chunk[value][index] = block;
+      chunk[value][index] = BiomeData.getBiomeDataFor(biome).primarySoil;
     });
     return chunk;
   }
 
-  List<List<Blocks?>> generateSecondarySoil(List<List<Blocks?>> chunk, List<int> yValues, Blocks block){
+  List<List<Blocks?>> generateSecondarySoil(List<List<Blocks?>> chunk, List<int> yValues, Biomes biome){
     yValues.asMap().forEach((int index, int value) {
       for (int i = value + 1; i <= GameMethods.instance.maxSecondarySoilExtent; i++) {
-        chunk[i][index] = block;
+        chunk[i][index] = BiomeData.getBiomeDataFor(biome).secondarySoil;
       }
     });
 

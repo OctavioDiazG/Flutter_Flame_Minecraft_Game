@@ -30,7 +30,7 @@ class GameMethods{
 
   Future<SpriteSheet> getBlockSpritesheet() async{
     return SpriteSheet(
-      image: await Flame.images.load('sprite_sheets/blocks/block_sprite_sheet.png'), 
+      image: await Flame.images.load('sprite_sheets/blocks/block_sprite_sheet_original.png'), 
       srcSize: Vector2.all(60), 
     );
   }
