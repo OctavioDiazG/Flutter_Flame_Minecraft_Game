@@ -22,7 +22,7 @@ class MainGame extends FlameGame{
   @override
   Future<void> onLoad() async{
     super.onLoad();
-    print(ChunkGenerationMethods.instance.generateChunk()); //ERASE
+    //print(ChunkGenerationMethods.instance.generateChunk()); //ERASE
     camera.followComponent(playerComponent);
     add(playerComponent);
     renderChunk(ChunkGenerationMethods.instance.generateChunk());

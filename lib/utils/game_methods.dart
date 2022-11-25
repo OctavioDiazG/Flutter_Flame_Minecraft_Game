@@ -11,11 +11,16 @@ class GameMethods{
   }
   
   Vector2 get blockSize{
-    return Vector2.all(getScreenSize().width/chunkWidth);
+    //return Vector2.all(getScreenSize().width/chunkWidth);
+    return Vector2.all(40);
   }
 
   int get freeArea{
-    return(chunkHeight * 0.4).toInt();
+    return(chunkHeight * 0.2).toInt();
+  }
+
+  int get maxSecondarySoilExtent{
+    return freeArea + 6;
   }
 
   Size getScreenSize ()
