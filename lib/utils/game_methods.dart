@@ -2,6 +2,7 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 
@@ -38,5 +39,11 @@ class GameMethods{
   Future<Sprite> getSpriteFromBlock(Blocks block) async{
     SpriteSheet spriteSheet = await getBlockSpritesheet();
     return spriteSheet.getSprite(0, block.index);
+  }
+  //chunk
+  void addChunkToRightWorldChunks (List<List<Blocks?>> chunk) {
+    chunk.asMap().forEach((int index, List<Blocks?> value) {
+      GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[index].addAll(value);
+    });
   }
 }

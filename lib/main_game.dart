@@ -6,6 +6,7 @@ import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/world_data.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/chunk_generation_methods.dart';
+import 'package:minecraft2d_game/utils/game_methods.dart';
 
 
 class MainGame extends FlameGame{
@@ -25,11 +26,13 @@ class MainGame extends FlameGame{
     //print(ChunkGenerationMethods.instance.generateChunk()); //ERASE
     camera.followComponent(playerComponent);
     add(playerComponent);
-    renderChunk(ChunkGenerationMethods.instance.generateChunk());
+    GameMethods.instance.addChunkToRightWorldChunks(ChunkGenerationMethods.instance.generateChunk(0));
+    GameMethods.instance.addChunkToRightWorldChunks(ChunkGenerationMethods.instance.generateChunk(1));
+    renderChunk();
   }
 
-  void renderChunk(List<List<Blocks?>> chunk){
-    chunk.asMap().forEach((int yIndex, List<Blocks?> rowOfBlocks) { 
+  void renderChunk(){
+    worldData.rightWorldChunks.asMap().forEach((int yIndex, List<Blocks?> rowOfBlocks) {
       rowOfBlocks.asMap().forEach((int xIndex, Blocks? block) { 
         if (block != null) {
           add(BlockComponent(block: block, blockIndex: Vector2(xIndex.toDouble(), yIndex.toDouble())));
