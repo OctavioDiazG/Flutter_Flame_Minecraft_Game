@@ -22,5 +22,7 @@ class WorldData {
     ];
   }
 
+  List<int> currentRenderedChunk =  [];
+
 
 }

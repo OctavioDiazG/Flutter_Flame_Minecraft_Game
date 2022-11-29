@@ -49,7 +49,46 @@ class MainGame extends FlameGame{
   @override
   void update(double dt){ //get the dt as delta time to get every frame posible of the playerPos.x
     super.update(dt);
-    print(worldData.chunksThatShouldBeRendered);
+    //print(worldData.chunksThatShouldBeRendered);
+    worldData.chunksThatShouldBeRendered.asMap().forEach((int index, int chunkIndex) {
+      //chunk isnt rendered
+      if (!worldData.currentRenderedChunk.contains(chunkIndex)) {
+        //For right world chunk
+        if (chunkIndex >= 0) {
+          //Chunk has not been created
+          if (worldData.rightWorldChunks[0].length ~/ chunkWidth < chunkIndex + 1) {
+            GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(chunkIndex), true);
+          }
+
+            renderChunk(chunkIndex);
+
+            worldData.currentRenderedChunk.add(chunkIndex);
+            //For Left World Chunk
+        } else {
+          
+        //Chunk has not been created
+        if (worldData.leftWorldChunks[0].length ~/ chunkWidth < chunkIndex.abs()) {
+          GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(chunkIndex), false);
+        }
+
+          renderChunk(chunkIndex);
+
+          worldData.currentRenderedChunk.add(chunkIndex);
+        }
+      }
+    });
   }
 
 }
+
+/*
+
+        //Chunk has not been created
+        if (worldData.rightWorldChunks[0].length ~/ chunkWidth < chunkIndex + 1) {
+          GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(chunkIndex), true);
+        }
+
+          renderChunk(chunkIndex);
+
+          worldData.currentRenderedChunk.add(chunkIndex);
+ */
