@@ -11,6 +11,7 @@ class WorldData {
 
   //Collection of all the chunk from 0 so chunks -1,0,1 will be rendered
   List<List<Blocks?>> rightWorldChunks = List.generate(chunkHeight, (index) => []);
+  List<List<Blocks?>> leftWorldChunks = List.generate(chunkHeight, (index) => []);
 
 
 }

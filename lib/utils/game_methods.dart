@@ -29,7 +29,7 @@ class GameMethods{
     return MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
   } 
 
-  Future<SpriteSheet> getBlockSpritesheet() async{
+  Future<SpriteSheet> getBlockSpriteSheet() async{
     return SpriteSheet(
       image: await Flame.images.load('sprite_sheets/blocks/block_sprite_sheet_original.png'), 
       srcSize: Vector2.all(60), 
@@ -37,21 +37,33 @@ class GameMethods{
   }
 
   Future<Sprite> getSpriteFromBlock(Blocks block) async{
-    SpriteSheet spriteSheet = await getBlockSpritesheet();
+    SpriteSheet spriteSheet = await getBlockSpriteSheet();
     return spriteSheet.getSprite(0, block.index);
   }
   //chunk
-  void addChunkToRightWorldChunks (List<List<Blocks?>> chunk) {
-    chunk.asMap().forEach((int yIndex, List<Blocks?> value) {
-      GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[yIndex].addAll(value);
-    });
+  void addChunkToWorldChunks (List<List<Blocks?>> chunk, bool isInRightWorldChunk) {
+    if (isInRightWorldChunk) {
+      chunk.asMap().forEach((int yIndex, List<Blocks?> value) {
+        GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[yIndex].addAll(value);
+      });
+    } else {
+      chunk.asMap().forEach((int yIndex, List<Blocks?> value) {
+        GlobalGameReference.instance.gameReference.worldData.leftWorldChunks[yIndex].addAll(value);
+      });
+    }
   }
   
   List<List<Blocks?>> getChunk(int chunkIndex) {
     List<List<Blocks?>> chunk = [];
-    GlobalGameReference.instance.gameReference.worldData.rightWorldChunks.asMap().forEach((int index, List<Blocks?> rowOfBlocks) { 
+    if (chunkIndex >= 0) {
+      GlobalGameReference.instance.gameReference.worldData.rightWorldChunks.asMap().forEach((int index, List<Blocks?> rowOfBlocks) { 
         chunk.add(rowOfBlocks.sublist(chunkWidth * chunkIndex, chunkWidth * (chunkIndex + 1)));
       });
+    } else { //Left World Chunk
+      GlobalGameReference.instance.gameReference.worldData.leftWorldChunks.asMap().forEach((int index, List<Blocks?> rowOfBlocks) { 
+        chunk.add(rowOfBlocks.sublist(chunkWidth * (chunkIndex.abs() - 1), chunkWidth * (chunkIndex.abs())).reversed.toList());
+      });
+    }
     return chunk;
   }
 }
