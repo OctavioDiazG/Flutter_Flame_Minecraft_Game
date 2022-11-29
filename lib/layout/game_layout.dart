@@ -11,13 +11,13 @@ class GameLayout extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    Random random = Random();
-    int randomSeed = random.nextInt(1000000); //Random Generator
+    //Random random = Random();
+    //int randomSeed = random.nextInt(1000000); //Random Generator
     return Stack(
       children: [
 
         //This is the maing game
-        GameWidget(game: MainGame(worldData: WorldData(seed: 123456789))), //set randomSeed in seed:
+        GameWidget(game: MainGame(worldData: WorldData(seed: 234546))), //set randomSeed in seed:
 
         //Every coming here will be in the HUD
         const ControllerWidget(),

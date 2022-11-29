@@ -42,8 +42,16 @@ class GameMethods{
   }
   //chunk
   void addChunkToRightWorldChunks (List<List<Blocks?>> chunk) {
-    chunk.asMap().forEach((int index, List<Blocks?> value) {
-      GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[index].addAll(value);
+    chunk.asMap().forEach((int yIndex, List<Blocks?> value) {
+      GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[yIndex].addAll(value);
     });
+  }
+  
+  List<List<Blocks?>> getChunk(int chunkIndex) {
+    List<List<Blocks?>> chunk = [];
+    GlobalGameReference.instance.gameReference.worldData.rightWorldChunks.asMap().forEach((int index, List<Blocks?> rowOfBlocks) { 
+        chunk.add(rowOfBlocks.sublist(chunkWidth * chunkIndex, chunkWidth * (chunkIndex + 1)));
+      });
+    return chunk;
   }
 }
