@@ -46,5 +46,10 @@ class MainGame extends FlameGame{
     });
   }
 
+  @override
+  void update(double dt){ //get the dt as delta time to get every frame posible of the playerPos.x
+    super.update(dt);
+    print(worldData.chunksThatShouldBeRendered);
+  }
 
 }

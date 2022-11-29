@@ -20,11 +20,21 @@ class GameMethods{
     return(chunkHeight * 0.2).toInt();
   }
 
-  int get maxSecondarySoilExtent{
+  int get maxSecondarySoilExtent{ //how many blocks are after the first soil (from top to down)
     return freeArea + 6;
   }
 
-  Size getScreenSize ()
+  double get playerXIndexPosition{
+    return GlobalGameReference.instance.gameReference.playerComponent.position.x / blockSize.x;
+  }
+
+  int get inCurrentChunkIndex{
+    return playerXIndexPosition >= 0 
+      ? playerXIndexPosition ~/ chunkWidth 
+      : (playerXIndexPosition ~/ chunkWidth) - 1;
+  }
+
+  Size getScreenSize()
   {
     return MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
   } 
@@ -41,7 +51,7 @@ class GameMethods{
     return spriteSheet.getSprite(0, block.index);
   }
   //chunk
-  void addChunkToWorldChunks (List<List<Blocks?>> chunk, bool isInRightWorldChunk) {
+  void addChunkToWorldChunks(List<List<Blocks?>> chunk, bool isInRightWorldChunk) {
     if (isInRightWorldChunk) {
       chunk.asMap().forEach((int yIndex, List<Blocks?> value) {
         GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[yIndex].addAll(value);
