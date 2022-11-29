@@ -40,7 +40,11 @@ class MainGame extends FlameGame{
     chunk.asMap().forEach((int yIndex, List<Blocks?> rowOfBlocks) {
       rowOfBlocks.asMap().forEach((int xIndex, Blocks? block) { 
         if (block != null) {
-          add(BlockComponent(block: block, blockIndex: Vector2((chunkIndex * chunkWidth) + xIndex.toDouble(), yIndex.toDouble())));
+          add(BlockComponent(
+            block: block, 
+            blockIndex: Vector2((chunkIndex * chunkWidth) + xIndex.toDouble(), 
+            yIndex.toDouble()), 
+            chunkIndex: chunkIndex ));
         }
       });
     });
@@ -80,15 +84,3 @@ class MainGame extends FlameGame{
   }
 
 }
-
-/*
-
-        //Chunk has not been created
-        if (worldData.rightWorldChunks[0].length ~/ chunkWidth < chunkIndex + 1) {
-          GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(chunkIndex), true);
-        }
-
-          renderChunk(chunkIndex);
-
-          worldData.currentRenderedChunk.add(chunkIndex);
- */
