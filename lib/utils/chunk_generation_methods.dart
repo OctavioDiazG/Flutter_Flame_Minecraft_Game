@@ -3,6 +3,7 @@ import 'package:fast_noise/fast_noise.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/resources/bioms.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
+import 'package:minecraft2d_game/resources/ores.dart';
 import 'package:minecraft2d_game/resources/structures.dart';
 import 'package:minecraft2d_game/structures/plants.dart';
 import 'package:minecraft2d_game/structures/trees.dart';
@@ -51,7 +52,10 @@ class ChunkGenerationMethods{
 
     chunk = addStructureToChunk(chunk, yValues, biome);
 
-    chunk = addOreToChunkList(chunk, Blocks.ironOre);
+    chunk = addOreToChunk(chunk, Ores.coalOre);
+    chunk = addOreToChunk(chunk, Ores.ironOre);
+    chunk = addOreToChunk(chunk, Ores.goldOre);
+    chunk = addOreToChunk(chunk, Ores.diamondOre);
 
 
 
@@ -135,7 +139,7 @@ class ChunkGenerationMethods{
     return yValues;
   }
 
-  List<List<Blocks?>> addOreToChunkList(List<List<Blocks?>> chunk, Blocks block ){
+  List<List<Blocks?>> addOreToChunk(List<List<Blocks?>> chunk, Ores ore ){
     List<List<double>> rawNoise = noise2(chunkHeight, chunkWidth,
       noiseType: NoiseType.Perlin, 
       frequency: 0.055, 
@@ -144,8 +148,8 @@ class ChunkGenerationMethods{
     List<List<int>> processedNoise = GameMethods.instance.processNoise(rawNoise);
     processedNoise.asMap().forEach((int rowOfProcessedNoiseIndex, List<int> rowOfProcessedNoise) {
       rowOfProcessedNoise.asMap().forEach((int index, int value) {
-        if (value < 90 && chunk[rowOfProcessedNoiseIndex][index] == Blocks.stone) {
-          chunk[rowOfProcessedNoiseIndex][index] = block;
+        if (value < ore.rarity && chunk[rowOfProcessedNoiseIndex][index] == Blocks.stone) {
+          chunk[rowOfProcessedNoiseIndex][index] = ore.block;
         }
        });
      });
