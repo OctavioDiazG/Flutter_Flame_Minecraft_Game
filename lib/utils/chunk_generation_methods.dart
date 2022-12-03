@@ -142,7 +142,7 @@ class ChunkGenerationMethods{
   List<List<Blocks?>> addOreToChunk(List<List<Blocks?>> chunk, Ores ore ){
     List<List<double>> rawNoise = noise2(chunkHeight, chunkWidth,
       noiseType: NoiseType.Perlin, 
-      frequency: 0.055, 
+      frequency: 0.1, 
       seed: Random().nextInt(123124234)
     );
     List<List<int>> processedNoise = GameMethods.instance.processNoise(rawNoise);

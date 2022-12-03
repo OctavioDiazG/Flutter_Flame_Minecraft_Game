@@ -8,10 +8,10 @@ class Ores{
 
   Ores({required this.block, required this.rarity});
 
-  static Ores coalOre = Ores(block: Blocks.coalOre, rarity: 90);
-  static Ores ironOre = Ores(block: Blocks.ironOre, rarity: 70);
-  static Ores goldOre = Ores(block: Blocks.goldOre, rarity: 60);
-  static Ores diamondOre = Ores(block: Blocks.diamondOre, rarity: 50);
+  static Ores coalOre = Ores(block: Blocks.coalOre, rarity: 60);
+  static Ores ironOre = Ores(block: Blocks.ironOre, rarity: 50);
+  static Ores goldOre = Ores(block: Blocks.goldOre, rarity: 40);
+  static Ores diamondOre = Ores(block: Blocks.diamondOre, rarity: 30);
 
 
 
