@@ -12,7 +12,7 @@ class GameLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //Random random = Random();
-    //int randomSeed = random.nextInt(1000000); //Random Generator 
+    //int randomSeed = Random().nextInt(1000000); //Random Generator 
     return Stack(
       children: [
 

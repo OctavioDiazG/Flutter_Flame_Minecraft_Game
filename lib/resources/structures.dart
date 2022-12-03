@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:minecraft2d_game/resources/blocks.dart';
 
 class Structure {
@@ -7,16 +9,8 @@ class Structure {
 
   Structure({required this.structure, required this.maxOccurences, required this.maxWidth});
 
-}
 
-Structure treeStructure = Structure(
-  structure: [
-    [Blocks.birchLeaf, Blocks.birchLeaf, Blocks.birchLeaf],
-    [Blocks.birchLeaf, Blocks.birchLeaf, Blocks.birchLeaf],
-    [Blocks.birchLeaf, Blocks.birchLeaf, Blocks.birchLeaf],
-    [null, Blocks.birchLog, null],
-    [null, Blocks.birchLog, null],
-  ], 
-  maxOccurences: 1, 
-  maxWidth: 3,
-);
+  factory Structure.getPlantStructureForBlock(Blocks block, ){
+    return Structure(structure: [[block]], maxOccurences: 1, maxWidth: 1);
+  }
+}
