@@ -3,6 +3,7 @@ import 'package:fast_noise/fast_noise.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/resources/bioms.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
+import 'package:minecraft2d_game/resources/structures.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
@@ -46,6 +47,10 @@ class ChunkGenerationMethods{
 
     chunk = generateStone(chunk);
 
+    chunk = addStructureToChunk(chunk, yValues);
+
+
+
     return chunk;
   }
 
@@ -81,8 +86,28 @@ class ChunkGenerationMethods{
     return chunk;
   }
 
+  List<List<Blocks?>> addStructureToChunk(List<List<Blocks?>> chunk, List<int> yValues){
+    Structure currentStructure = treeStructure;
 
-  List<int> getYValuesFromRawNoise (List<List<double>> rawNoise){
+    List<List<Blocks?>> structureList = List.from(currentStructure.structure.reversed);
+
+    int xPositionOfStructure = Random().nextInt(chunkWidth - currentStructure.maxWidth);
+    int yPositionOfStructure = (yValues[xPositionOfStructure + (structureList.length ~/ 2)]) - 1;
+
+    for (int indexOfRow = 0; indexOfRow < currentStructure.structure.length; indexOfRow++) {
+      List<Blocks?> rowOfBlocksInStructure = structureList[indexOfRow];
+
+      rowOfBlocksInStructure.asMap().forEach((int index, Blocks? blockInStructure) {
+        if (chunk[yPositionOfStructure - (indexOfRow)][xPositionOfStructure + index] == null) {
+          chunk[yPositionOfStructure - indexOfRow][xPositionOfStructure + index] = blockInStructure; 
+        }
+       });
+    }
+    return chunk;
+  }
+
+
+  List<int> getYValuesFromRawNoise(List<List<double>> rawNoise){
     List<int> yValues = [];
 
     rawNoise.asMap().forEach((int index, List<double> value) {

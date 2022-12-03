@@ -17,7 +17,7 @@ class GameMethods{
   }
 
   int get freeArea{
-    return(chunkHeight * 0.2).toInt();
+    return(chunkHeight * 0.4).toInt();
   }
 
   int get maxSecondarySoilExtent{ //how many blocks are after the first soil (from top to down)
