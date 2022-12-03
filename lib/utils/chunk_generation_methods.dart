@@ -51,6 +51,8 @@ class ChunkGenerationMethods{
 
     chunk = addStructureToChunk(chunk, yValues, biome);
 
+    chunk = addOreToChunkList(chunk, Blocks.ironOre);
+
 
 
     return chunk;
@@ -131,6 +133,23 @@ class ChunkGenerationMethods{
     });
 
     return yValues;
+  }
+
+  List<List<Blocks?>> addOreToChunkList(List<List<Blocks?>> chunk, Blocks block ){
+    List<List<double>> rawNoise = noise2(chunkHeight, chunkWidth,
+      noiseType: NoiseType.Perlin, 
+      frequency: 0.055, 
+      seed: Random().nextInt(123124234)
+    );
+    List<List<int>> processedNoise = GameMethods.instance.processNoise(rawNoise);
+    processedNoise.asMap().forEach((int rowOfProcessedNoiseIndex, List<int> rowOfProcessedNoise) {
+      rowOfProcessedNoise.asMap().forEach((int index, int value) {
+        if (value < 90 && chunk[rowOfProcessedNoiseIndex][index] == Blocks.stone) {
+          chunk[rowOfProcessedNoiseIndex][index] = block;
+        }
+       });
+     });
+    return chunk;
   }
 }
 
