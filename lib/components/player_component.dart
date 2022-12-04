@@ -3,6 +3,7 @@ import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
+import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
 class PlayerComponent extends SpriteAnimationComponent{
@@ -12,6 +13,7 @@ class PlayerComponent extends SpriteAnimationComponent{
   final double speed = 5;
   bool isFacingRight = true;
   bool isNotJumping = true; //JUMP ANIM
+  double yVelocity = 0;
 
   // Movement Animation
   late SpriteSheet playerWalkingSpritesheet;
@@ -60,6 +62,12 @@ class PlayerComponent extends SpriteAnimationComponent{
     super.update(dt);
     movementLogic();
 
+    if (yVelocity < gravity * 5) { //place a limit to the yVelocity
+      position.y += yVelocity;
+      yVelocity += gravity;
+    } else {
+      position.y += yVelocity;
+    }
   }
 
   void movementLogic() {
