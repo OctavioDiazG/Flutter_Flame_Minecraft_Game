@@ -42,7 +42,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 
     intersectionPoints.forEach((Vector2 individualIntersectionPoint) { 
 
-      if (individualIntersectionPoint.y > (position.y - (size.y * 0.3))) { //Add the 30% of the player so it will detect the floor 
+      if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) && (intersectionPoints.first.x - intersectionPoints.last.x.abs() > size.x * 0.4)) { //Add the 30% of the player so it will detect the floor 
         //print("bottom Collision");
         isCollidingBottom = true;
       }
@@ -50,7 +50,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
       if (individualIntersectionPoint.y < (position.y - (size.y * 0.3))) {
         //print("isCollidingHotizontally");
         //Right Collision
-        if (isFacingRight) {
+        if (individualIntersectionPoint.x > position.x) {
           isCollidingRight = true;
         } else {
           isCollidingLeft = true;
