@@ -1,3 +1,4 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
@@ -16,6 +17,8 @@ class BlockComponent extends SpriteComponent{
   Future<void> onLoad() async{
     super.onLoad();
     sprite = await GameMethods.instance.getSpriteFromBlock(block);
+
+    add(RectangleHitbox());
   }
 
   @override

@@ -10,7 +10,7 @@ import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
 
-class MainGame extends FlameGame{
+class MainGame extends FlameGame with HasCollisionDetection{ //Has CollisionDetection is telling the program is will have Collition Detection
   final WorldData worldData;
 
   MainGame({required this.worldData}){

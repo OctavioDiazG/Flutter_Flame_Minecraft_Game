@@ -1,3 +1,4 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
@@ -6,7 +7,7 @@ import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
-class PlayerComponent extends SpriteAnimationComponent{
+class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {//CollisionCallbacks will give us access to a function
 
   final Vector2 playerDimensions = Vector2(50, 40); //the number of pixels it will be cut the spriteSheet
   //final double stepTime = 0.15; maybe use it later
@@ -28,8 +29,18 @@ class PlayerComponent extends SpriteAnimationComponent{
   late SpriteAnimation jumpAnimation = playerJumpSpritesheet.createAnimation(row: 0, stepTime: 0.12);
 
   @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+
+    print("Other is $other ");
+    print("IntersectionPoints are $intersectionPoints ");
+  }
+
+  @override
   Future<void> onLoad() async {
     super.onLoad();
+
+    add(RectangleHitbox());
 
     priority = 3;
 
