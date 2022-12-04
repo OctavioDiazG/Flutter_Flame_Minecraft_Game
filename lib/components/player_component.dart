@@ -11,7 +11,6 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 
   final Vector2 playerDimensions = Vector2(50, 40); //the number of pixels it will be cut the spriteSheet
   //final double stepTime = 0.15; maybe use it later
-  final double speed = 5;
   bool isFacingRight = true;
   bool isNotJumping = true; //JUMP ANIM
   double yVelocity = 0;
@@ -95,40 +94,66 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   @override
   void update(double dt) {
     super.update(dt);
-    movementLogic();
+    movementLogic(dt);
+
+    fallingLogic(dt);
+
+    setCollisionsToFalse();
+  }
+
+  void fallingLogic(double dt){
 
     if (!isCollidingBottom) {
-      if (yVelocity < gravity * 5) { //place a limit to the yVelocity
+      if (yVelocity < (GameMethods.instance.gravity * dt) * 5) { //place a limit to the yVelocity
         position.y += yVelocity;
-        yVelocity += gravity;
+        yVelocity += GameMethods.instance.gravity * dt;
       } else {
         position.y += yVelocity;
       }
     }
+  }
 
+  void setCollisionsToFalse(){
     isCollidingBottom = false;
     isCollidingRight = false;
     isCollidingLeft = false;
   }
 
-  void movementLogic() {
+  void move(ComponentMotionState componentMotionState, double dt) {
+    switch (componentMotionState) {
+      case ComponentMotionState.walkingLeft:
+        if(!isCollidingLeft){
+          position.x -= (playerSpeed * GameMethods.instance.blockSize.x) * dt; //moving the player to the Left * speed
+        }
+        if (isFacingRight) {
+          flipHorizontallyAroundCenter();
+          isFacingRight = false;
+        }
+        animation = walkingAnimation;
+      break;
+      case ComponentMotionState.walkingRight:
+        if(!isCollidingRight) {
+          position.x += (playerSpeed * GameMethods.instance.blockSize.x) * dt; //moving the player to the Left * speed
+        }
+        if (!isFacingRight) {
+          flipHorizontallyAroundCenter();
+          isFacingRight = true;
+        }
+        animation = walkingAnimation;
+      break;
+      default: 
+      break;
+    }
+  }
+
+  void movementLogic(double dt) {
     //Moving Left
-    if(GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingLeft && !isCollidingLeft){
-      position.x -= speed; //moving the player to the Left * speed
-      if (isFacingRight) {
-        flipHorizontallyAroundCenter();
-        isFacingRight = false;
-      }
-      animation = walkingAnimation;
+    if(GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingLeft){
+      move(ComponentMotionState.walkingLeft, dt);
     }
     //Moving Right
-    if(GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingRight && !isCollidingRight){
-      position.x += speed; //moving the player to the Right * speed
-      if (!isFacingRight) {
-        flipHorizontallyAroundCenter();
-        isFacingRight = true;
-      }
-      animation = walkingAnimation;
+    if(GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingRight){
+      move(ComponentMotionState.walkingRight, dt);
     }
     //Idle 
     if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.idle) {

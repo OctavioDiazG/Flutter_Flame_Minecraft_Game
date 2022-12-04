@@ -34,6 +34,10 @@ class GameMethods{
       : (playerXIndexPosition ~/ chunkWidth) - 1;
   }
 
+  double get gravity {
+    return blockSize.x * 0.8; //check if it works
+  }
+
   Size getScreenSize()
   {
     return MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
