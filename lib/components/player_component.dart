@@ -9,10 +9,9 @@ import 'package:minecraft2d_game/utils/game_methods.dart';
 
 class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {//CollisionCallbacks will give us access to a function
 
-  final Vector2 playerDimensions = Vector2(50, 40); //the number of pixels it will be cut the spriteSheet
-  //final double stepTime = 0.15; maybe use it later
+  final Vector2 playerDimensions = Vector2.all(60); //the number of pixels it will be cut the spriteSheet
+  final double stepTime = 0.3; //maybe use it later
   bool isFacingRight = true;
-  bool isNotJumping = true; //JUMP ANIM
   double yVelocity = 0;
 
   // Movement Animation
@@ -41,14 +40,14 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 
     intersectionPoints.forEach((Vector2 individualIntersectionPoint) { 
 
-      if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) && (intersectionPoints.first.x - intersectionPoints.last.x.abs() > size.x * 0.4)) { //Add the 30% of the player so it will detect the floor 
-        //print("bottom Collision");
+      if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4) { 
+        print("bottom Collision");
         isCollidingBottom = true;
       }
 
       if (individualIntersectionPoint.y < (position.y - (size.y * 0.3))) {
         //print("isCollidingHotizontally");
-        //Right Collision
+        //create right collision
         if (individualIntersectionPoint.x > position.x) {
           isCollidingRight = true;
         } else {
@@ -65,19 +64,19 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 
     add(RectangleHitbox());
 
-    priority = 3;
+    priority = 2;
 
     anchor = Anchor.bottomCenter;  
 
     // WalkingSprite
     playerWalkingSpritesheet = SpriteSheet(
-      image: await Flame.images.load('sprite_sheets/own_imports/RougeHeroWalk.png'), //tells flutter where to grab the spriteSheet
-      srcSize: Vector2(50,45), //the number of pixels it will be cut the spriteSheet
+      image: await Flame.images.load('sprite_sheets/player/player_walking_sprite_sheet.png'), //tells flutter where to grab the spriteSheet
+      srcSize: Vector2.all(60), //the number of pixels it will be cut the spriteSheet
     );
     // IdleSprite 
     playerIdleSpritesheet = SpriteSheet(
-      image: await Flame.images.load('sprite_sheets/own_imports/RougeHeroIdle.png'), //tells flutter where to grab the spriteSheet
-      srcSize: Vector2(50,45), //the number of pixels it will be cut the spriteSheet
+      image: await Flame.images.load('sprite_sheets/player/player_idle_sprite_sheet.png'), //tells flutter where to grab the spriteSheet
+      srcSize: Vector2.all(60), //the number of pixels it will be cut the spriteSheet
     );
     // JumpSprite
     playerJumpSpritesheet = SpriteSheet(
@@ -87,7 +86,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 
     animation = idleAnimation;//set the animation row->what row it will take from the spritesheet. stepTime->time between the sprites 
     
-    position = Vector2(100,675); //position in the world
+    position = Vector2(200,500); //position in the world
     
   }
 
@@ -98,13 +97,13 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 
     fallingLogic(dt);
 
-    setCollisionsToFalse();
+    setAllCollisionsToFalse();
   }
 
   void fallingLogic(double dt){
 
     if (!isCollidingBottom) {
-      if (yVelocity < (GameMethods.instance.gravity * dt) * 5) { //place a limit to the yVelocity
+      if (yVelocity < (GameMethods.instance.gravity * dt) * 5) { //place a limit to the yVelocity //5
         position.y += yVelocity;
         yVelocity += GameMethods.instance.gravity * dt;
       } else {
@@ -113,7 +112,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     }
   }
 
-  void setCollisionsToFalse(){
+  void setAllCollisionsToFalse(){
     isCollidingBottom = false;
     isCollidingRight = false;
     isCollidingLeft = false;
@@ -142,7 +141,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
         animation = walkingAnimation;
       break;
       default: 
-      break;
+      break;  //if its defoult it will do nothing
     }
   }
 
@@ -160,15 +159,15 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
       animation = idleAnimation;
     }
     //Jump
-    if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.jump) {
-      animation = jumpAnimation; //JUMP ANIM
-    }
+    
+    /*if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.jump) {
+      //animation = jumpAnimation; //JUMP ANIM
+    }*/
   }
 
   @override
   void onGameResize(Vector2 newGameSize) {
-    // TODO: implement onGameResize
     super.onGameResize(newGameSize);
-    size = GameMethods.instance.blockSize * 1.5;
+    size = GameMethods.instance.blockSize * 1.5; 
   }
 }

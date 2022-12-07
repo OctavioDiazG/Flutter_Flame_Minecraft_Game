@@ -9,6 +9,6 @@ Structure birchTree = Structure(
     [null, null, Blocks.birchLog, null, null],
     [null, null, Blocks.birchLog, null, null],
   ], 
-  maxOccurences: 0, //Random().nextInt(3), //Generates a max of 3 occurences in the same chunk
+  maxOccurences: 1, //Generates a max of 3 occurences in the same chunk
   maxWidth: 5,
 );

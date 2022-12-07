@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:minecraft2d_game/global/world_data.dart';
@@ -17,7 +16,7 @@ class GameLayout extends StatelessWidget {
       children: [
 
         //This is the maing game
-        GameWidget(game: MainGame(worldData: WorldData(seed: 123456789))), //set randomSeed in seed:
+        GameWidget(game: MainGame(worldData: WorldData(seed: 437))), //set randomSeed in seed:
 
         //Every coming here will be in the HUD
         const ControllerWidget(),

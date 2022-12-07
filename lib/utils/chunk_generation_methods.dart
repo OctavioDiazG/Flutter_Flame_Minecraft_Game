@@ -100,11 +100,11 @@ class ChunkGenerationMethods{
       int randomOcurrences = 1;
 
       if (currentStructure == birchTree) {
-        randomOcurrences = Random().nextInt(3); //Random Generator 
+        randomOcurrences = Random().nextInt(2); //Random Generator 
       }
       if (currentStructure == cactus) {
-        randomOcurrences = Random().nextInt(5); //Random Generator 
-      } //TODO: Change if statement for switch
+        randomOcurrences = Random().nextInt(3); //Random Generator 
+      }
 
       for (int ocurrence = 0; ocurrence < currentStructure.maxOccurences + randomOcurrences; ocurrence++) {
 

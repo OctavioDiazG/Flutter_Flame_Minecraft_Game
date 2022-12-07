@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:minecraft2d_game/resources/blocks.dart';
 
 class Structure {
