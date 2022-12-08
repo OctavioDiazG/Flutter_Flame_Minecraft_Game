@@ -8,9 +8,9 @@ class PlayerData{
 
 enum ComponentMotionState{
   walkingLeft, 
-  jump,
   walkingRight, 
   idle,
+  jumping,
 } //compare value 
 
 /*

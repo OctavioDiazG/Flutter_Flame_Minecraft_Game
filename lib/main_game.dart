@@ -1,8 +1,12 @@
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:minecraft2d_game/components/block_component.dart';
 import 'package:minecraft2d_game/components/player_component.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
+import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/global/world_data.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/chunk_generation_methods.dart';
@@ -10,7 +14,7 @@ import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
 
-class MainGame extends FlameGame{
+class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKeyboardHandlerComponents{ //Has CollisionDetection is telling the program is will have Collition Detection
   final WorldData worldData;
 
   MainGame({required this.worldData}){
@@ -81,6 +85,32 @@ class MainGame extends FlameGame{
         }
       }
     });
+  }
+
+  @override
+  KeyEventResult onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed,) {
+    super.onKeyEvent(event, keysPressed);
+    //print(keysPressed);
+    //Keyes that make the player go right
+    if (keysPressed.contains(LogicalKeyboardKey.arrowRight) || keysPressed.contains(LogicalKeyboardKey.keyD)) {
+      //print("Right");
+      worldData.playerData.componentMotionState = ComponentMotionState.walkingRight;
+    }
+     //Keyes that make the player go left
+    if (keysPressed.contains(LogicalKeyboardKey.arrowLeft) || keysPressed.contains(LogicalKeyboardKey.keyA)) {
+      //print("Left");
+      worldData.playerData.componentMotionState = ComponentMotionState.walkingLeft;
+    }
+     //Keyes that make the player go up
+    if (keysPressed.contains(LogicalKeyboardKey.arrowUp) || keysPressed.contains(LogicalKeyboardKey.keyW) || keysPressed.contains(LogicalKeyboardKey.space)) {
+      //print("Up");
+      worldData.playerData.componentMotionState = ComponentMotionState.jumping;
+    }
+
+    if (keysPressed.isEmpty) {
+      worldData.playerData.componentMotionState = ComponentMotionState.idle;
+    }
+    return KeyEventResult.ignored;
   }
 
 }

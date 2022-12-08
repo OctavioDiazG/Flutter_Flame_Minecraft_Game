@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/structures.dart';
 
@@ -6,13 +7,13 @@ Structure cactus = Structure(
     [Blocks.cactus],
     [Blocks.cactus],
   ],
-  maxOccurences: 0,
+  maxOccurences: 1,
   maxWidth: 1
 );
 
 Structure deadBush = Structure(
   structure: [[Blocks.deadBush]], 
-  maxOccurences: 2, 
+  maxOccurences: 1, 
   maxWidth: 1
 );
 

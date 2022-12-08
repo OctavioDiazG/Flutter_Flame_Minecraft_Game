@@ -27,7 +27,7 @@ class ControllerWidget extends StatelessWidget {
             path: "assets/controller/center_button.png",
             onPressed: (){
               log('centerB');
-              playerData.componentMotionState = ComponentMotionState.jump; //JUMP ANIM
+              playerData.componentMotionState = ComponentMotionState.jumping;
             }),
           ControllerButtonWidget( //Right Movement Button
             path: "assets/controller/right_button.png",

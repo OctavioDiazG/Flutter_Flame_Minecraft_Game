@@ -12,8 +12,8 @@ class GameMethods{
   }
   
   Vector2 get blockSize{
-    //return Vector2.all(getScreenSize().width/chunkWidth);
-    return Vector2.all(40);
+    return Vector2.all(getScreenSize().width/chunkWidth);
+    //return Vector2.all(30);
   }
 
   int get freeArea{
@@ -32,6 +32,10 @@ class GameMethods{
     return playerXIndexPosition >= 0 
       ? playerXIndexPosition ~/ chunkWidth 
       : (playerXIndexPosition ~/ chunkWidth) - 1;
+  }
+
+  double get gravity {
+    return blockSize.x * 0.8; //check if it works
   }
 
   Size getScreenSize()
