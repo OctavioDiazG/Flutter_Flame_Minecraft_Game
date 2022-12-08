@@ -31,18 +31,24 @@ class ChunkGenerationMethods{
     //chunkWidth * 1 = 16, chunkWidth * 2 = 32 ...
 
     List<List<double>> rawNoise = noise2(
-      chunkIndex >= 0 ? chunkWidth * (chunkIndex + 1) : chunkWidth * (chunkIndex.abs()), //-1
+      chunkIndex >= 0 
+      ? chunkWidth * (chunkIndex + 1) 
+      : chunkWidth * (chunkIndex.abs()), //-1
       1, 
       noiseType: NoiseType.Perlin, 
       frequency: 0.05,
       seed: chunkIndex >= 0 
         ? GlobalGameReference.instance.gameReference.worldData.seed 
-        : GlobalGameReference.instance.gameReference.worldData.seed + 1, //Grab the seed reference from world_data
+        : GlobalGameReference.instance.gameReference.worldData.seed + 10, //Grab the seed reference from world_data
     );
 
     List<int> yValues = getYValuesFromRawNoise(rawNoise);
 
-    yValues.removeRange(0, chunkIndex >= 0? chunkWidth * chunkIndex: chunkWidth * (chunkIndex.abs() - 1));
+    yValues.removeRange(
+      0, 
+      chunkIndex >= 0 
+        ? chunkWidth * chunkIndex 
+        : chunkWidth * (chunkIndex.abs() - 1));
 
     chunk = generatePrimarySoil(chunk, yValues, biome);
 

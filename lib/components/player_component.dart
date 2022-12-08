@@ -13,6 +13,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   final double stepTime = 0.3; //maybe use it later
   bool isFacingRight = true;
   double yVelocity = 0;
+  double jumpForce = 0;
 
   // Movement Animation
   late SpriteSheet playerWalkingSpritesheet;
@@ -23,8 +24,8 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   late SpriteAnimation idleAnimation = playerIdleSpritesheet.createAnimation(row: 0, stepTime: 0.18);
 
   // Jump Animation
-  late SpriteSheet playerJumpSpritesheet;
-  late SpriteAnimation jumpAnimation = playerJumpSpritesheet.createAnimation(row: 0, stepTime: 0.12);
+  //late SpriteSheet playerJumpSpritesheet;
+  //late SpriteAnimation jumpAnimation = playerJumpSpritesheet.createAnimation(row: 0, stepTime: 0.12);
 
   bool isCollidingBottom = false;
   bool isCollidingRight = false;
@@ -43,6 +44,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
       if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4) { 
         print("bottom Collision");
         isCollidingBottom = true;
+        yVelocity = 0;
       }
 
       if (individualIntersectionPoint.y < (position.y - (size.y * 0.3))) {
@@ -71,22 +73,22 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     // WalkingSprite
     playerWalkingSpritesheet = SpriteSheet(
       image: await Flame.images.load('sprite_sheets/player/player_walking_sprite_sheet.png'), //tells flutter where to grab the spriteSheet
-      srcSize: Vector2.all(60), //the number of pixels it will be cut the spriteSheet
+      srcSize: playerDimensions, //the number of pixels it will be cut the spriteSheet
     );
     // IdleSprite 
     playerIdleSpritesheet = SpriteSheet(
       image: await Flame.images.load('sprite_sheets/player/player_idle_sprite_sheet.png'), //tells flutter where to grab the spriteSheet
-      srcSize: Vector2.all(60), //the number of pixels it will be cut the spriteSheet
+      srcSize: playerDimensions, //the number of pixels it will be cut the spriteSheet
     );
     // JumpSprite
-    playerJumpSpritesheet = SpriteSheet(
+    /*playerJumpSpritesheet = SpriteSheet(
       image: await Flame.images.load('sprite_sheets/own_imports/RougeHeroJump.png'), 
       srcSize: Vector2(50,45), //check the pixel numer of the cut 
-    ); //JUMP ANIM
+    );*/ //JUMP ANIM
 
     animation = idleAnimation;//set the animation row->what row it will take from the spritesheet. stepTime->time between the sprites 
     
-    position = Vector2(200,500); //position in the world
+    position = Vector2(100,400); //position in the world
     
   }
 
@@ -98,6 +100,11 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     fallingLogic(dt);
 
     setAllCollisionsToFalse();
+
+    if (jumpForce > 0) {
+      position.y -= jumpForce;
+      jumpForce -= GameMethods.instance.blockSize.x * 0.15;
+    }
   }
 
   void fallingLogic(double dt){
@@ -159,10 +166,13 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
       animation = idleAnimation;
     }
     //Jump
-    
-    /*if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.jump) {
-      //animation = jumpAnimation; //JUMP ANIM
-    }*/
+    if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.jumping) {
+      jumpForce = GameMethods.instance.blockSize.x * 0.6; 
+      /*if (isCollidingBottom) {
+        yVelocity = -jumpForce;
+      }*/
+      //animation = jumpAnimation;
+    }
   }
 
   @override

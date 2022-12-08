@@ -13,7 +13,7 @@ class GameMethods{
   
   Vector2 get blockSize{
     return Vector2.all(getScreenSize().width/chunkWidth);
-    //return Vector2.all(40);
+    //return Vector2.all(30);
   }
 
   int get freeArea{
