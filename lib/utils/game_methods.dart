@@ -12,8 +12,8 @@ class GameMethods{
   }
   
   Vector2 get blockSize{
-    return Vector2.all(getScreenSize().width/chunkWidth);
-    //return Vector2.all(30);
+    //return Vector2.all(getScreenSize().width/chunkWidth);
+    return Vector2.all(30);
   }
 
   int get freeArea{
@@ -38,6 +38,19 @@ class GameMethods{
     return blockSize.x * 0.8; //check if it works
   }
 
+  int getChunkIndexFromPositionIndex(Vector2 positionIndex){
+    return positionIndex.x >= 0 //positionIndex.x ~/ chunkWidth 
+      ? positionIndex.x ~/ chunkWidth 
+      : (positionIndex.x ~/ chunkWidth) - 1;
+  }
+
+  Vector2 getIndexPositionFromPixels(Vector2 clickPosision){
+    return Vector2(
+      (clickPosision.x / blockSize.x).floorToDouble(), 
+      (clickPosision.y / blockSize.y).floorToDouble()
+    );
+  }
+
   Size getScreenSize()
   {
     return MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
@@ -45,7 +58,7 @@ class GameMethods{
 
   Future<SpriteSheet> getBlockSpriteSheet() async{
     return SpriteSheet(
-      image: await Flame.images.load('sprite_sheets/blocks/block_sprite_sheet_original.png'), 
+      image: await Flame.images.load('sprite_sheets/blocks/block_sprite_sheet.png'), 
       srcSize: Vector2.all(60), 
     );
   }

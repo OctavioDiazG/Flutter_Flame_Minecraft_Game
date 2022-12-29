@@ -113,4 +113,14 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
     return KeyEventResult.ignored;
   }
 
+  @override
+  void onTapDown(int pointerId, TapDownInfo info) {
+    super.onTapDown(pointerId, info);
+
+
+    Vector2 blockPlacingPosition = GameMethods.instance.getIndexPositionFromPixels(info.eventPosition.game);
+
+    add(BlockComponent(chunkIndex: GameMethods.instance.getChunkIndexFromPositionIndex(blockPlacingPosition), blockIndex: blockPlacingPosition, block: Blocks.dirt));
+  }
+
 }
