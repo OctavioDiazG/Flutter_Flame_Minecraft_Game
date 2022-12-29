@@ -125,7 +125,7 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
   void placeBlockLogic(Vector2 blockPlacingPosition, Blocks block){
 
-    if (blockPlacingPosition.y > 0 &&  blockPlacingPosition.y < chunkHeight && GameMethods.instance.playerIsWithinRange(blockPlacingPosition)) {
+    if (blockPlacingPosition.y > 0 &&  blockPlacingPosition.y < chunkHeight && GameMethods.instance.playerIsWithinRange(blockPlacingPosition) && GameMethods.instance.getBlockAtIndexPosition(blockPlacingPosition) == null) {
       GameMethods.instance.repleceBlockAtWorldChunks(block, blockPlacingPosition);
       
       add(BlockComponent(

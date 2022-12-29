@@ -129,4 +129,15 @@ class GameMethods{
     return false;
   }
 
+  Blocks? getBlockAtIndexPosition(Vector2 blockIndex){
+
+    if (blockIndex.x >= 0) {
+      return GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt()];
+    } 
+    else {
+      return GlobalGameReference.instance.gameReference.worldData.leftWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt().abs() - 1];
+    }
+
+  }
+
 }
