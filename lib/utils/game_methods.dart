@@ -12,8 +12,8 @@ class GameMethods{
   }
   
   Vector2 get blockSize{
-    //return Vector2.all(getScreenSize().width/chunkWidth);
-    return Vector2.all(30);
+    return Vector2.all(getScreenSize().width/chunkWidth);
+    //return Vector2.all(30);
   }
 
   int get freeArea{
@@ -39,7 +39,7 @@ class GameMethods{
   }
 
   int getChunkIndexFromPositionIndex(Vector2 positionIndex){
-    return positionIndex.x >= 0 //positionIndex.x ~/ chunkWidth 
+    return positionIndex.x >= 0 
       ? positionIndex.x ~/ chunkWidth 
       : (positionIndex.x ~/ chunkWidth) - 1;
   }
@@ -107,4 +107,14 @@ class GameMethods{
     }
     return processedNoise;
   }
+
+  void repleceBlockAtWorldChunks(Blocks? block, Vector2 blockIndex) {
+    if (blockIndex.x >= 0) {
+      GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt()] = block;
+    } 
+    else {
+      GlobalGameReference.instance.gameReference.worldData.leftWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt().abs() - 1] = block;
+    }
+  }
+
 }

@@ -120,7 +120,13 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
     Vector2 blockPlacingPosition = GameMethods.instance.getIndexPositionFromPixels(info.eventPosition.game);
 
-    add(BlockComponent(chunkIndex: GameMethods.instance.getChunkIndexFromPositionIndex(blockPlacingPosition), blockIndex: blockPlacingPosition, block: Blocks.dirt));
+    GameMethods.instance.repleceBlockAtWorldChunks(Blocks.dirt, blockPlacingPosition);
+
+    add(BlockComponent(
+      chunkIndex: GameMethods.instance.getChunkIndexFromPositionIndex(blockPlacingPosition), 
+      blockIndex: blockPlacingPosition, 
+      block: Blocks.dirt
+    ));
   }
 
 }
