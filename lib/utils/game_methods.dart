@@ -27,8 +27,12 @@ class GameMethods{
   double get playerXIndexPosition{
     return GlobalGameReference.instance.gameReference.playerComponent.position.x / blockSize.x;
   }
+  
+  double get playerYIndexPosition{
+    return GlobalGameReference.instance.gameReference.playerComponent.position.y / blockSize.y;
+  }
 
-  int get inCurrentChunkIndex{
+  int get currentChunkPlayerIndex{
     return playerXIndexPosition >= 0 
       ? playerXIndexPosition ~/ chunkWidth 
       : (playerXIndexPosition ~/ chunkWidth) - 1;
@@ -115,6 +119,14 @@ class GameMethods{
     else {
       GlobalGameReference.instance.gameReference.worldData.leftWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt().abs() - 1] = block;
     }
+  }
+
+  bool playerIsWithinRange(Vector2 positionIndex) {
+    
+    if((positionIndex.x - playerXIndexPosition).abs() <= maxReach && (positionIndex.y - playerYIndexPosition).abs() <= maxReach){
+      return true;
+    }
+    return false;
   }
 
 }
