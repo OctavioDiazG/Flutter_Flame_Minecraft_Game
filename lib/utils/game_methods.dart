@@ -6,6 +6,8 @@ import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 
+enum Direction { top, bottom, left, right }
+
 class GameMethods{
   static GameMethods get instance {
     return GameMethods();
@@ -138,6 +140,56 @@ class GameMethods{
       return GlobalGameReference.instance.gameReference.worldData.leftWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt().abs() - 1];
     }
 
+  }
+  Blocks? getBlocksAtDirection(Vector2 blockIndex, Direction direction){
+    switch (direction) {
+      case Direction.top:
+      try{
+        return getBlockAtIndexPosition(Vector2(blockIndex.x, blockIndex.y - 1));
+      }catch(e){
+        break;
+      }
+        //return getBlockAtIndexPosition(blockIndex + Vector2(0, -1));
+      case Direction.bottom:
+      try{
+        return getBlockAtIndexPosition(Vector2(blockIndex.x, blockIndex.y + 1));
+      }catch(e){
+        break;
+      }
+        //return getBlockAtIndexPosition(blockIndex + Vector2(0, 1));
+      case Direction.left:
+      try{
+        return getBlockAtIndexPosition(Vector2(blockIndex.x - 1, blockIndex.y));
+      }catch(e){
+        break;
+      }
+        //return getBlockAtIndexPosition(blockIndex + Vector2(-1, 0));
+      case Direction.right:
+      try{
+        return getBlockAtIndexPosition(Vector2(blockIndex.x + 1, blockIndex.y));
+      }catch(e){
+        break;
+      }
+        //return getBlockAtIndexPosition(blockIndex + Vector2(1, 0));
+      default:
+        return null;
+    }
+  }
+
+  bool adjacentBlocksExist(Vector2 blockIndex){
+    if(getBlocksAtDirection(blockIndex, Direction.top) is Blocks){
+      return true;
+    } 
+    else if(getBlocksAtDirection(blockIndex, Direction.bottom) is Blocks){
+      return true;
+    }
+    else if(getBlocksAtDirection(blockIndex, Direction.left) is Blocks){
+      return true;
+    }
+    else if(getBlocksAtDirection(blockIndex, Direction.right) is Blocks){
+      return true;
+    }
+    return false;
   }
 
 }
