@@ -6,14 +6,16 @@ import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 
+enum Direction { top, bottom, left, right }
+
 class GameMethods{
   static GameMethods get instance {
     return GameMethods();
   }
   
   Vector2 get blockSize{
-    //return Vector2.all(getScreenSize().width/chunkWidth);
-    return Vector2.all(30);
+    return Vector2.all(getScreenSize().width/chunkWidth);
+    //return Vector2.all(30);
   }
 
   int get freeArea{
@@ -27,8 +29,12 @@ class GameMethods{
   double get playerXIndexPosition{
     return GlobalGameReference.instance.gameReference.playerComponent.position.x / blockSize.x;
   }
+  
+  double get playerYIndexPosition{
+    return GlobalGameReference.instance.gameReference.playerComponent.position.y / blockSize.y;
+  }
 
-  int get inCurrentChunkIndex{
+  int get currentChunkPlayerIndex{
     return playerXIndexPosition >= 0 
       ? playerXIndexPosition ~/ chunkWidth 
       : (playerXIndexPosition ~/ chunkWidth) - 1;
@@ -39,7 +45,7 @@ class GameMethods{
   }
 
   int getChunkIndexFromPositionIndex(Vector2 positionIndex){
-    return positionIndex.x >= 0 //positionIndex.x ~/ chunkWidth 
+    return positionIndex.x >= 0 
       ? positionIndex.x ~/ chunkWidth 
       : (positionIndex.x ~/ chunkWidth) - 1;
   }
@@ -107,4 +113,83 @@ class GameMethods{
     }
     return processedNoise;
   }
+
+  void repleceBlockAtWorldChunks(Blocks? block, Vector2 blockIndex) {
+    if (blockIndex.x >= 0) {
+      GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt()] = block;
+    } 
+    else {
+      GlobalGameReference.instance.gameReference.worldData.leftWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt().abs() - 1] = block;
+    }
+  }
+
+  bool playerIsWithinRange(Vector2 positionIndex) {
+    
+    if((positionIndex.x - playerXIndexPosition).abs() <= maxReach && (positionIndex.y - playerYIndexPosition).abs() <= maxReach){
+      return true;
+    }
+    return false;
+  }
+
+  Blocks? getBlockAtIndexPosition(Vector2 blockIndex){
+
+    if (blockIndex.x >= 0) {
+      return GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt()];
+    } 
+    else {
+      return GlobalGameReference.instance.gameReference.worldData.leftWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt().abs() - 1];
+    }
+
+  }
+  Blocks? getBlocksAtDirection(Vector2 blockIndex, Direction direction){
+    switch (direction) {
+      case Direction.top:
+      try{
+        return getBlockAtIndexPosition(Vector2(blockIndex.x, blockIndex.y - 1));
+      }catch(e){
+        break;
+      }
+        //return getBlockAtIndexPosition(blockIndex + Vector2(0, -1));
+      case Direction.bottom:
+      try{
+        return getBlockAtIndexPosition(Vector2(blockIndex.x, blockIndex.y + 1));
+      }catch(e){
+        break;
+      }
+        //return getBlockAtIndexPosition(blockIndex + Vector2(0, 1));
+      case Direction.left:
+      try{
+        return getBlockAtIndexPosition(Vector2(blockIndex.x - 1, blockIndex.y));
+      }catch(e){
+        break;
+      }
+        //return getBlockAtIndexPosition(blockIndex + Vector2(-1, 0));
+      case Direction.right:
+      try{
+        return getBlockAtIndexPosition(Vector2(blockIndex.x + 1, blockIndex.y));
+      }catch(e){
+        break;
+      }
+        //return getBlockAtIndexPosition(blockIndex + Vector2(1, 0));
+      default:
+        return null;
+    }
+  }
+
+  bool adjacentBlocksExist(Vector2 blockIndex){
+    if(getBlocksAtDirection(blockIndex, Direction.top) is Blocks){
+      return true;
+    } 
+    else if(getBlocksAtDirection(blockIndex, Direction.bottom) is Blocks){
+      return true;
+    }
+    else if(getBlocksAtDirection(blockIndex, Direction.left) is Blocks){
+      return true;
+    }
+    else if(getBlocksAtDirection(blockIndex, Direction.right) is Blocks){
+      return true;
+    }
+    return false;
+  }
+
 }

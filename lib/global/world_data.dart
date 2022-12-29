@@ -16,9 +16,9 @@ class WorldData {
 
   List<int> get chunksThatShouldBeRendered{
     return [  //the number of chunks that should be render depending on the player pos
-      GameMethods.instance.inCurrentChunkIndex - 1,
-      GameMethods.instance.inCurrentChunkIndex ,
-      GameMethods.instance.inCurrentChunkIndex + 1,
+      GameMethods.instance.currentChunkPlayerIndex - 1,
+      GameMethods.instance.currentChunkPlayerIndex ,
+      GameMethods.instance.currentChunkPlayerIndex + 1,
     ];
   }
 

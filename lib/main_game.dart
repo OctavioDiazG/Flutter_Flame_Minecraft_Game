@@ -120,7 +120,20 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
     Vector2 blockPlacingPosition = GameMethods.instance.getIndexPositionFromPixels(info.eventPosition.game);
 
-    add(BlockComponent(chunkIndex: GameMethods.instance.getChunkIndexFromPositionIndex(blockPlacingPosition), blockIndex: blockPlacingPosition, block: Blocks.dirt));
+    placeBlockLogic(blockPlacingPosition, Blocks.dirt);
+  }
+
+  void placeBlockLogic(Vector2 blockPlacingPosition, Blocks block){
+
+    if (blockPlacingPosition.y > 0 &&  blockPlacingPosition.y < chunkHeight && GameMethods.instance.playerIsWithinRange(blockPlacingPosition) && GameMethods.instance.getBlockAtIndexPosition(blockPlacingPosition) == null && GameMethods.instance.adjacentBlocksExist(blockPlacingPosition)) {
+      GameMethods.instance.repleceBlockAtWorldChunks(block, blockPlacingPosition);
+      
+      add(BlockComponent(
+        chunkIndex: GameMethods.instance.getChunkIndexFromPositionIndex(blockPlacingPosition), 
+        blockIndex: blockPlacingPosition, 
+        block: block
+      ));
+    }     
   }
 
 }
