@@ -13,7 +13,6 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   final double stepTime = 0.3; //maybe use it later
   bool isFacingRight = true;
   double yVelocity = 0;
-  double jumpForce = 0;
 
   // Movement Animation
   late SpriteSheet playerWalkingSpritesheet;
@@ -30,6 +29,13 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   bool isCollidingBottom = false;
   bool isCollidingRight = false;
   bool isCollidingLeft = false;
+  bool isCollidingTop = false;
+
+  double jumpForce = 0;
+
+  double localPlayerSpeed = 0;
+
+  bool refreshSpeed = false;
 
 
   @override
@@ -41,12 +47,19 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 
     intersectionPoints.forEach((Vector2 individualIntersectionPoint) { 
 
+      //Ground Collision
       if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4) { 
-        print("bottom Collision");
+        //print("bottom Collision");
         isCollidingBottom = true;
         yVelocity = 0;
       }
 
+      //Top Collision
+      if (individualIntersectionPoint.y < (position.y - (size.y * 0.75)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4 && jumpForce > 0) {
+        isCollidingTop = true;
+      }
+
+      //Horizontal Collision
       if (individualIntersectionPoint.y < (position.y - (size.y * 0.3))) {
         //print("isCollidingHotizontally");
         //create right collision
@@ -86,10 +99,18 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
       srcSize: Vector2(50,45), //check the pixel numer of the cut 
     );*/ //JUMP ANIM
 
+    position = Vector2(100,400); //position in the world
+
     animation = idleAnimation;//set the animation row->what row it will take from the spritesheet. stepTime->time between the sprites 
     
-    position = Vector2(100,400); //position in the world
-    
+    //refreshSpeed = true; every second
+    add(TimerComponent(
+      period: 1,
+      repeat: true, 
+      onTick:() {
+        refreshSpeed = true;
+      }
+    ));
   }
 
   @override
@@ -99,18 +120,31 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 
     fallingLogic(dt);
 
+    jumpingLogic();
+
     setAllCollisionsToFalse();
 
+    if (refreshSpeed) {
+      localPlayerSpeed = (playerSpeed * GameMethods.instance.blockSize.x) * dt;
+      refreshSpeed = false;
+    }
+
+  }
+
+  void jumpingLogic(){
     if (jumpForce > 0) {
       position.y -= jumpForce;
       jumpForce -= GameMethods.instance.blockSize.x * 0.15;
+      if (isCollidingTop) {
+        jumpForce = 0;
+      }
     }
-  }
+  } 
 
   void fallingLogic(double dt){
 
     if (!isCollidingBottom) {
-      if (yVelocity < (GameMethods.instance.gravity * dt) * 5) { //place a limit to the yVelocity //5
+      if (yVelocity < (GameMethods.instance.gravity * dt) * 10) { //place a limit to the yVelocity //5
         position.y += yVelocity;
         yVelocity += GameMethods.instance.gravity * dt;
       } else {
@@ -123,13 +157,14 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     isCollidingBottom = false;
     isCollidingRight = false;
     isCollidingLeft = false;
+    isCollidingTop = false;
   }
 
   void move(ComponentMotionState componentMotionState, double dt) {
     switch (componentMotionState) {
       case ComponentMotionState.walkingLeft:
         if(!isCollidingLeft){
-          position.x -= (playerSpeed * GameMethods.instance.blockSize.x) * dt; //moving the player to the Left * speed
+          position.x -= localPlayerSpeed; //moving the player to the Left * speed
         }
         if (isFacingRight) {
           flipHorizontallyAroundCenter();
@@ -139,7 +174,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
       break;
       case ComponentMotionState.walkingRight:
         if(!isCollidingRight) {
-          position.x += (playerSpeed * GameMethods.instance.blockSize.x) * dt; //moving the player to the Left * speed
+          position.x += localPlayerSpeed; //moving the player to the Left * speed
         }
         if (!isFacingRight) {
           flipHorizontallyAroundCenter();
@@ -166,7 +201,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
       animation = idleAnimation;
     }
     //Jump
-    if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.jumping) {
+    if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.jumping && isCollidingBottom) {
       jumpForce = GameMethods.instance.blockSize.x * 0.6; 
       /*if (isCollidingBottom) {
         yVelocity = -jumpForce;
