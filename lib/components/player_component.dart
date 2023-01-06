@@ -2,8 +2,10 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
+import 'package:minecraft2d_game/components/block_component.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
+import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
@@ -42,35 +44,33 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-    //print("Other is $other ");
-    //print("IntersectionPoints are $intersectionPoints ");
-
-    intersectionPoints.forEach((Vector2 individualIntersectionPoint) { 
-
-      //Ground Collision
-      if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4) { 
-        //print("bottom Collision");
-        isCollidingBottom = true;
-        yVelocity = 0;
-      }
-
-      //Top Collision
-      if (individualIntersectionPoint.y < (position.y - (size.y * 0.75)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4 && jumpForce > 0) {
-        isCollidingTop = true;
-      }
-
-      //Horizontal Collision
-      if (individualIntersectionPoint.y < (position.y - (size.y * 0.3))) {
-        //print("isCollidingHotizontally");
-        //create right collision
-        if (individualIntersectionPoint.x > position.x) {
-          isCollidingRight = true;
-        } else {
-          isCollidingLeft = true;
+    if (other is BlockComponent && BlockData.getBlockDataFor(other.block).isCollidable) {
+      intersectionPoints.forEach((Vector2 individualIntersectionPoint) { 
+  
+        //Ground Collision
+        if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4) { 
+          //print("bottom Collision");
+          isCollidingBottom = true;
+          yVelocity = 0;
         }
-      }
-
-    });
+  
+        //Top Collision
+        if (individualIntersectionPoint.y < (position.y - (size.y * 0.75)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4 && jumpForce > 0) {
+          isCollidingTop = true;
+        }
+  
+        //Horizontal Collision
+        if (individualIntersectionPoint.y < (position.y - (size.y * 0.3))) {
+          //print("isCollidingHotizontally");
+          //create right collision
+          if (individualIntersectionPoint.x > position.x) {
+            isCollidingRight = true;
+          } else {
+            isCollidingLeft = true;
+          }
+        }
+      });
+    }
   }
 
   @override
@@ -134,7 +134,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   void jumpingLogic(){
     if (jumpForce > 0) {
       position.y -= jumpForce;
-      jumpForce -= GameMethods.instance.blockSize.x * 0.15;
+      jumpForce -= GameMethods.instance.blockSize.x * 0.10;
       if (isCollidingTop) {
         jumpForce = 0;
       }

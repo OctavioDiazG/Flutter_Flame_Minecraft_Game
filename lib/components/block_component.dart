@@ -24,7 +24,7 @@ class BlockComponent extends SpriteComponent with Tappable{
 
   //the double dot is the cascate operator in dart, think about it as the word with
   late BlockBreakingComponent blockBreakingComponent = BlockBreakingComponent()
-  ..animation = animationBlockSpriteSheet.createAnimation(row: 0, stepTime: 0.3, loop: false)
+  ..animation = animationBlockSpriteSheet.createAnimation(row: 0, stepTime: BlockData.getBlockDataFor(block).baseMiningSpeed/6, loop: false)
   ..animation!.onComplete = (){
     GameMethods.instance.repleceBlockAtWorldChunks(null, blockIndex);
     removeFromParent();
