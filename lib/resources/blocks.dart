@@ -91,7 +91,7 @@ class  BlockData {
   static BlockData leaf = BlockData(isCollidable: false, baseMiningSpeed: 0.35);
   static BlockData stone  = BlockData(isCollidable: true, baseMiningSpeed: 4);
   static BlockData woodPlank  = BlockData(isCollidable: true, baseMiningSpeed: 2.5);
-  static BlockData unbreakable  = BlockData(isCollidable: true, baseMiningSpeed: 999999, breakable: false);
+  static BlockData unbreakable  = BlockData(isCollidable: true, baseMiningSpeed: 1, breakable: false);
 
 
 }

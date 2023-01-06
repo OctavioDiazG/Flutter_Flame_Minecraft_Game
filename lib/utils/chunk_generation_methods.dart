@@ -58,13 +58,19 @@ class ChunkGenerationMethods{
 
     chunk = addStructureToChunk(chunk, yValues, biome);
 
+    chunk = addBedrock(chunk);
+
     chunk = addOreToChunk(chunk, Ores.coalOre);
     chunk = addOreToChunk(chunk, Ores.ironOre);
     chunk = addOreToChunk(chunk, Ores.goldOre);
     chunk = addOreToChunk(chunk, Ores.diamondOre);
 
 
+    return chunk;
+  }
 
+  List<List<Blocks?>> addBedrock(List<List<Blocks?>> chunk){
+    chunk.last.replaceRange(0, chunkWidth, List.generate(chunkWidth, (index) => Blocks.bedrock));
     return chunk;
   }
 

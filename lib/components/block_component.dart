@@ -66,10 +66,12 @@ class BlockComponent extends SpriteComponent with Tappable{
   bool onTapDown(TapDownInfo info){ 
     super.onTapDown(info);
     
-    //Add Block Breaking animation     
-    if (!blockBreakingComponent.isMounted) {
-      blockBreakingComponent.animation!.reset(); // every time the player taps on the block, the animation will reset
-      add(blockBreakingComponent);
+    if (BlockData.getBlockDataFor(block).breakable) {
+      //Add Block Breaking animation     
+      if (!blockBreakingComponent.isMounted) {
+        blockBreakingComponent.animation!.reset(); // every time the player taps on the block, the animation will reset
+        add(blockBreakingComponent);
+      }
     }
     return true;
   }
