@@ -62,9 +62,9 @@ class GameMethods{
     return MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
   } 
 
-  Future<SpriteSheet> getBlockSpriteSheet() async{
+  SpriteSheet getBlockSpriteSheet() {
     return SpriteSheet(
-      image: await Flame.images.load('sprite_sheets/blocks/block_sprite_sheet.png'), 
+      image: Flame.images.fromCache('sprite_sheets/blocks/block_sprite_sheet.png'), 
       srcSize: Vector2.all(60), 
     );
   }

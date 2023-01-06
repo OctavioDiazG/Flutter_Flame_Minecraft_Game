@@ -85,12 +85,12 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 
     // WalkingSprite
     playerWalkingSpritesheet = SpriteSheet(
-      image: await Flame.images.load('sprite_sheets/player/player_walking_sprite_sheet.png'), //tells flutter where to grab the spriteSheet
+      image: Flame.images.fromCache('sprite_sheets/player/player_walking_sprite_sheet.png'), //tells flutter where to grab the spriteSheet
       srcSize: playerDimensions, //the number of pixels it will be cut the spriteSheet
     );
     // IdleSprite 
     playerIdleSpritesheet = SpriteSheet(
-      image: await Flame.images.load('sprite_sheets/player/player_idle_sprite_sheet.png'), //tells flutter where to grab the spriteSheet
+      image: Flame.images.fromCache('sprite_sheets/player/player_idle_sprite_sheet.png'), //tells flutter where to grab the spriteSheet
       srcSize: playerDimensions, //the number of pixels it will be cut the spriteSheet
     );
     // JumpSprite
