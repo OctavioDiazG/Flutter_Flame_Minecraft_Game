@@ -30,13 +30,16 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
     super.onLoad();
     //print(ChunkGenerationMethods.instance.generateChunk()); //ERASE
     camera.followComponent(playerComponent);
+    
     add(playerComponent);
-    GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(-1), false);
-    GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(0), true);
-    GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(1), true);
-    renderChunk(-1);
-    renderChunk(0);
-    renderChunk(1);
+    /*
+    //GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(-1), false);
+    //GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(0), true);
+    //GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(1), true);
+    //renderChunk(-1);
+    //renderChunk(0);
+    //renderChunk(1);
+    */
   }
 
   void renderChunk(int chunkIndex){
