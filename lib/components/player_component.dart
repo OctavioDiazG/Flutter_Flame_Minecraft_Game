@@ -6,15 +6,14 @@ import 'package:minecraft2d_game/components/block_component.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
+import 'package:minecraft2d_game/resources/entity.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
-class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {//CollisionCallbacks will give us access to a function
+class PlayerComponent extends Entity {//CollisionCallbacks will give us access to a function
 
   final Vector2 playerDimensions = Vector2.all(60); //the number of pixels it will be cut the spriteSheet
   final double stepTime = 0.3; //maybe use it later
-  bool isFacingRight = true;
-  double yVelocity = 0;
 
   // Movement Animation
   late SpriteSheet playerWalkingSpritesheet;
@@ -28,48 +27,15 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   //late SpriteSheet playerJumpSpritesheet;
   //late SpriteAnimation jumpAnimation = playerJumpSpritesheet.createAnimation(row: 0, stepTime: 0.12);
 
-  bool isCollidingBottom = false;
-  bool isCollidingRight = false;
-  bool isCollidingLeft = false;
-  bool isCollidingTop = false;
-
-  double jumpForce = 0;
 
   double localPlayerSpeed = 0;
 
   bool refreshSpeed = false;
 
-
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    super.onCollision(intersectionPoints, other);
-
     if (other is BlockComponent && BlockData.getBlockDataFor(other.block).isCollidable) {
-      intersectionPoints.forEach((Vector2 individualIntersectionPoint) { 
-  
-        //Ground Collision
-        if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4) { 
-          //print("bottom Collision");
-          isCollidingBottom = true;
-          yVelocity = 0;
-        }
-  
-        //Top Collision
-        if (individualIntersectionPoint.y < (position.y - (size.y * 0.75)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4 && jumpForce > 0) {
-          isCollidingTop = true;
-        }
-  
-        //Horizontal Collision
-        if (individualIntersectionPoint.y < (position.y - (size.y * 0.3))) {
-          //print("isCollidingHotizontally");
-          //create right collision
-          if (individualIntersectionPoint.x > position.x) {
-            isCollidingRight = true;
-          } else {
-            isCollidingLeft = true;
-          }
-        }
-      });
+      super.onCollision(intersectionPoints, other);
     }
   }
 
@@ -129,72 +95,20 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
       refreshSpeed = false;
     }
 
-  }
-
-  void jumpingLogic(){
-    if (jumpForce > 0) {
-      position.y -= jumpForce;
-      jumpForce -= GameMethods.instance.blockSize.x * 0.10;
-      if (isCollidingTop) {
-        jumpForce = 0;
-      }
-    }
   } 
 
-  void fallingLogic(double dt){
 
-    if (!isCollidingBottom) {
-      if (yVelocity < (GameMethods.instance.gravity * dt) * 10) { //place a limit to the yVelocity //5
-        position.y += yVelocity;
-        yVelocity += GameMethods.instance.gravity * dt;
-      } else {
-        position.y += yVelocity;
-      }
-    }
-  }
-
-  void setAllCollisionsToFalse(){
-    isCollidingBottom = false;
-    isCollidingRight = false;
-    isCollidingLeft = false;
-    isCollidingTop = false;
-  }
-
-  void move(ComponentMotionState componentMotionState, double dt) {
-    switch (componentMotionState) {
-      case ComponentMotionState.walkingLeft:
-        if(!isCollidingLeft){
-          position.x -= localPlayerSpeed; //moving the player to the Left * speed
-        }
-        if (isFacingRight) {
-          flipHorizontallyAroundCenter();
-          isFacingRight = false;
-        }
-        animation = walkingAnimation;
-      break;
-      case ComponentMotionState.walkingRight:
-        if(!isCollidingRight) {
-          position.x += localPlayerSpeed; //moving the player to the Left * speed
-        }
-        if (!isFacingRight) {
-          flipHorizontallyAroundCenter();
-          isFacingRight = true;
-        }
-        animation = walkingAnimation;
-      break;
-      default: 
-      break;  //if its defoult it will do nothing
-    }
-  }
 
   void movementLogic(double dt) {
     //Moving Left
     if(GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingLeft){
-      move(ComponentMotionState.walkingLeft, dt);
+      move(ComponentMotionState.walkingLeft, dt, localPlayerSpeed);
+      animation = walkingAnimation;
     }
     //Moving Right
     if(GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingRight){
-      move(ComponentMotionState.walkingRight, dt);
+      move(ComponentMotionState.walkingRight, dt, localPlayerSpeed);
+      animation = walkingAnimation;
     }
     //Idle 
     if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.idle) {
