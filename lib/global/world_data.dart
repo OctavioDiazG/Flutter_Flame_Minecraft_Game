@@ -1,4 +1,5 @@
 import 'package:minecraft2d_game/components/item_component.dart';
+import 'package:minecraft2d_game/global/inventory.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
@@ -26,6 +27,8 @@ class WorldData {
   List<int> currentRenderedChunk =  [];
 
   List<ItemComponent> items = [];
+
+  InventoryManager inventoryManager = InventoryManager();
 
 
 }
