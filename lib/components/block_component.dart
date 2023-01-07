@@ -4,6 +4,7 @@ import 'package:flame/flame.dart';
 import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
 import 'package:minecraft2d_game/components/block_breaking_component.dart';
+import 'package:minecraft2d_game/components/item_component.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
@@ -25,10 +26,13 @@ class BlockComponent extends SpriteComponent with Tappable{
   //the double dot is the cascate operator in dart, think about it as the word with
   late BlockBreakingComponent blockBreakingComponent = BlockBreakingComponent()
   ..animation = animationBlockSpriteSheet.createAnimation(row: 0, stepTime: BlockData.getBlockDataFor(block).baseMiningSpeed/6, loop: false)
-  ..animation!.onComplete = (){
+  ..animation!.onComplete = onBroken;
+
+  void onBroken() {
     GameMethods.instance.repleceBlockAtWorldChunks(null, blockIndex);
+    GlobalGameReference.instance.gameReference.add(ItemComponent(spawnBlockIndex: blockIndex, block: block));
     removeFromParent();
-  };
+  }
 
   @override
   Future<void> onLoad() async{
