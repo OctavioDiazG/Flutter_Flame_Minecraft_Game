@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:minecraft2d_game/components/block_component.dart';
+import 'package:minecraft2d_game/components/item_component.dart';
 import 'package:minecraft2d_game/components/player_component.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
@@ -60,8 +61,12 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
   @override
   void update(double dt){ //get the dt as delta time to get every frame posible of the playerPos.x
     super.update(dt);
+
+    itemRenderingLogic();
+
     //print(worldData.chunksThatShouldBeRendered);
     worldData.chunksThatShouldBeRendered.asMap().forEach((int index, int chunkIndex) {
+
       //chunk isnt rendered
       if (!worldData.currentRenderedChunk.contains(chunkIndex)) {
         //For right world chunk
@@ -85,6 +90,24 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
           renderChunk(chunkIndex);
 
           worldData.currentRenderedChunk.add(chunkIndex);
+        }
+      }
+    });
+  }
+
+  void itemRenderingLogic(){
+    //logic
+    worldData.items.asMap().forEach((int index, ItemComponent item) {
+
+      if (!item.isMounted ) {
+        if (worldData.chunksThatShouldBeRendered.contains(GameMethods.instance.getChunkIndexFromPositionIndex(item.spawnBlockIndex))) {
+          add(item);
+          //item.isRendered = true;
+        }
+      } else {
+        if (!worldData.chunksThatShouldBeRendered.contains(GameMethods.instance.getChunkIndexFromPositionIndex(item.spawnBlockIndex))) {
+          remove(item);
+          //item.isRendered = false;
         }
       }
     });
