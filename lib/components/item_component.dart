@@ -20,10 +20,13 @@ class ItemComponent extends Entity {
     if (other is BlockComponent && BlockData.getBlockDataFor(other.block).isCollidable) {
       super.onCollision(intersectionPoints, other);
     } else if (other is PlayerComponent) {
-      GlobalGameReference.instance.gameReference.worldData.items.remove(this);
-      //add item to inventory
-      //other.inventory.addItem(block);
-      removeFromParent();
+
+      if (GlobalGameReference.instance.gameReference.worldData.inventoryManager.addBlockToInventory(block)) {
+        //remove item from world  
+        GlobalGameReference.instance.gameReference.worldData.items.remove(this);
+        //add item to inventory
+        removeFromParent();
+      }
     }
   }
 
