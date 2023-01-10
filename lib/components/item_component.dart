@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:minecraft2d_game/components/block_component.dart';
 import 'package:minecraft2d_game/components/player_component.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
+import 'package:minecraft2d_game/global/inventory.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/entity.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
@@ -26,6 +27,9 @@ class ItemComponent extends Entity {
         GlobalGameReference.instance.gameReference.worldData.items.remove(this);
         //add item to inventory
         removeFromParent();
+        GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots.asMap().forEach((int index, InventorySlot value){
+          print('$index block is ${value.block} with count ${value.count}');
+        });
       }
     }
   }
