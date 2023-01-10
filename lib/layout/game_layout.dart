@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:minecraft2d_game/global/world_data.dart';
 import 'package:minecraft2d_game/layout/controller_widget.dart';
 import 'package:minecraft2d_game/main_game.dart';
+import 'package:minecraft2d_game/utils/game_methods.dart';
+import 'package:minecraft2d_game/widget/inventroy/inventory_slot.dart';
 
 class GameLayout extends StatelessWidget {
    
@@ -20,6 +22,7 @@ class GameLayout extends StatelessWidget {
 
         //Every coming here will be in the HUD
         const ControllerWidget(),
+        const InventroySlotWidget(slotType: SlotType.itemBar),
       ],
     );
   }
