@@ -7,17 +7,24 @@ class ItemBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        InventroySlotWidget(slotType: SlotType.itemBar),
-        InventroySlotWidget(slotType: SlotType.itemBar),
-        InventroySlotWidget(slotType: SlotType.itemBar),
-        InventroySlotWidget(slotType: SlotType.itemBar),
-        InventroySlotWidget(slotType: SlotType.itemBar),
-        InventroySlotWidget(slotType: SlotType.itemBar),
-        InventroySlotWidget(slotType: SlotType.itemBar),
-        InventroySlotWidget(slotType: SlotType.itemBar),
-      ],
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: GameMethods.instance.slotSize / 8),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            InventroySlotWidget(slotType: SlotType.itemBar),
+            InventroySlotWidget(slotType: SlotType.itemBar),
+            InventroySlotWidget(slotType: SlotType.itemBar),
+            InventroySlotWidget(slotType: SlotType.itemBar),
+            InventroySlotWidget(slotType: SlotType.itemBar),
+            InventroySlotWidget(slotType: SlotType.itemBar),
+            InventroySlotWidget(slotType: SlotType.itemBar),
+            InventroySlotWidget(slotType: SlotType.itemBar),
+          ],
+        ),
+      ),
     );
   }
 }

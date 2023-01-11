@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
 class InventorySlotBackgroundWidget extends StatelessWidget {
@@ -10,7 +11,9 @@ class InventorySlotBackgroundWidget extends StatelessWidget {
     return SizedBox( 
       width: GameMethods.instance.slotSize, 
       height: GameMethods.instance.slotSize, 
-      child: Image.asset(getPath())
+      child: FittedBox(
+        child: Image.asset(getPath()),
+      )
     );
   }
   String getPath(){
