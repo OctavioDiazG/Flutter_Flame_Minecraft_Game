@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 import 'package:minecraft2d_game/widget/inventroy/inventory_slot.dart';
 
@@ -14,14 +15,15 @@ class ItemBarWidget extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            InventroySlotWidget(slotType: SlotType.itemBar),
-            InventroySlotWidget(slotType: SlotType.itemBar),
-            InventroySlotWidget(slotType: SlotType.itemBar),
-            InventroySlotWidget(slotType: SlotType.itemBar),
-            InventroySlotWidget(slotType: SlotType.itemBar),
-            InventroySlotWidget(slotType: SlotType.itemBar),
-            InventroySlotWidget(slotType: SlotType.itemBar),
-            InventroySlotWidget(slotType: SlotType.itemBar),
+            InventroySlotWidget(slotType: SlotType.itemBar, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[0],),
+            InventroySlotWidget(slotType: SlotType.itemBar, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[1],),
+            InventroySlotWidget(slotType: SlotType.itemBar, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[2],),
+            InventroySlotWidget(slotType: SlotType.itemBar, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[3],),
+            InventroySlotWidget(slotType: SlotType.itemBar, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[4],),
+            InventroySlotWidget(slotType: SlotType.itemBar, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[5],),
+            InventroySlotWidget(slotType: SlotType.itemBar, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[6],),
+            InventroySlotWidget(slotType: SlotType.itemBar, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[7],),
+            InventroySlotWidget(slotType: SlotType.itemBar, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[8],),
           ],
         ),
       ),

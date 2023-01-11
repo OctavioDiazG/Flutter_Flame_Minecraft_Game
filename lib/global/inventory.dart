@@ -2,7 +2,7 @@ import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 
 class InventoryManager {
-  List<InventorySlot> inventorySlots = List.generate(5, (index) => InventorySlot(index: index));
+  List<InventorySlot> inventorySlots = List.generate(36, (index) => InventorySlot(index: index,));
 
   bool addBlockToInventory(Blocks block) {
     //loops through all the slots
