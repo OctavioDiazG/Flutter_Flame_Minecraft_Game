@@ -27,9 +27,6 @@ class ItemComponent extends Entity {
         GlobalGameReference.instance.gameReference.worldData.items.remove(this);
         //add item to inventory
         removeFromParent();
-        GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots.asMap().forEach((int index, InventorySlot value){
-          print('$index block is ${value.block} with count ${value.count}');
-        });
       }
     }
   }

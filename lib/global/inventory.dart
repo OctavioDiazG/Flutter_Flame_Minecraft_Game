@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 
@@ -14,7 +15,7 @@ class InventoryManager {
         }
       } else if (slot.block == null) {
         slot.block = block;
-        slot.count++;
+        slot.count.value++;
         return true;
       }
       /* else if(slot.block != block){
@@ -27,22 +28,22 @@ class InventoryManager {
 
 class InventorySlot{
   Blocks? block;
-  int count = 0;
+  Rx<int> count = 0.obs;
   final int index;
 
   InventorySlot({required this.index});
 
   bool incrementCount(){
-    if(count < stack){
-      count++;
+    if(count.value < stack){
+      count.value++;
       return true;
     }
     return false;
   }
 
   void decrementCount(){
-    count--;
-    if(count <= 0){
+    count.value--;
+    if(count.value == 0){
       block = null;
     }
   }

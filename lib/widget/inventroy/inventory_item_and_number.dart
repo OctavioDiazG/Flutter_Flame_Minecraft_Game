@@ -1,5 +1,6 @@
 import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:minecraft2d_game/global/inventory.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
@@ -14,10 +15,10 @@ class InventoryItemAndNumberWidget extends StatelessWidget {
     return SizedBox(
       width: GameMethods.instance.slotSize,
       height: GameMethods.instance.slotSize,
-      child: Stack(
-        children: [
-          inventorySlot.block != null 
-          ? Positioned ( //if
+      child: Obx((() => inventorySlot.count.value > 0 
+        ? Stack(
+          children: [
+            Positioned (
               left: 0,
               right: 0,
               top: 0,
@@ -26,16 +27,14 @@ class InventoryItemAndNumberWidget extends StatelessWidget {
                 padding: EdgeInsets.all(GameMethods.instance.slotSize/4),
                 child: SpriteWidget(sprite: GameMethods.instance.getSpriteFromBlock(inventorySlot.block!)),
               )
-            )  
-          : Container(), //else
-          inventorySlot.count > 0 
-          ? Positioned( bottom: 0, right: 0, //if
+            ), 
+            Positioned( bottom: 0, right: 0,
               child: Padding(
                 padding: EdgeInsets.only(
                   bottom: GameMethods.instance.slotSize/7, 
                   right: GameMethods.instance.slotSize/7),
                 child: Text(
-                  inventorySlot.count.toString(), 
+                  inventorySlot.count.value.toString(), 
                   style: TextStyle( color: Colors.white, 
                   fontSize: GameMethods.instance.slotSize/4,
                   fontFamily: "MinecraftFont",
@@ -44,9 +43,9 @@ class InventoryItemAndNumberWidget extends StatelessWidget {
                 ),
               )
             )
-          : Container(), //else
-        ],
-      ),
+          ],
+        ) : Container()
+      ))
     );
   }
 }
