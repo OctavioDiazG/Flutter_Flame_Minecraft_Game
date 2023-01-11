@@ -18,7 +18,8 @@ void main() async{
 
   
   //WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MaterialApp(home: GameLayout(),));
+  runApp(const MaterialApp(
+    home: Scaffold(body: GameLayout()),));
 }
 
 //GameWidget(game: MainGame())
