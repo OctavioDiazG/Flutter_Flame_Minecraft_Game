@@ -156,16 +156,16 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
       GameMethods.instance.playerIsWithinRange(blockPlacingPosition) && 
       GameMethods.instance.getBlockAtIndexPosition(blockPlacingPosition) == null &&
       GameMethods.instance.adjacentBlocksExist(blockPlacingPosition) 
-      && worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot].block != null) {
+      && worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block != null) {
       
-      GameMethods.instance.repleceBlockAtWorldChunks(worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot].block, blockPlacingPosition);
+      GameMethods.instance.repleceBlockAtWorldChunks(worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block, blockPlacingPosition);
       
       add(BlockComponent(
-        block: worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot].block!,
+        block: worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block!,
         blockIndex: blockPlacingPosition,
         chunkIndex: GameMethods.instance
           .getChunkIndexFromPositionIndex(blockPlacingPosition)));
-      worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot].decrementCount();    
+      worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].decrementCount();    
     }     
   }
 

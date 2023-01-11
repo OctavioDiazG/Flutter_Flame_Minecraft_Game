@@ -4,7 +4,7 @@ import 'package:minecraft2d_game/utils/constant.dart';
 
 class InventoryManager {
 
-  int currentSelectedInventorySlot = 0;
+  Rx<int> currentSelectedInventorySlot = 0.obs;
 
   List<InventorySlot> inventorySlots = List.generate(36, (index) => InventorySlot(index: index,));
 

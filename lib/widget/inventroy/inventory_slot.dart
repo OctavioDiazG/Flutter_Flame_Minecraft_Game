@@ -18,12 +18,12 @@ class InventroySlotWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (slotType == SlotType.itemBar) {
-          GlobalGameReference.instance.gameReference.worldData.inventoryManager.currentSelectedInventorySlot = inventorySlot.index;
+          GlobalGameReference.instance.gameReference.worldData.inventoryManager.currentSelectedInventorySlot.value = inventorySlot.index;
         }
       },
       child: Stack(
         children: [
-          InventorySlotBackgroundWidget(slotType: slotType),
+          InventorySlotBackgroundWidget(slotType: slotType, index: inventorySlot.index,),
           InventoryItemAndNumberWidget(inventorySlot: inventorySlot,), //added the items in the items bar
         ]
       ),
