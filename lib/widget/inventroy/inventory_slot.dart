@@ -1,6 +1,7 @@
 import 'package:flame/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/inventory.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
@@ -14,11 +15,18 @@ class InventroySlotWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        InventorySlotBackgroundWidget(slotType: slotType),
-        InventoryItemAndNumberWidget(inventorySlot: inventorySlot,), //added the items in the items bar
-      ]
+    return GestureDetector(
+      onTap: () {
+        if (slotType == SlotType.itemBar) {
+          GlobalGameReference.instance.gameReference.worldData.inventoryManager.currentSelectedInventorySlot = inventorySlot.index;
+        }
+      },
+      child: Stack(
+        children: [
+          InventorySlotBackgroundWidget(slotType: slotType),
+          InventoryItemAndNumberWidget(inventorySlot: inventorySlot,), //added the items in the items bar
+        ]
+      ),
     );
   }
 }

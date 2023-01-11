@@ -156,16 +156,16 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
       GameMethods.instance.playerIsWithinRange(blockPlacingPosition) && 
       GameMethods.instance.getBlockAtIndexPosition(blockPlacingPosition) == null &&
       GameMethods.instance.adjacentBlocksExist(blockPlacingPosition) 
-      && worldData.inventoryManager.inventorySlots[0].block != null) {
+      && worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot].block != null) {
       
-      GameMethods.instance.repleceBlockAtWorldChunks(block, blockPlacingPosition);
+      GameMethods.instance.repleceBlockAtWorldChunks(worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot].block, blockPlacingPosition);
       
       add(BlockComponent(
-        block: worldData.inventoryManager.inventorySlots[0].block!,
+        block: worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot].block!,
         blockIndex: blockPlacingPosition,
         chunkIndex: GameMethods.instance
           .getChunkIndexFromPositionIndex(blockPlacingPosition)));
-      worldData.inventoryManager.inventorySlots[0].decrementCount();    
+      worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot].decrementCount();    
     }     
   }
 

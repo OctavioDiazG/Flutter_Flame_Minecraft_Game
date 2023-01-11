@@ -3,6 +3,9 @@ import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 
 class InventoryManager {
+
+  int currentSelectedInventorySlot = 0;
+
   List<InventorySlot> inventorySlots = List.generate(36, (index) => InventorySlot(index: index,));
 
   bool addBlockToInventory(Blocks block) {
