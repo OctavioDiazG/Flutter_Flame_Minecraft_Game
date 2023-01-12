@@ -29,7 +29,7 @@ class GameMethods{
   }
 
   double get slotSize{
-    return getScreenSize().height * 0.1;
+    return getScreenSize().height * 0.09;
   }
 
   int get freeArea{

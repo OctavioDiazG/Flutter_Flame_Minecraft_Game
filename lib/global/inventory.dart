@@ -6,7 +6,7 @@ class InventoryManager {
 
   Rx<int> currentSelectedInventorySlot = 0.obs;
 
-  List<InventorySlot> inventorySlots = List.generate(36, (index) => InventorySlot(index: index,));
+  List<InventorySlot> inventorySlots = List.generate(36, (index) => InventorySlot(index: index,)..block = Blocks.dirt..count.value = index);
 
   bool addBlockToInventory(Blocks block) {
     //loops through all the slots
