@@ -10,36 +10,44 @@ class InventoryStorageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double inventoryStorageSize = GameMethods.instance.slotSize * 9.5 ;
-    return Stack(
-      children: [
-
-        //this is the background image
-        SizedBox(
-          width: inventoryStorageSize,
-          height: inventoryStorageSize,
-          child: FittedBox(
-            fit: BoxFit.fill,
-            child: Image.asset('assets/images/inventory/inventory_background.png')
-          )
-        ),
-
-        Positioned.fill(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                getRow(3),
-                getRow(2),
-                getRow(1),
-                Padding( //we add the padding because it is the last row which is our player active inventory bar
-                  padding: EdgeInsets.symmetric(vertical: GameMethods.instance.slotSize / 3),
-                  child: getRow(0),
+    return Padding(
+      padding: EdgeInsets.only(bottom: GameMethods.instance.slotSize / 1.5),
+      child: SizedBox(
+        height: GameMethods.instance.getScreenSize().height * 0.8,
+        width: GameMethods.instance.getScreenSize().height * 0.8,
+        child: FittedBox(
+          child: Stack(
+            children: [
+              //this is the background image
+              SizedBox(
+                width: inventoryStorageSize,
+                height: inventoryStorageSize,
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Image.asset('assets/images/inventory/inventory_background.png')
+                )
+              ),
+            
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      getRow(3),
+                      getRow(2),
+                      getRow(1),
+                      Padding( //we add the padding because it is the last row which is our player active inventory bar
+                        padding: EdgeInsets.symmetric(vertical: GameMethods.instance.slotSize / 3),
+                        child: getRow(0),
+                      ),
+                    ],),
                 ),
-              ],),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 
