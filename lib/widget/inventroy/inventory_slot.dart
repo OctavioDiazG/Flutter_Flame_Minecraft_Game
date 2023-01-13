@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/inventory.dart';
+import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 import 'package:minecraft2d_game/widget/inventroy/inventory_item_and_number.dart';
 import 'package:minecraft2d_game/widget/inventroy/inventory_slot_background.dart';
@@ -25,11 +26,21 @@ class InventroySlotWidget extends StatelessWidget {
 
       //inventory  
       case SlotType.inventory:
-        return Draggable(
-          feedback: InventoryItemAndNumberWidget(inventorySlot: inventorySlot,),
-          childWhenDragging: InventorySlotBackgroundWidget(slotType: slotType, index: inventorySlot.index,),
-          data: inventorySlot,
-          child: getChild(),
+        return GestureDetector(
+          
+          onLongPress: () {
+            for (int i = 0; i < inventorySlot.count.value/2; i++) {
+              GlobalGameReference.instance.gameReference.worldData.inventoryManager.addBlockToInventory(inventorySlot.block!);
+              inventorySlot.decrementCount();
+            }
+          },
+
+          child: Draggable(
+            feedback: InventoryItemAndNumberWidget(inventorySlot: inventorySlot,),
+            childWhenDragging: InventorySlotBackgroundWidget(slotType: slotType, index: inventorySlot.index,),
+            data: inventorySlot,
+            child: getChild(),
+          ),
         );
      }
   }
@@ -60,9 +71,19 @@ class InventroySlotWidget extends StatelessWidget {
             inventorySlot.block = draggingInventorySlot.block;
             inventorySlot.count.value = draggingInventorySlot.count.value;
             draggingInventorySlot.emptySlot();
-          } else {
-            print('not empty');
-          }
+
+            
+          } else if(draggingInventorySlot.block == inventorySlot.block && draggingInventorySlot.count.value + inventorySlot.count.value <= stack){
+            inventorySlot.count.value += draggingInventorySlot.count.value;
+            draggingInventorySlot.emptySlot();
+          } /* else {
+            BlockType tempBlock = draggingInventorySlot.block;
+            int tempCount = draggingInventorySlot.count.value;
+            draggingInventorySlot.block = inventorySlot.block;
+            draggingInventorySlot.count.value = inventorySlot.count.value;
+            inventorySlot.block = tempBlock;
+            inventorySlot.count.value = tempCount;
+          } */
         },
       ),
     );
