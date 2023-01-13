@@ -13,22 +13,32 @@ class InventroySlotWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Draggable(
-      feedback: InventoryItemAndNumberWidget(inventorySlot: inventorySlot,),
-      childWhenDragging: InventorySlotBackgroundWidget(slotType: slotType, index: inventorySlot.index,),
-      child: GestureDetector(
-        onTap: () {
-          if (slotType == SlotType.itemBar) {
+    switch (slotType) {
+      //item bar
+      case SlotType.itemBar:
+        return GestureDetector(
+          onTap: () {
             GlobalGameReference.instance.gameReference.worldData.inventoryManager.currentSelectedInventorySlot.value = inventorySlot.index;
-          }
-        },
-        child: Stack(
-          children: [
-            InventorySlotBackgroundWidget(slotType: slotType, index: inventorySlot.index,),
-            InventoryItemAndNumberWidget(inventorySlot: inventorySlot,), //added the items in the items bar
-          ]
-        ),
-      ),
+          },
+          child: getChild(),
+        );
+
+      //inventory  
+      case SlotType.inventory:
+        return Draggable(
+          feedback: InventoryItemAndNumberWidget(inventorySlot: inventorySlot,),
+          childWhenDragging: InventorySlotBackgroundWidget(slotType: slotType, index: inventorySlot.index,),
+          child: getChild(),
+        );
+     }
+  }
+
+  Widget getChild() {
+    return Stack(
+      children: [
+        InventorySlotBackgroundWidget(slotType: slotType, index: inventorySlot.index,),
+        InventoryItemAndNumberWidget(inventorySlot: inventorySlot,), //added the items in the items bar
+      ]
     );
   }
 }
