@@ -17,9 +17,9 @@ class BlockComponent extends SpriteComponent with Tappable{
   final int chunkIndex;
 
   BlockComponent(
-    {required this.chunkIndex, 
+    {required this.block,
     required this.blockIndex, 
-    required this.block});
+    required this.chunkIndex,});
 
   late SpriteSheet animationBlockSpriteSheet;
 

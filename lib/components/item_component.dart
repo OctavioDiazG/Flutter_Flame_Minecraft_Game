@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:minecraft2d_game/components/block_component.dart';
 import 'package:minecraft2d_game/components/player_component.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
+import 'package:minecraft2d_game/global/inventory.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/entity.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
@@ -20,10 +21,13 @@ class ItemComponent extends Entity {
     if (other is BlockComponent && BlockData.getBlockDataFor(other.block).isCollidable) {
       super.onCollision(intersectionPoints, other);
     } else if (other is PlayerComponent) {
-      GlobalGameReference.instance.gameReference.worldData.items.remove(this);
-      //add item to inventory
-      //other.inventory.addItem(block);
-      removeFromParent();
+
+      if (GlobalGameReference.instance.gameReference.worldData.inventoryManager.addBlockToInventory(block)) {
+        //remove item from world  
+        GlobalGameReference.instance.gameReference.worldData.items.remove(this);
+        //add item to inventory
+        removeFromParent();
+      }
     }
   }
 

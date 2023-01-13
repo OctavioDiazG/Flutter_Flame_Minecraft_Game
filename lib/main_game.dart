@@ -151,14 +151,21 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
   void placeBlockLogic(Vector2 blockPlacingPosition, Blocks block){
 
-    if (blockPlacingPosition.y > 0 &&  blockPlacingPosition.y < chunkHeight && GameMethods.instance.playerIsWithinRange(blockPlacingPosition) && GameMethods.instance.getBlockAtIndexPosition(blockPlacingPosition) == null && GameMethods.instance.adjacentBlocksExist(blockPlacingPosition)) {
-      GameMethods.instance.repleceBlockAtWorldChunks(block, blockPlacingPosition);
+    if (blockPlacingPosition.y > 0 && 
+      blockPlacingPosition.y < chunkHeight && 
+      GameMethods.instance.playerIsWithinRange(blockPlacingPosition) && 
+      GameMethods.instance.getBlockAtIndexPosition(blockPlacingPosition) == null &&
+      GameMethods.instance.adjacentBlocksExist(blockPlacingPosition) 
+      && worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block != null) {
+      
+      GameMethods.instance.repleceBlockAtWorldChunks(worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block, blockPlacingPosition);
       
       add(BlockComponent(
-        chunkIndex: GameMethods.instance.getChunkIndexFromPositionIndex(blockPlacingPosition), 
-        blockIndex: blockPlacingPosition, 
-        block: block
-      ));
+        block: worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block!,
+        blockIndex: blockPlacingPosition,
+        chunkIndex: GameMethods.instance
+          .getChunkIndexFromPositionIndex(blockPlacingPosition)));
+      worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].decrementCount();    
     }     
   }
 

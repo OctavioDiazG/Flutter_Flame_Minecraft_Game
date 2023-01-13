@@ -6,7 +6,17 @@ import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 
-enum Direction { top, bottom, left, right }
+enum Direction { 
+  top, 
+  bottom, 
+  left, 
+  right,
+}
+
+enum SlotType { 
+  inventory, 
+  itemBar, 
+}
 
 class GameMethods{
   static GameMethods get instance {
@@ -16,6 +26,10 @@ class GameMethods{
   Vector2 get blockSize{
     return Vector2.all(getScreenSize().width/chunkWidth);
     //return Vector2.all(20);
+  }
+
+  double get slotSize{
+    return getScreenSize().height * 0.09;
   }
 
   int get freeArea{
@@ -69,8 +83,8 @@ class GameMethods{
     );
   }
 
-  Future<Sprite> getSpriteFromBlock(Blocks block) async{
-    SpriteSheet spriteSheet = await getBlockSpriteSheet();
+  Sprite getSpriteFromBlock(Blocks block) {
+    SpriteSheet spriteSheet = getBlockSpriteSheet();
     return spriteSheet.getSprite(0, block.index);
   }
   //chunk
