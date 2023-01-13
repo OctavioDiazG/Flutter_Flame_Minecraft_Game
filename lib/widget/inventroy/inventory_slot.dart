@@ -28,6 +28,7 @@ class InventroySlotWidget extends StatelessWidget {
         return Draggable(
           feedback: InventoryItemAndNumberWidget(inventorySlot: inventorySlot,),
           childWhenDragging: InventorySlotBackgroundWidget(slotType: slotType, index: inventorySlot.index,),
+          data: inventorySlot,
           child: getChild(),
         );
      }
@@ -37,8 +38,33 @@ class InventroySlotWidget extends StatelessWidget {
     return Stack(
       children: [
         InventorySlotBackgroundWidget(slotType: slotType, index: inventorySlot.index,),
-        InventoryItemAndNumberWidget(inventorySlot: inventorySlot,), //added the items in the items bar
-      ]
+        InventoryItemAndNumberWidget(inventorySlot: inventorySlot,),
+        getDragTarget(), //added the items in the items bar
+      ],
+    );
+  }
+
+
+  Widget getDragTarget(){
+    return SizedBox(
+      width: GameMethods.instance.slotSize,
+      height: GameMethods.instance.slotSize,
+      child: DragTarget(
+        builder: (context, /* List<InventorySlot> */ candidateData, rejectedData) => Container(),
+        onWillAccept: (data) {
+          return true;
+        },
+        onAccept: (InventorySlot draggingInventorySlot) {
+          //InventorySlot inventorySlot = data as InventorySlot;
+          if (inventorySlot.isEmpty) {
+            inventorySlot.block = draggingInventorySlot.block;
+            inventorySlot.count.value = draggingInventorySlot.count.value;
+            draggingInventorySlot.emptySlot();
+          } else {
+            print('not empty');
+          }
+        },
+      ),
     );
   }
 }
