@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
+import 'package:minecraft2d_game/widget/inventroy/inventory_button.dart';
 import 'package:minecraft2d_game/widget/inventroy/inventory_slot.dart';
 
 class ItemBarWidget extends StatelessWidget {
@@ -24,6 +25,7 @@ class ItemBarWidget extends StatelessWidget {
             InventroySlotWidget(slotType: SlotType.itemBar, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[6],),
             InventroySlotWidget(slotType: SlotType.itemBar, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[7],),
             InventroySlotWidget(slotType: SlotType.itemBar, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[8],),
+            const InventoryButtonWidget(),
           ],
         ),
       ),
