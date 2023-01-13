@@ -16,14 +16,6 @@ class PlayerInventoryWidget extends StatelessWidget {
           child: Stack(
             children: [
               const InventoryStorageWidget(),
-              Positioned(
-                left: 0, right: 0, top: 20,
-                child: Container(
-                  height: GameMethods.instance.slotSize * 4,
-                  width: GameMethods.instance.slotSize * 9,
-                  color: Colors.grey,
-                ),
-              )
             ],
           ),
         ),
