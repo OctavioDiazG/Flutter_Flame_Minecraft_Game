@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
+import 'package:minecraft2d_game/widget/crafting/player_inventory_crafting_grid.dart';
 import 'package:minecraft2d_game/widget/inventroy/inventroy_storage_widget.dart';
 
 class PlayerInventoryWidget extends StatelessWidget {
@@ -14,8 +15,9 @@ class PlayerInventoryWidget extends StatelessWidget {
         child: Align(
           alignment: Alignment.center,
           child: Stack(
-            children: [
-              const InventoryStorageWidget(),
+            children: const[
+              InventoryStorageWidget(),
+              PlayerInventoryCraftingGrid()
             ],
           ),
         ),

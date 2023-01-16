@@ -67,27 +67,30 @@ class InventoryStorageWidget extends StatelessWidget {
 
   Widget getDragTarget(Direction direction){
     return Expanded(
-      child: DragTarget(
-        builder: (context, candidateData, rejectedData) => Container(),
-        onAccept: (InventorySlot inventorySlot){
-          //print("Dropping ${inventorySlot.block}, ${inventorySlot.count.value}");
-
-          for (int i = 0; i < inventorySlot.count.value; i++) {
-            Vector2 spawningPosition;
-            if (direction == Direction.right) {
-              spawningPosition = Vector2(GameMethods.instance.playerXIndexPosition + maxReach, GameMethods.instance.playerYIndexPosition - maxReach);
-            } else {
-              spawningPosition = Vector2(GameMethods.instance.playerXIndexPosition - maxReach*1.25, GameMethods.instance.playerYIndexPosition - maxReach);
+      child: SizedBox(
+        height: GameMethods.instance.slotSize * 9.5,
+        child: DragTarget(
+          builder: (context, candidateData, rejectedData) => Container(),
+          onAccept: (InventorySlot inventorySlot){
+            //print("Dropping ${inventorySlot.block}, ${inventorySlot.count.value}");
+      
+            for (int i = 0; i < inventorySlot.count.value; i++) {
+              Vector2 spawningPosition;
+              if (direction == Direction.right) {
+                spawningPosition = Vector2(GameMethods.instance.playerXIndexPosition + maxReach, GameMethods.instance.playerYIndexPosition - maxReach);
+              } else {
+                spawningPosition = Vector2(GameMethods.instance.playerXIndexPosition - maxReach*1.25, GameMethods.instance.playerYIndexPosition - maxReach);
+              }
+              GlobalGameReference.instance.gameReference.worldData.items.add(
+                ItemComponent(
+                  spawnBlockIndex: spawningPosition, 
+                  block: inventorySlot.block!
+                )
+              );
             }
-            GlobalGameReference.instance.gameReference.worldData.items.add(
-              ItemComponent(
-                spawnBlockIndex: spawningPosition, 
-                block: inventorySlot.block!
-              )
-            );
-          }
-          inventorySlot.emptySlot();
-        },
+            inventorySlot.emptySlot();
+          },
+        ),
       ),
     );
   }
@@ -97,15 +100,15 @@ class InventoryStorageWidget extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        InventroySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 0],),
-        InventroySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 1],),
-        InventroySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 2],),
-        InventroySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 3],),
-        InventroySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 4],),
-        InventroySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 5],),
-        InventroySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 6],),
-        InventroySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 7],),
-        InventroySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 8],),
+        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 0],),
+        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 1],),
+        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 2],),
+        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 3],),
+        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 4],),
+        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 5],),
+        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 6],),
+        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 7],),
+        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventorySlots[newRowIndex + 8],),
       ],
     );
   }

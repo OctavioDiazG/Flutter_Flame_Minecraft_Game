@@ -7,10 +7,10 @@ import 'package:minecraft2d_game/utils/game_methods.dart';
 import 'package:minecraft2d_game/widget/inventroy/inventory_item_and_number.dart';
 import 'package:minecraft2d_game/widget/inventroy/inventory_slot_background.dart';
 
-class InventroySlotWidget extends StatelessWidget {
+class InventorySlotWidget extends StatelessWidget {
   final SlotType slotType;
   final InventorySlot inventorySlot;
-  const InventroySlotWidget({super.key, required this.slotType, required this.inventorySlot});
+  const InventorySlotWidget({super.key, required this.slotType, required this.inventorySlot});
 
   @override
   Widget build(BuildContext context) {
