@@ -33,14 +33,11 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
     camera.followComponent(playerComponent);
     
     add(playerComponent);
-    /*
-    //GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(-1), false);
-    //GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(0), true);
-    //GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(1), true);
-    //renderChunk(-1);
-    //renderChunk(0);
-    //renderChunk(1);
-    */
+
+    Future.delayed(Duration(seconds: 1)).then((value) {
+      worldData.inventoryManager.addBlockToInventory(Blocks.craftingTable);
+    }); //Add crafting table to inventory at the begining of the game
+
   }
 
   void renderChunk(int chunkIndex){
@@ -48,11 +45,12 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
     chunk.asMap().forEach((int yIndex, List<Blocks?> rowOfBlocks) {
       rowOfBlocks.asMap().forEach((int xIndex, Blocks? block) { 
         if (block != null) {
-          add(BlockComponent(
-            block: block, 
-            blockIndex: Vector2((chunkIndex * chunkWidth) + xIndex.toDouble(), 
+          add(BlockData.getParentForBlock(
+            block, 
+            Vector2((chunkIndex * chunkWidth) + xIndex.toDouble(), 
             yIndex.toDouble()), 
-            chunkIndex: chunkIndex ));
+            chunkIndex ,
+          ));
         }
       });
     });
@@ -159,12 +157,13 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
       && worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block != null) {
       
       GameMethods.instance.repleceBlockAtWorldChunks(worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block, blockPlacingPosition);
-      
-      add(BlockComponent(
-        block: worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block!,
-        blockIndex: blockPlacingPosition,
-        chunkIndex: GameMethods.instance
-          .getChunkIndexFromPositionIndex(blockPlacingPosition)));
+
+      add(BlockData.getParentForBlock(
+        worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block!,
+        blockPlacingPosition,
+        GameMethods.instance.getChunkIndexFromPositionIndex(blockPlacingPosition)
+      ));
+
       worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].decrementCount();    
     }     
   }

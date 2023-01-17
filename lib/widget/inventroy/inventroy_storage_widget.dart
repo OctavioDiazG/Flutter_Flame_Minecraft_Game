@@ -67,29 +67,36 @@ class InventoryStorageWidget extends StatelessWidget {
 
   Widget getDragTarget(Direction direction){
     return Expanded(
-      child: SizedBox(
-        height: GameMethods.instance.slotSize * 9.5,
-        child: DragTarget(
-          builder: (context, candidateData, rejectedData) => Container(),
-          onAccept: (InventorySlot inventorySlot){
-            //print("Dropping ${inventorySlot.block}, ${inventorySlot.count.value}");
-      
-            for (int i = 0; i < inventorySlot.count.value; i++) {
-              Vector2 spawningPosition;
-              if (direction == Direction.right) {
-                spawningPosition = Vector2(GameMethods.instance.playerXIndexPosition + maxReach, GameMethods.instance.playerYIndexPosition - maxReach);
-              } else {
-                spawningPosition = Vector2(GameMethods.instance.playerXIndexPosition - maxReach*1.25, GameMethods.instance.playerYIndexPosition - maxReach);
+      child: InkWell(
+        onTap: (){
+          if (GlobalGameReference.instance.gameReference.worldData.craftingManager.craftingInventoryIsOpen.value) {
+            GlobalGameReference.instance.gameReference.worldData.craftingManager.craftingInventoryIsOpen.value = false;
+          }
+        },
+        child: SizedBox(
+          height: GameMethods.instance.slotSize * 9.5,
+          child: DragTarget(
+            builder: (context, candidateData, rejectedData) => Container(),
+            onAccept: (InventorySlot inventorySlot){
+              //print("Dropping ${inventorySlot.block}, ${inventorySlot.count.value}");
+        
+              for (int i = 0; i < inventorySlot.count.value; i++) {
+                Vector2 spawningPosition;
+                if (direction == Direction.right) {
+                  spawningPosition = Vector2(GameMethods.instance.playerXIndexPosition + maxReach, GameMethods.instance.playerYIndexPosition - maxReach);
+                } else {
+                  spawningPosition = Vector2(GameMethods.instance.playerXIndexPosition - maxReach*1.25, GameMethods.instance.playerYIndexPosition - maxReach);
+                }
+                GlobalGameReference.instance.gameReference.worldData.items.add(
+                  ItemComponent(
+                    spawnBlockIndex: spawningPosition, 
+                    block: inventorySlot.block!
+                  )
+                );
               }
-              GlobalGameReference.instance.gameReference.worldData.items.add(
-                ItemComponent(
-                  spawnBlockIndex: spawningPosition, 
-                  block: inventorySlot.block!
-                )
-              );
-            }
-            inventorySlot.emptySlot();
-          },
+              inventorySlot.emptySlot();
+            },
+          ),
         ),
       ),
     );
