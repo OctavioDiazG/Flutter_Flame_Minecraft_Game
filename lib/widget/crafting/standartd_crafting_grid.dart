@@ -25,27 +25,27 @@ class StandardCraftingGrid extends StatelessWidget {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[0],),
-                        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[1],),
-                        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[2],),
+                        InventorySlotWidget(slotType: SlotType.crafting, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[0],),
+                        InventorySlotWidget(slotType: SlotType.crafting, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[1],),
+                        InventorySlotWidget(slotType: SlotType.crafting, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[2],),
                       ],
                     ),
 
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[3],),
-                        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[4],),
-                        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[5],),
+                        InventorySlotWidget(slotType: SlotType.crafting, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[3],),
+                        InventorySlotWidget(slotType: SlotType.crafting, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[4],),
+                        InventorySlotWidget(slotType: SlotType.crafting, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[5],),
                       ],
                     ),
 
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[6],),
-                        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[7],),
-                        InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[8],),
+                        InventorySlotWidget(slotType: SlotType.crafting, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[6],),
+                        InventorySlotWidget(slotType: SlotType.crafting, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[7],),
+                        InventorySlotWidget(slotType: SlotType.crafting, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[8],),
                       ],
                     ),
                   ],
@@ -56,7 +56,7 @@ class StandardCraftingGrid extends StatelessWidget {
                   child: Image.asset('assets/images/inventory/inventory_arrow.png'),
                 ),
 
-                InventorySlotWidget(slotType: SlotType.inventory, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[9]),
+                InventorySlotWidget(slotType: SlotType.craftingOutput, inventorySlot: GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid[9]),
               ],
             ),
           ),

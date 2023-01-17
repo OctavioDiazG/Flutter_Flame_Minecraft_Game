@@ -16,6 +16,8 @@ enum Direction {
 enum SlotType { 
   inventory, 
   itemBar, 
+  crafting,
+  craftingOutput, 
 }
 
 class GameMethods{
