@@ -9,7 +9,7 @@ class InventoryManager {
 
   List<InventorySlot> inventorySlots = List.generate(36, (index) => InventorySlot(index: index,));
 
-  bool addBlockToInventory(Blocks block) {
+  bool addBlockToInventory(dynamic block) {
     //loops through all the slots
     for (InventorySlot slot in inventorySlots) {
       if (slot.block == block) {
@@ -31,7 +31,7 @@ class InventoryManager {
 }
 
 class InventorySlot{
-  Blocks? block;
+  dynamic block;
   Rx<int> count = 0.obs;
   final int index;
 

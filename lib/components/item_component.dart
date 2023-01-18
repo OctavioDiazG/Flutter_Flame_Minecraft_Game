@@ -3,7 +3,6 @@ import 'package:flame/components.dart';
 import 'package:minecraft2d_game/components/block_component.dart';
 import 'package:minecraft2d_game/components/player_component.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
-import 'package:minecraft2d_game/global/inventory.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/entity.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
@@ -11,9 +10,9 @@ import 'package:minecraft2d_game/utils/game_methods.dart';
 class ItemComponent extends Entity {
 
   final Vector2 spawnBlockIndex;
-  final Blocks block;
+  final dynamic item;
   
-  ItemComponent({required this.spawnBlockIndex, required this.block});
+  ItemComponent({required this.spawnBlockIndex, required this.item});
 
 
   @override
@@ -22,7 +21,7 @@ class ItemComponent extends Entity {
       super.onCollision(intersectionPoints, other);
     } else if (other is PlayerComponent) {
 
-      if (GlobalGameReference.instance.gameReference.worldData.inventoryManager.addBlockToInventory(block)) {
+      if (GlobalGameReference.instance.gameReference.worldData.inventoryManager.addBlockToInventory(item)) {
         //remove item from world  
         GlobalGameReference.instance.gameReference.worldData.items.remove(this);
         //add item to inventory
@@ -39,7 +38,9 @@ class ItemComponent extends Entity {
     add(RectangleHitbox());
 
     position = (spawnBlockIndex * GameMethods.instance.blockSize.x) + GameMethods.instance.blockSize / 4;
-    animation = SpriteAnimation.spriteList([await GameMethods.instance.getSpriteFromBlock(block)], stepTime: 1);
+    animation = SpriteAnimation.spriteList([item is Blocks 
+      ? GameMethods.instance.getSpriteFromBlock(item)
+      : GameMethods.instance.getSpriteFromItem(item)], stepTime: 1);
   }
 
   @override

@@ -16,6 +16,7 @@ void main() async{
   //await Flame.images.load('sprite_sheets/player/player_idle_sprite_sheet.png');
   await Flame.images.load('sprite_sheets/own_imports/new_player_idle.png'); //new player idle
   await Flame.images.load('sprite_sheets/blocks/block_sprite_sheet.png');
+  await Flame.images.load('sprite_sheets/item/item_sprite_sheet.png');
 
   
   //WidgetsFlutterBinding.ensureInitialized();

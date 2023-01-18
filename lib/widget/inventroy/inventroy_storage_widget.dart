@@ -90,7 +90,7 @@ class InventoryStorageWidget extends StatelessWidget {
                 GlobalGameReference.instance.gameReference.worldData.items.add(
                   ItemComponent(
                     spawnBlockIndex: spawningPosition, 
-                    block: inventorySlot.block!
+                    item: inventorySlot.block!
                   )
                 );
               }

@@ -1,0 +1,31 @@
+
+enum Tools { none, sword, shovel, pickaxe, axe }
+
+enum Items {
+  woodenSword,
+  woodenShovel,
+  woodenPickaxe,
+  woodenAxe,
+  stoneSword,
+  stoneShovel,
+  stonePickaxe,
+  stoneAxe,
+  ironSword,
+  ironShovel,
+  ironPickaxe,
+  ironAxe,
+  diamondSword,
+  diamondShovel,
+  diamondPickaxe,
+  diamondAxe,
+  goldenSword,
+  goldenShovel,
+  goldenPickaxe,
+  goldenAxe,
+  coal,
+  ironIngot,
+  diamond,
+  apple,
+  stick,
+  goldIngot,
+}

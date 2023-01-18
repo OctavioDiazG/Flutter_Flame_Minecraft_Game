@@ -10,6 +10,7 @@ import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/global/world_data.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
+import 'package:minecraft2d_game/resources/items.dart';
 import 'package:minecraft2d_game/utils/chunk_generation_methods.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
@@ -36,6 +37,7 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
     Future.delayed(Duration(seconds: 1)).then((value) {
       worldData.inventoryManager.addBlockToInventory(Blocks.craftingTable);
+      worldData.inventoryManager.addBlockToInventory(Items.apple);
     }); //Add crafting table to inventory at the begining of the game
 
   }
@@ -150,11 +152,14 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
   void placeBlockLogic(Vector2 blockPlacingPosition, Blocks block){
 
     if (blockPlacingPosition.y > 0 && 
-      blockPlacingPosition.y < chunkHeight && 
-      GameMethods.instance.playerIsWithinRange(blockPlacingPosition) && 
-      GameMethods.instance.getBlockAtIndexPosition(blockPlacingPosition) == null &&
-      GameMethods.instance.adjacentBlocksExist(blockPlacingPosition) 
-      && worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block != null) {
+          blockPlacingPosition.y < chunkHeight && 
+          GameMethods.instance.playerIsWithinRange(blockPlacingPosition) && 
+          GameMethods.instance.getBlockAtIndexPosition(blockPlacingPosition) == null &&
+          GameMethods.instance.adjacentBlocksExist(blockPlacingPosition) && 
+          worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block != null && 
+          GameMethods.instance.adjacentBlocksExist(blockPlacingPosition) && 
+          worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block is Blocks
+        ) {
       
       GameMethods.instance.repleceBlockAtWorldChunks(worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block, blockPlacingPosition);
 

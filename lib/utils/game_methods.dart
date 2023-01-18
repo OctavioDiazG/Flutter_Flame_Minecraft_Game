@@ -4,6 +4,7 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
+import 'package:minecraft2d_game/resources/items.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 
 enum Direction { 
@@ -85,10 +86,23 @@ class GameMethods{
     );
   }
 
+  SpriteSheet getItemSpriteSheet() {
+    return SpriteSheet(
+        image:
+            Flame.images.fromCache("sprite_sheets/item/item_sprite_sheet.png"),
+        srcSize: Vector2.all(60));
+  }
+
   Sprite getSpriteFromBlock(Blocks block) {
     SpriteSheet spriteSheet = getBlockSpriteSheet();
     return spriteSheet.getSprite(0, block.index);
   }
+
+  Sprite getSpriteFromItem(Items item) {
+    SpriteSheet spriteSheet = getItemSpriteSheet();
+    return spriteSheet.getSprite(0, item.index);
+  }
+
   //chunk
   void addChunkToWorldChunks(List<List<Blocks?>> chunk, bool isInRightWorldChunk) {
     if (isInRightWorldChunk) {

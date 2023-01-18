@@ -30,7 +30,7 @@ class BlockComponent extends SpriteComponent with Tappable{
 
   void onBroken() {
     GameMethods.instance.repleceBlockAtWorldChunks(null, blockIndex);
-    GlobalGameReference.instance.gameReference.worldData.items.add(ItemComponent(spawnBlockIndex: blockIndex, block: block));
+    GlobalGameReference.instance.gameReference.worldData.items.add(ItemComponent(spawnBlockIndex: blockIndex, item: block));
     removeFromParent();
   }
 
