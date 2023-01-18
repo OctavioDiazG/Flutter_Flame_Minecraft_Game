@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
+import 'package:minecraft2d_game/resources/items.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 
 class InventoryManager {
@@ -12,19 +13,25 @@ class InventoryManager {
   bool addBlockToInventory(dynamic block) {
     //loops through all the slots
     for (InventorySlot slot in inventorySlots) {
+      //item
       if (slot.block == block) {
-        //if the slot.block is >= 64, then it will skip to the next slot
-        if (slot.incrementCount()) {
-          return true;
+        //ITEM
+        if (block is Items && ItemData.getItemDataForItem(block).toolType == Tools.none){
+          if (slot.incrementCount()) {
+            return true;
+          }
+          //block
+        } else if (block is Blocks) {
+          if (slot.incrementCount()) {
+            return true;
+          }
         }
+        //Slot is empty
       } else if (slot.block == null) {
         slot.block = block;
         slot.count.value++;
         return true;
       }
-      /* else if(slot.block != block){
-
-      } */
     }
     return false;
   }

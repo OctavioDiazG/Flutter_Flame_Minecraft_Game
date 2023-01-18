@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:minecraft2d_game/global/crafting_manager.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/inventory.dart';
+import 'package:minecraft2d_game/resources/items.dart';
+import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 import 'package:minecraft2d_game/widget/inventroy/inventory_item_and_number.dart';
 import 'package:minecraft2d_game/widget/inventroy/inventory_slot_background.dart';
@@ -133,12 +135,13 @@ class InventorySlotWidget extends StatelessWidget {
               draggingInventorySlot.emptySlot();
 
               //if both have the same block, and if the total additive sum is less than or equal to a stack
-            } /* else if (draggingInventorySlot.block == inventorySlot.block &&
+            } //else if(draggingInventorySlot.block == inventorySlot.block && draggingInventorySlot.count.value + inventorySlot.count.value <= ){
+              else if (draggingInventorySlot.block == inventorySlot.block &&
                 draggingInventorySlot.count.value + inventorySlot.count.value <=
-                    getStack(draggingInventorySlot.block)) {
+                getStack(draggingInventorySlot.block)) {
               inventorySlot.count.value += draggingInventorySlot.count.value;
               draggingInventorySlot.emptySlot();
-            } */
+            } 
           }
 
           if (slotType == SlotType.crafting) {
@@ -149,10 +152,9 @@ class InventorySlotWidget extends StatelessWidget {
     );
   }
 
-  /* int getStack(dynamic block) {
-    return (block is Items &&
-            ItemData.getItemDataForItem(block).toolType != Tools.none)
-        ? 1
-        : stack;
-  } */
+  int getStack(dynamic block) {
+    return (block is Items && ItemData.getItemDataForItem(block).toolType != Tools.none)
+      ? 1
+      : stack;
+  } 
 }
