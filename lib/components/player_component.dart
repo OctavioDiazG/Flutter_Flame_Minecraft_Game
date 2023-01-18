@@ -56,7 +56,8 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
     );
     // IdleSprite 
     playerIdleSpritesheet = SpriteSheet(
-      image: Flame.images.fromCache('sprite_sheets/player/player_idle_sprite_sheet.png'), //tells flutter where to grab the spriteSheet
+      //image: Flame.images.fromCache('sprite_sheets/player/player_idle_sprite_sheet.png'), //tells flutter where to grab the spriteSheet
+      image: Flame.images.fromCache('sprite_sheets/own_imports/new_player_idle.png'), //tells flutter where to grab the spriteSheet
       srcSize: playerDimensions, //the number of pixels it will be cut the spriteSheet
     );
     // JumpSprite
