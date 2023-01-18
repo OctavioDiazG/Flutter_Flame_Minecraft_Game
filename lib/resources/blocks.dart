@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:minecraft2d_game/blocks/crafting_table_block.dart';
 import 'package:minecraft2d_game/components/block_component.dart';
+import 'package:minecraft2d_game/resources/items.dart';
 
 enum Blocks{
   grass,
@@ -33,9 +34,12 @@ class  BlockData {
   final double baseMiningSpeed; //seconds
   final bool breakable;
 
+  final Tools suitableTool;
+
   BlockData({
     required this.isCollidable, 
     required this.baseMiningSpeed, 
+    required this.suitableTool, 
     this.breakable = true
   });
 
@@ -122,13 +126,13 @@ class  BlockData {
     }
   }
 
-  static BlockData plants = BlockData(isCollidable: false, baseMiningSpeed: 0.00001);
-  static BlockData soil = BlockData(isCollidable: true, baseMiningSpeed: 0.75);
-  static BlockData wood = BlockData(isCollidable: false, baseMiningSpeed: 3);
-  static BlockData leaf = BlockData(isCollidable: false, baseMiningSpeed: 0.35);
-  static BlockData stone  = BlockData(isCollidable: true, baseMiningSpeed: 4);
-  static BlockData woodPlank  = BlockData(isCollidable: true, baseMiningSpeed: 2.5);
-  static BlockData unbreakable  = BlockData(isCollidable: true, baseMiningSpeed: 1, breakable: false);
+  static BlockData plants = BlockData(isCollidable: false, baseMiningSpeed: 0.00001, suitableTool: Tools.none);
+  static BlockData soil = BlockData(isCollidable: true, baseMiningSpeed: 0.75, suitableTool: Tools.shovel);
+  static BlockData wood = BlockData(isCollidable: false, baseMiningSpeed: 3, suitableTool: Tools.axe);
+  static BlockData leaf = BlockData(isCollidable: false, baseMiningSpeed: 0.35, suitableTool: Tools.axe);
+  static BlockData stone  = BlockData(isCollidable: true, baseMiningSpeed: 4, suitableTool: Tools.pickaxe);
+  static BlockData woodPlank  = BlockData(isCollidable: true, baseMiningSpeed: 2.5, suitableTool: Tools.axe);
+  static BlockData unbreakable  = BlockData(isCollidable: true, baseMiningSpeed: 1, breakable: false, suitableTool: Tools.none);
 
 
 }

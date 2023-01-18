@@ -36,19 +36,11 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
     add(playerComponent);
 
     Future.delayed(Duration(seconds: 1)).then((value) {
-      worldData.inventoryManager.addBlockToInventory(Blocks.craftingTable);
-      worldData.inventoryManager.addBlockToInventory(Items.apple);
-      worldData.inventoryManager.addBlockToInventory(Items.apple);
-      worldData.inventoryManager.addBlockToInventory(Items.apple);
-      worldData.inventoryManager.addBlockToInventory(Items.apple);
-      worldData.inventoryManager.addBlockToInventory(Blocks.birchLog);
-      worldData.inventoryManager.addBlockToInventory(Blocks.birchLog);
-      worldData.inventoryManager.addBlockToInventory(Blocks.birchLog);
-      worldData.inventoryManager.addBlockToInventory(Blocks.birchLog);
-      worldData.inventoryManager.addBlockToInventory(Blocks.birchLog);
-      worldData.inventoryManager.addBlockToInventory(Blocks.birchLog);
-      worldData.inventoryManager.addBlockToInventory(Blocks.birchLog);
-      worldData.inventoryManager.addBlockToInventory(Blocks.birchLog);
+      worldData.inventoryManager.addBlockToInventory(Items.woodenPickaxe);
+      worldData.inventoryManager.addBlockToInventory(Items.stonePickaxe);
+      worldData.inventoryManager.addBlockToInventory(Items.ironPickaxe);
+      worldData.inventoryManager.addBlockToInventory(Items.diamondPickaxe);
+      worldData.inventoryManager.addBlockToInventory(Items.goldenPickaxe);
     }); //Add crafting table to inventory at the begining of the game
 
   }
