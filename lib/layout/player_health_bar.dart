@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minecraft2d_game/utils/game_methods.dart';
 
 class PlayerHealthBarWidget extends StatelessWidget {
   const PlayerHealthBarWidget({super.key});
@@ -7,8 +8,16 @@ class PlayerHealthBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> children = [];
 
-    for (int i = 0; i < 10; i++) {
-      children.add(getHeartWidget(true));
+    double health = 10;
+
+    for (int i = 10; i > 0; i--) {
+      bool isFullHeart = false;
+
+      if (health >= i) {
+        isFullHeart = true;
+      }
+
+      children.add(getHeartWidget(isFullHeart));
     }
 
     return Padding(
@@ -20,13 +29,20 @@ class PlayerHealthBarWidget extends StatelessWidget {
   }
 
   Widget getHeartWidget(bool fullHeart) {
-    return Stack(
-      children: [
-        Image.asset('assets/images/gui/empty_heart.png'),
-        fullHeart 
-          ? Image.asset('assets/images/gui/full_heart.png')
-          : Container(),
-      ],
+    double width = GameMethods.instance.getScreenSize().width / 30;
+    return SizedBox(
+      width: width,
+      height: width,
+      child: FittedBox(
+        child: Stack(
+          children: [
+            Image.asset('assets/images/gui/empty_heart.png'),
+            fullHeart 
+              ? Image.asset('assets/images/gui/full_heart.png')
+              : Container(),
+          ],
+        ),
+      ),
     );
   }
 
