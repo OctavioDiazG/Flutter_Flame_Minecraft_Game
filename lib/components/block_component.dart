@@ -11,37 +11,43 @@ import 'package:minecraft2d_game/resources/tools.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
 
-class BlockComponent extends SpriteComponent with Tappable{
-
+class BlockComponent extends SpriteComponent with Tappable {
   final Blocks block;
-  final Vector2 blockIndex;
+  Vector2 blockIndex;
   final int chunkIndex;
 
   BlockComponent(
-    {required this.block,
-    required this.blockIndex, 
-    required this.chunkIndex,});
+      {required this.block,
+      required this.blockIndex,
+      required this.chunkIndex});
+
+  dynamic itemDropped;
 
   late SpriteSheet animationBlockSpriteSheet;
 
-  //the double dot is the cascate operator in dart, think about it as the word with
   late BlockBreakingComponent blockBreakingComponent = BlockBreakingComponent()
-  ..animation = animationBlockSpriteSheet.createAnimation(row: 0, stepTime: (BlockData.getBlockDataFor(block).baseMiningSpeed/6) * getMiningSpeedChange(block), loop: false)
-  ..animation!.onComplete = onBroken;
+    ..animation = animationBlockSpriteSheet.createAnimation(
+        row: 0,
+        stepTime: (BlockData.getBlockDataFor(block).baseMiningSpeed / 6) *getMiningSpeedChange(block),
+        loop: false)
+    ..animation!.onComplete = onBroken;
 
   void onBroken() {
-    GameMethods.instance.repleceBlockAtWorldChunks(null, blockIndex);
-    GlobalGameReference.instance.gameReference.worldData.items.add(ItemComponent(spawnBlockIndex: blockIndex, item: block));
+    GameMethods.instance.replaceBlockAtWorldChunks(null, blockIndex);
+    GlobalGameReference.instance.gameReference.worldData.items.add(ItemComponent(spawnBlockIndex: blockIndex, item: itemDropped ?? block));
     removeFromParent();
   }
 
   @override
-  Future<void> onLoad() async{
+  Future<void> onLoad() async {
     super.onLoad();
 
     add(RectangleHitbox());
 
-    animationBlockSpriteSheet = SpriteSheet(image: Flame.images.fromCache('sprite_sheets/blocks/block_breaking_sprite_sheet.png'), srcSize: Vector2.all(60));
+    animationBlockSpriteSheet = SpriteSheet(
+      image: Flame.images.fromCache("sprite_sheets/blocks/block_breaking_sprite_sheet.png"),
+      srcSize: Vector2.all(60),
+    );
 
     sprite = await GameMethods.instance.getSpriteFromBlock(block);
   }
@@ -50,58 +56,56 @@ class BlockComponent extends SpriteComponent with Tappable{
   void onGameResize(Vector2 newGameSize) {
     super.onGameResize(newGameSize);
     size = GameMethods.instance.blockSize;
-    position = Vector2(
-      GameMethods.instance.blockSize.x * blockIndex.x,
-      GameMethods.instance.blockSize.y * blockIndex.y,
-    );
+    position = Vector2(GameMethods.instance.blockSize.x * blockIndex.x, GameMethods.instance.blockSize.x * blockIndex.y);
   }
 
   @override
   void update(double dt) {
     super.update(dt);
+
     if (!GlobalGameReference.instance.gameReference.worldData.chunksThatShouldBeRendered.contains(chunkIndex)) {
-        
       removeFromParent();
 
-      GlobalGameReference.instance.gameReference.worldData.currentRenderedChunk.remove(chunkIndex);
+      GlobalGameReference.instance.gameReference.worldData.currentlyRenderedChunks.remove(chunkIndex);
     }
   }
 
   @override
-  bool onTapDown(TapDownInfo info){ 
+  bool onTapDown(TapDownInfo info) {
     super.onTapDown(info);
-    
+
     if (BlockData.getBlockDataFor(block).breakable) {
-      //Add Block Breaking animation     
+      //Adding component twice
       if (!blockBreakingComponent.isMounted) {
-        blockBreakingComponent.animation!.reset(); // every time the player taps on the block, the animation will reset
+        blockBreakingComponent.animation!.reset();
+
         add(blockBreakingComponent);
       }
+
+      //Add block breaking animation and stuff
     }
     return true;
   }
 
   @override
-  bool onTapUp(TapUpInfo info) { 
+  bool onTapUp(TapUpInfo info) {
     super.onTapUp(info);
 
-    //Stop Block Breaking animation 
+    //stop block braking animation removeing
     if (blockBreakingComponent.isMounted) {
       remove(blockBreakingComponent);
     }
-    
+
     return true;
   }
 
   @override
   bool onTapCancel() {
-    //Stop Block Breaking animation
+    //sotp block breaking animation
     if (blockBreakingComponent.isMounted) {
       remove(blockBreakingComponent);
-    } 
-    
+    }
+
     return true;
   }
-
-
 }

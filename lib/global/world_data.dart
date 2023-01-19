@@ -25,7 +25,7 @@ class WorldData {
     ];
   }
 
-  List<int> currentRenderedChunk =  [];
+  List<int> currentlyRenderedChunks =  [];
 
   List<ItemComponent> items = [];
 

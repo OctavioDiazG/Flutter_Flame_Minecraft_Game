@@ -76,7 +76,7 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
     worldData.chunksThatShouldBeRendered.asMap().forEach((int index, int chunkIndex) {
 
       //chunk isnt rendered
-      if (!worldData.currentRenderedChunk.contains(chunkIndex)) {
+      if (!worldData.currentlyRenderedChunks.contains(chunkIndex)) {
         //For right world chunk
         if (chunkIndex >= 0) {
           //Chunk has not been created
@@ -86,7 +86,7 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
             renderChunk(chunkIndex);
 
-            worldData.currentRenderedChunk.add(chunkIndex);
+            worldData.currentlyRenderedChunks.add(chunkIndex);
             //For Left World Chunk
         } else {
           
@@ -97,7 +97,7 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
           renderChunk(chunkIndex);
 
-          worldData.currentRenderedChunk.add(chunkIndex);
+          worldData.currentlyRenderedChunks.add(chunkIndex);
         }
       }
     });
@@ -181,7 +181,7 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
           worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block is Blocks
         ) {
       
-      GameMethods.instance.repleceBlockAtWorldChunks(worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block, blockPlacingPosition);
+      GameMethods.instance.replaceBlockAtWorldChunks(worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block, blockPlacingPosition);
 
       add(BlockData.getParentForBlock(
         worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block!,

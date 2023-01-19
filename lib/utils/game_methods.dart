@@ -144,7 +144,7 @@ class GameMethods{
     return processedNoise;
   }
 
-  void repleceBlockAtWorldChunks(Blocks? block, Vector2 blockIndex) {
+  void replaceBlockAtWorldChunks(Blocks? block, Vector2 blockIndex) {
     if (blockIndex.x >= 0) {
       GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt()] = block;
     } 

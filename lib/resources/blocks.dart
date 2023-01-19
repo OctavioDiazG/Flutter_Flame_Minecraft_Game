@@ -1,5 +1,11 @@
 import 'package:flame/components.dart';
+import 'package:minecraft2d_game/blocks/birch_leaf_block.dart';
+import 'package:minecraft2d_game/blocks/coal_ore_block.dart';
 import 'package:minecraft2d_game/blocks/crafting_table_block.dart';
+import 'package:minecraft2d_game/blocks/diamond_ore_block.dart';
+import 'package:minecraft2d_game/blocks/gold_ore_block.dart';
+import 'package:minecraft2d_game/blocks/iron_ore_block.dart';
+import 'package:minecraft2d_game/blocks/stone_block.dart';
 import 'package:minecraft2d_game/components/block_component.dart';
 import 'package:minecraft2d_game/resources/items.dart';
 
@@ -99,7 +105,7 @@ class  BlockData {
         return CraftingTableBlock(
             chunkIndex: chunkIndex, blockIndex: blockIndex);
 
-     /*  case Blocks.birchLeaf:
+       case Blocks.birchLeaf:
         return BirchLeafBlock(blockIndex: blockIndex, chunkIndex: chunkIndex);
 
       case Blocks.stone:
@@ -117,9 +123,9 @@ class  BlockData {
       case Blocks.goldOre:
         return GoldOreBlock(blockIndex: blockIndex, chunkIndex: chunkIndex);
 
-      case Blocks.sand:
+      /* case Blocks.sand:
         return SandBlock(blockIndex: blockIndex, chunkIndex: chunkIndex);
- */
+  */
       default:
         return BlockComponent(
             block: block, blockIndex: blockIndex, chunkIndex: chunkIndex);

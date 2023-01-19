@@ -80,7 +80,7 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
     ));
 
     add(TimerComponent(
-      period: 2,
+      period: 25,
       repeat: true, 
       onTick:() {
         changeHungerBy(-0.5);
