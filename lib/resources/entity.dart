@@ -118,8 +118,6 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
     } else {
       health = 10;
     }
-
-    killEntityLogic();
   }
 
   void killEntityLogic(){

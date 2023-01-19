@@ -78,6 +78,14 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
         refreshSpeed = true;
       }
     ));
+
+    add(TimerComponent(
+      period: 20,
+      repeat: true, 
+      onTick:() {
+        changeHungerBy(-0.5);
+      }
+    ));
   }
 
   @override
@@ -90,6 +98,8 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
     jumpingLogic();
 
     killEntityLogic();
+
+    healthAndhungerLogic();
 
     setAllCollisionsToFalse();
 
@@ -105,6 +115,29 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
       
     }
   } 
+
+  void changeHungerBy(double value){
+    //current hunger
+    double hunger = GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value;
+    if (hunger + value <= 10) {
+      if(hunger + value >= 0){
+        GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value += value;
+      } else {
+        GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value = 0;
+      }
+    } else {
+      GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value = 10;
+    }
+  }
+
+
+  void healthAndhungerLogic() {
+    //regenerationLogic
+    if(GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value > 9){
+      changeHealthBy(0.05);
+    }
+
+  }
 
 
 
