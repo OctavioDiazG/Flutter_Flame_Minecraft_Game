@@ -2,7 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:minecraft2d_game/global/world_data.dart';
 import 'package:minecraft2d_game/layout/controller_widget.dart';
-import 'package:minecraft2d_game/layout/player_health_bar.dart';
+import 'package:minecraft2d_game/layout/hunger_and_health_bar.dart';
 import 'package:minecraft2d_game/main_game.dart';
 import 'package:minecraft2d_game/widget/crafting/crafting_inventory.dart';
 import 'package:minecraft2d_game/layout/item_bar.dart';
@@ -25,7 +25,7 @@ class GameLayout extends StatelessWidget {
         //Every coming here will be in the HUD
         const ControllerWidget(),
         const ItemBarWidget(),
-        const PlayerHealthBarWidget(),
+        const HungerAndHealthBarWidget(),
         const PlayerInventoryWidget(),
         const CraftingInventory(),
       ],

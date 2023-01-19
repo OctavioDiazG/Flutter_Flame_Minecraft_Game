@@ -20,12 +20,7 @@ class PlayerHealthBarWidget extends StatelessWidget {
       children.add(getHeartWidget(isFullHeart));
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        children: children,
-      ),
-    );
+    return Row(children: children,);
   }
 
   Widget getHeartWidget(bool fullHeart) {
