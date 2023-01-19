@@ -89,6 +89,8 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
 
     jumpingLogic();
 
+    killEntityLogic();
+
     setAllCollisionsToFalse();
 
     if (refreshSpeed) {
@@ -96,6 +98,7 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
       refreshSpeed = false;
     }
 
+    
   } 
 
 

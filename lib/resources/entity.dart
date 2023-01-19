@@ -14,6 +14,8 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
 
   double jumpForce = 0;
 
+  double health = 10;
+
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
@@ -96,6 +98,26 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
         break;
       default: 
         break;  //if its defoult it will do nothing
+    }
+  }
+
+  void changeHealthBy(double value){
+    if (health + value <= 10) {
+      if(health + value >= 0){
+        health += value;
+      } else {
+        health = 0;
+      }
+    } else {
+      health = 10;
+    }
+
+    killEntityLogic();
+  }
+
+  void killEntityLogic(){
+    if (health == 0) {
+      removeFromParent();
     }
   }
 
