@@ -103,9 +103,18 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
 
     setAllCollisionsToFalse();
 
+
+    double hunger = GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value;
+
     if (refreshSpeed) {
-      localPlayerSpeed = (playerSpeed * GameMethods.instance.blockSize.x) * dt;
+      if (hunger > 3) {  
+        localPlayerSpeed = (playerSpeed * GameMethods.instance.blockSize.x) * dt;
+      } else {
+        localPlayerSpeed = (playerSpeed/2 * GameMethods.instance.blockSize.x) * dt;
+        localPlayerSpeed /= 1.5;
+      }
       refreshSpeed = false;
+
     }
 
     double playerHealth = GlobalGameReference.instance.gameReference.worldData.playerData.playerHealth.value;

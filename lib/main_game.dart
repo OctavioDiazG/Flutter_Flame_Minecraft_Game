@@ -160,20 +160,12 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
   }
 
   void eatingLogic() {
-    dynamic currentItem = worldData
-        .inventoryManager
-        .inventorySlots[
-            worldData.inventoryManager.currentSelectedInventorySlot.value]
-        .block;
+    dynamic currentItem = worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block;
 
     if (currentItem is Items &&
-        ItemData.getItemDataForItem(currentItem).isEatable) {
+      ItemData.getItemDataForItem(currentItem).isEatable) {
       playerComponent.changeHungerBy(getFoodPointsForFood[currentItem] ?? 0);
-      worldData
-          .inventoryManager
-          .inventorySlots[
-              worldData.inventoryManager.currentSelectedInventorySlot.value]
-          .decrementCount();
+      worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].decrementCount();
     }
   }
 
