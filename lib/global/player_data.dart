@@ -1,7 +1,10 @@
 
+
+import 'package:get/get.dart';
+
 class PlayerData{
-  //Health
-  //Hunger 
+  Rx<double> playerHealth = 10.0.obs;
+  Rx<double> playerHunger = 10.0.obs;
   //State idle, walking
   ComponentMotionState componentMotionState = ComponentMotionState.idle;
 }

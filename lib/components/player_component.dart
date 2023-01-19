@@ -98,7 +98,12 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
       refreshSpeed = false;
     }
 
-    
+    double playerHealth = GlobalGameReference.instance.gameReference.worldData.playerData.playerHealth.value;
+
+    if (playerHealth != health) {
+      GlobalGameReference.instance.gameReference.worldData.playerData.playerHealth.value = health;
+      
+    }
   } 
 
 
