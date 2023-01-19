@@ -10,6 +10,7 @@ import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/global/world_data.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
+import 'package:minecraft2d_game/resources/foods.dart';
 import 'package:minecraft2d_game/resources/items.dart';
 import 'package:minecraft2d_game/utils/chunk_generation_methods.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
@@ -40,7 +41,11 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
       worldData.inventoryManager.addBlockToInventory(Items.stonePickaxe);
       worldData.inventoryManager.addBlockToInventory(Items.ironPickaxe);
       worldData.inventoryManager.addBlockToInventory(Items.diamondPickaxe);
-      worldData.inventoryManager.addBlockToInventory(Items.goldenPickaxe);
+      worldData.inventoryManager.addBlockToInventory(Items.apple);
+      worldData.inventoryManager.addBlockToInventory(Items.apple);
+      worldData.inventoryManager.addBlockToInventory(Items.apple);
+      worldData.inventoryManager.addBlockToInventory(Items.apple);
+      worldData.inventoryManager.addBlockToInventory(Items.apple);
     }); //Add crafting table to inventory at the begining of the game
 
   }
@@ -71,7 +76,7 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
     worldData.chunksThatShouldBeRendered.asMap().forEach((int index, int chunkIndex) {
 
       //chunk isnt rendered
-      if (!worldData.currentRenderedChunk.contains(chunkIndex)) {
+      if (!worldData.currentlyRenderedChunks.contains(chunkIndex)) {
         //For right world chunk
         if (chunkIndex >= 0) {
           //Chunk has not been created
@@ -81,7 +86,7 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
             renderChunk(chunkIndex);
 
-            worldData.currentRenderedChunk.add(chunkIndex);
+            worldData.currentlyRenderedChunks.add(chunkIndex);
             //For Left World Chunk
         } else {
           
@@ -92,7 +97,7 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
           renderChunk(chunkIndex);
 
-          worldData.currentRenderedChunk.add(chunkIndex);
+          worldData.currentlyRenderedChunks.add(chunkIndex);
         }
       }
     });
@@ -150,6 +155,18 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
     Vector2 blockPlacingPosition = GameMethods.instance.getIndexPositionFromPixels(info.eventPosition.game);
 
     placeBlockLogic(blockPlacingPosition, Blocks.dirt);
+
+    eatingLogic();
+  }
+
+  void eatingLogic() {
+    dynamic currentItem = worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block;
+
+    if (currentItem is Items &&
+      ItemData.getItemDataForItem(currentItem).isEatable) {
+      playerComponent.changeHungerBy(getFoodPointsForFood[currentItem] ?? 0);
+      worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].decrementCount();
+    }
   }
 
   void placeBlockLogic(Vector2 blockPlacingPosition, Blocks block){
@@ -164,7 +181,7 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
           worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block is Blocks
         ) {
       
-      GameMethods.instance.repleceBlockAtWorldChunks(worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block, blockPlacingPosition);
+      GameMethods.instance.replaceBlockAtWorldChunks(worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block, blockPlacingPosition);
 
       add(BlockData.getParentForBlock(
         worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block!,
