@@ -16,6 +16,12 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
 
   double health = 10;
 
+  double blocksFallen = 0;
+
+  bool isHurt = false;
+
+  bool doFallDamage = true;
+
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
@@ -23,11 +29,14 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
       intersectionPoints.forEach((Vector2 individualIntersectionPoint) { 
   
         //Ground Collision
-        if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4) { 
-          //print("bottom Collision");
-          isCollidingBottom = true;
-          yVelocity = 0;
+        if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4) {
+        if (blocksFallen > 3 && doFallDamage) {
+          changeHealthBy(-(blocksFallen / 2));
         }
+        isCollidingBottom = true;
+        blocksFallen = 0;
+        yVelocity = 0;
+      }
   
         //Top Collision
         if (individualIntersectionPoint.y < (position.y - (size.y * 0.75)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4 && jumpForce > 0) {
@@ -57,15 +66,13 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
     }
   }
 
-  void fallingLogic(double dt){
-
+  void fallingLogic(double dt) {
     if (!isCollidingBottom) {
-      if (yVelocity < (GameMethods.instance.gravity * dt) * 10) { //place a limit to the yVelocity //5
-        position.y += yVelocity;
+      if (yVelocity < (GameMethods.instance.gravity * dt) * 10) {
         yVelocity += GameMethods.instance.gravity * dt;
-      } else {
-        position.y += yVelocity;
       }
+      position.y += yVelocity;
+      blocksFallen += yVelocity / GameMethods.instance.blockSize.x;
     }
   }
 
