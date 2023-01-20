@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:minecraft2d_game/components/block_component.dart';
+import 'package:minecraft2d_game/components/player_component.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
@@ -24,12 +25,22 @@ class Zombie extends Entity{
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    //blocks collision
     if (other is BlockComponent && BlockData.getBlockDataFor(other.block).isCollidable) {
       super.onCollision(intersectionPoints, other);
+    }
+
+    //player collision
+    if (other is PlayerComponent){
+      if (canDamage == true) {
+        other.changeHealthBy(-1);
+        canDamage = false;
+      }
     }
   }
 
   bool canJump = false;
+  bool canDamage = false;
   bool isAggrevated = false;
 
   @override
@@ -39,6 +50,7 @@ class Zombie extends Entity{
     add(RectangleHitbox());
 
     add(TimerComponent(period: 1, repeat: true, onTick: (() => canJump = true)));
+    add(TimerComponent(period: .70, repeat: true, onTick: (() => canDamage = true)));
 
     anchor = Anchor.bottomCenter;
 
