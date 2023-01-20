@@ -18,6 +18,9 @@ void main() async{
   await Flame.images.load('sprite_sheets/blocks/block_sprite_sheet.png');
   await Flame.images.load('sprite_sheets/item/item_sprite_sheet.png');
 
+  await Flame.images.load('sprite_sheets/mobs/sprite_sheet_zombie.png'); //zombie image
+  await Flame.images.load('sprite_sheets/mobs/sprite_sheet_spider.png'); //zombie image
+
   
   //WidgetsFlutterBinding.ensureInitialized();
   runApp(const MaterialApp(

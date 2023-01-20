@@ -26,34 +26,42 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-      intersectionPoints.forEach((Vector2 individualIntersectionPoint) { 
-  
-        //Ground Collision
-        if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4) {
+    intersectionPoints.forEach((Vector2 individualIntersectionPoint) {
+      //player is colliding with the ground
+
+      //Ground collision
+      if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) &&
+          (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
+              size.x * 0.4) {
         if (blocksFallen > 3 && doFallDamage) {
           changeHealthBy(-(blocksFallen / 2));
         }
+
         isCollidingBottom = true;
         blocksFallen = 0;
         yVelocity = 0;
       }
-  
-        //Top Collision
-        if (individualIntersectionPoint.y < (position.y - (size.y * 0.75)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4 && jumpForce > 0) {
-          isCollidingTop = true;
+
+      //Top collision
+      if (individualIntersectionPoint.y < (position.y - (size.y * 0.75)) &&
+          (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
+              size.x * 0.4 &&
+          jumpForce > 0) {
+        isCollidingTop = true;
+      }
+
+      //horizonatal collision
+      if (individualIntersectionPoint.y < (position.y - (size.y * 0.3))) {
+        //Right Collision
+        if (individualIntersectionPoint.x > position.x) {
+          isCollidingRight = true;
+
+          //Left collision
+        } else {
+          isCollidingLeft = true;
         }
-  
-        //Horizontal Collision
-        if (individualIntersectionPoint.y < (position.y - (size.y * 0.3))) {
-          //print("isCollidingHotizontally");
-          //create right collision
-          if (individualIntersectionPoint.x > position.x) {
-            isCollidingRight = true;
-          } else {
-            isCollidingLeft = true;
-          }
-        }
-      });
+      }
+    });
   }
 
   void jumpingLogic(){

@@ -12,6 +12,7 @@ import 'package:minecraft2d_game/components/sky_component.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/global/world_data.dart';
+import 'package:minecraft2d_game/mobs/zombie.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/foods.dart';
 import 'package:minecraft2d_game/resources/items.dart';
@@ -43,6 +44,8 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
     add(playerComponent);
 
     add(skyComponent);
+
+    add(Zombie());
 
     Future.delayed(const Duration(seconds: 1)).then((value) {
       worldData.inventoryManager.addBlockToInventory(Items.diamondPickaxe);
