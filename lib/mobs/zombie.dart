@@ -31,11 +31,8 @@ class Zombie extends Entity{
     }
 
     //player collision
-    if (other is PlayerComponent){
-      if (canDamage == true) {
-        other.changeHealthBy(-1);
-        canDamage = false;
-      }
+    if (other is PlayerComponent) {
+      inflictDamageToPlayer(other);
     }
   }
 
@@ -69,6 +66,21 @@ class Zombie extends Entity{
     setAllCollisionsToFalse();
   }
 
+  void inflictDamageToPlayer(PlayerComponent other){
+    if (canDamage == true) {
+      other.changeHealthBy(-1);
+      canDamage = false;
+      double playerXPosition = GlobalGameReference.instance.gameReference.playerComponent.position.x;
+      other.move(
+        position.x > playerXPosition 
+          ? ComponentMotionState.walkingLeft
+          : ComponentMotionState.walkingRight, 
+        1/45, 
+        GameMethods.instance.blockSize.x * 0.6
+      );
+    }
+  }
+
   void checkForAggro(){
     if (GameMethods.instance.playerIsWithinRange(GameMethods.instance.getIndexPositionFromPixels(position))){
       isAggrevated = true;
@@ -83,7 +95,7 @@ class Zombie extends Entity{
     if (isAggrevated) {
       double playerXPosition = GlobalGameReference.instance.gameReference.playerComponent.position.x;
       //if to the left
-      if ((playerXPosition - position.x).abs() > 10) {
+      if ((playerXPosition - position.x).abs() > 20) {
         if (position.x < playerXPosition){
           if (!move(ComponentMotionState.walkingRight, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3)) {
             if (canJump = true) {
