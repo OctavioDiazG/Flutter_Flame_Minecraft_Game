@@ -83,28 +83,31 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
     isCollidingTop = false;
   }
 
-  void move(ComponentMotionState componentMotionState, double dt, double speed) {
+  bool move(ComponentMotionState componentMotionState, double dt, double speed) {
     switch (componentMotionState) {
       case ComponentMotionState.walkingLeft:
-        if(!isCollidingLeft){
-          position.x -= speed; //moving the player to the Left * speed
+        if (!isCollidingLeft) {
+          position.x -= speed;
           if (isFacingRight) {
             flipHorizontallyAroundCenter();
             isFacingRight = false;
           }
+          return true;
         }
-        break;
+        return false;
       case ComponentMotionState.walkingRight:
-        if(!isCollidingRight) {
-          position.x += speed; //moving the player to the Left * speed
+        print("inside move $isCollidingRight");
+        if (!isCollidingRight) {
+          position.x += speed;
           if (!isFacingRight) {
             flipHorizontallyAroundCenter();
             isFacingRight = true;
           }
+          return true;
         }
-        break;
-      default: 
-        break;  //if its defoult it will do nothing
+        return false;
+      default:
+        return false;
     }
   }
 

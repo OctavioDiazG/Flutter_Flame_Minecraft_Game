@@ -153,17 +153,44 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
   void movementLogic(double dt) {
     //Moving Left
     if(GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingLeft){
-      move(ComponentMotionState.walkingLeft, dt, localPlayerSpeed);
+      if (move(ComponentMotionState.walkingLeft, dt, localPlayerSpeed)) {
+        GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.walkingRight;
+      } else {
+        GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.idle;
+      }
+/*       if (isHurt) {
+        animation = walkingHurtAnimation;
+      } else {
+        animation = walkingAnimation;
+      } */
       animation = walkingAnimation;
     }
+
     //Moving Right
-    if(GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingRight){
-      move(ComponentMotionState.walkingRight, dt, localPlayerSpeed);
+    if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState ==
+        ComponentMotionState.walkingRight) {
+      if (move(ComponentMotionState.walkingRight, dt, localPlayerSpeed)) {
+        GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.walkingLeft;
+      } else {
+        GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.idle;
+      }
+/*       if (isHurt) {
+        animation = walkingHurtAnimation;
+      } else {
+        animation = walkingAnimation;
+      } */
       animation = walkingAnimation;
     }
+
     //Idle 
     if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.idle) {
+/*       if (isHurt) {
+        animation = idleHurtAnimation;
+      } else {
+        animation = idleAnimation;
+      } */
       animation = idleAnimation;
+      GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.idle;
     }
     //Jump
     if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.jumping && isCollidingBottom) {
