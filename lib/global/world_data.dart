@@ -3,6 +3,7 @@ import 'package:minecraft2d_game/global/crafting_manager.dart';
 import 'package:minecraft2d_game/global/inventory.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
+import 'package:minecraft2d_game/resources/sky_timer.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
@@ -32,6 +33,8 @@ class WorldData {
   InventoryManager inventoryManager = InventoryManager();
 
   CraftingManager craftingManager = CraftingManager();
+
+  SkyTimer skyTimer = SkyTimer();
 
 
 }

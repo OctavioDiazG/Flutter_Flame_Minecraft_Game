@@ -15,6 +15,7 @@ import 'package:minecraft2d_game/global/world_data.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/foods.dart';
 import 'package:minecraft2d_game/resources/items.dart';
+import 'package:minecraft2d_game/resources/sky_timer.dart';
 import 'package:minecraft2d_game/utils/chunk_generation_methods.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
@@ -72,13 +73,13 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
   void update(double dt) {
     super.update(dt);
 
-    //worldData.skyTimer.updateTimer(dt);
+    worldData.skyTimer.updateTimer(dt);
 
     itemRenderingLogic();
 
-/*     if (worldData.skyTimer.skyTime == SkyTimerEnum.night) {
+/*      if (worldData.skyTimer.skyTime == SkyTimerEnum.night) {
       worldData.mobs.spawnHostileMobs();
-    } */
+    }  */
 
     worldData.chunksThatShouldBeRendered.asMap().forEach((int index, int chunkIndex) {
 

@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame/parallax.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
+import 'package:minecraft2d_game/resources/sky_timer.dart';
 
 class SkyComponent extends ParallaxComponent {
   ComponentMotionState componentMotionState = ComponentMotionState.walkingLeft;
@@ -17,7 +18,7 @@ class SkyComponent extends ParallaxComponent {
   Future<void> onLoad() async {
     super.onLoad();
 
-    ParallaxComponent morningSky = await GlobalGameReference.instance.gameReference.loadParallaxComponent([
+    morningSky = await GlobalGameReference.instance.gameReference.loadParallaxComponent([
       ParallaxImageData("parallax/morning/sky.png"),
       ParallaxImageData("parallax/morning/second_parallax.png"),
       ParallaxImageData("parallax/morning/first_parallax.png"),
@@ -35,8 +36,6 @@ class SkyComponent extends ParallaxComponent {
       ParallaxImageData("parallax/night/first_parallax.png"),
     ], baseVelocity: Vector2(0, 0), velocityMultiplierDelta: Vector2(3, 0));
 
-    parallax = eveningSky.parallax;
-/*
     switch (GlobalGameReference.instance.gameReference.worldData.skyTimer.skyTime) {
       case SkyTimerEnum.morning:
         parallax = morningSky.parallax;
@@ -48,7 +47,7 @@ class SkyComponent extends ParallaxComponent {
         parallax = nightSky.parallax;
         break;
     }
-*/
+
   }
 
   @override
