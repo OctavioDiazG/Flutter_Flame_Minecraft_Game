@@ -137,7 +137,11 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
     }
   }
 
-  
+    void jump(double jumphight) {
+    if (isCollidingBottom) {
+      jumpForce = GameMethods.instance.blockSize.x * jumphight;
+    }
+  }
 
 
 }

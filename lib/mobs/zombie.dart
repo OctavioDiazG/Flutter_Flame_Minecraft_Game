@@ -4,8 +4,11 @@ import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:minecraft2d_game/components/block_component.dart';
+import 'package:minecraft2d_game/global/global_game_reference.dart';
+import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/entity.dart';
+import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
 class Zombie extends Entity{
@@ -23,11 +26,15 @@ class Zombie extends Entity{
     }
   }
 
+  bool canJump = false;
+
   @override
   Future<void> onLoad() async {
     super.onLoad();
 
     add(RectangleHitbox());
+
+    add(TimerComponent(period: 1, repeat: true, onTick: (() => canJump = true)));
 
     anchor = Anchor.bottomCenter;
 
@@ -40,8 +47,32 @@ class Zombie extends Entity{
     fallingLogic(dt);
     killEntityLogic();
     jumpingLogic();
+    zombieLogic(dt);
 
     setAllCollisionsToFalse();
+  }
+
+  void zombieLogic(double dt){
+    double playerXPosition = GlobalGameReference.instance.gameReference.playerComponent.position.x;
+    //if to the left
+    if ((playerXPosition - position.x).abs() > 10) {
+      if (position.x < playerXPosition){
+        if (!move(ComponentMotionState.walkingRight, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3)) {
+          if (canJump = true) {
+            jump(0.5);
+            canJump = false;
+          }
+        }
+        //move(ComponentMotionState.walkingRight, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3);
+      }else{
+        if (!move(ComponentMotionState.walkingLeft, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3)) {
+          if (canJump = true) {
+            jump(0.5);
+            canJump = false;
+          }
+        }
+      }
+    }
   }
 
 

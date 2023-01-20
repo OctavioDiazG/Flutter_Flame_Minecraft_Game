@@ -92,17 +92,11 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
   void update(double dt) {
     super.update(dt);
     movementLogic(dt);
-
     fallingLogic(dt);
-
     jumpingLogic();
-
     killEntityLogic();
-
     healthAndhungerLogic();
-
     setAllCollisionsToFalse();
-
 
     double hunger = GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value;
 
@@ -151,54 +145,46 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
 
 
   void movementLogic(double dt) {
-    //Moving Left
-    if(GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingLeft){
+    //Moving left
+    if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingLeft) {
       if (move(ComponentMotionState.walkingLeft, dt, localPlayerSpeed)) {
         GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.walkingRight;
       } else {
         GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.idle;
       }
-/*       if (isHurt) {
+      /* if (isHurt) {
         animation = walkingHurtAnimation;
       } else {
         animation = walkingAnimation;
       } */
-      animation = walkingAnimation;
+        animation = walkingAnimation;
     }
 
-    //Moving Right
-    if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState ==
-        ComponentMotionState.walkingRight) {
+    //Moving right
+    if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingRight) {
       if (move(ComponentMotionState.walkingRight, dt, localPlayerSpeed)) {
         GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.walkingLeft;
       } else {
         GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.idle;
       }
-/*       if (isHurt) {
+      /* if (isHurt) {
         animation = walkingHurtAnimation;
       } else {
         animation = walkingAnimation;
       } */
-      animation = walkingAnimation;
+        animation = walkingAnimation;
     }
-
-    //Idle 
     if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.idle) {
-/*       if (isHurt) {
+      /* if (isHurt) {
         animation = idleHurtAnimation;
       } else {
         animation = idleAnimation;
       } */
-      animation = idleAnimation;
+        animation = idleAnimation;
       GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.idle;
     }
-    //Jump
     if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.jumping && isCollidingBottom) {
-      jumpForce = GameMethods.instance.blockSize.x * 0.6; 
-      /*if (isCollidingBottom) {
-        yVelocity = -jumpForce;
-      }*/
-      //animation = jumpAnimation;
+      jump(0.6);
     }
   }
 
