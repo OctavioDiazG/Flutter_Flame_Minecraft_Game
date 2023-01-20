@@ -1,17 +1,21 @@
+import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame/parallax.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:minecraft2d_game/components/block_component.dart';
 import 'package:minecraft2d_game/components/item_component.dart';
 import 'package:minecraft2d_game/components/player_component.dart';
+import 'package:minecraft2d_game/components/sky_component.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/global/world_data.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/foods.dart';
 import 'package:minecraft2d_game/resources/items.dart';
+import 'package:minecraft2d_game/resources/sky_timer.dart';
 import 'package:minecraft2d_game/utils/chunk_generation_methods.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
@@ -28,6 +32,8 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
   PlayerComponent playerComponent = PlayerComponent();
 
+  SkyComponent skyComponent = SkyComponent();
+
   @override
   Future<void> onLoad() async{
     super.onLoad();
@@ -36,29 +42,26 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
     
     add(playerComponent);
 
-    Future.delayed(Duration(seconds: 1)).then((value) {
-      worldData.inventoryManager.addBlockToInventory(Items.woodenPickaxe);
-      worldData.inventoryManager.addBlockToInventory(Items.stonePickaxe);
-      worldData.inventoryManager.addBlockToInventory(Items.ironPickaxe);
-      worldData.inventoryManager.addBlockToInventory(Items.diamondPickaxe);
-      worldData.inventoryManager.addBlockToInventory(Items.apple);
-      worldData.inventoryManager.addBlockToInventory(Items.apple);
-      worldData.inventoryManager.addBlockToInventory(Items.apple);
-      worldData.inventoryManager.addBlockToInventory(Items.apple);
-      worldData.inventoryManager.addBlockToInventory(Items.apple);
-    }); //Add crafting table to inventory at the begining of the game
+    add(skyComponent);
 
+    Future.delayed(const Duration(seconds: 1)).then((value) {
+      worldData.inventoryManager.addBlockToInventory(Items.diamondPickaxe);
+      worldData.inventoryManager.addBlockToInventory(Blocks.coalOre);
+      worldData.inventoryManager.addBlockToInventory(Blocks.goldOre);
+      worldData.inventoryManager.addBlockToInventory(Blocks.diamondOre);
+    }); //Add crafting table to inventory at the begining of the game
   }
 
   void renderChunk(int chunkIndex){
     List<List<Blocks?>> chunk = GameMethods.instance.getChunk(chunkIndex);
+
     chunk.asMap().forEach((int yIndex, List<Blocks?> rowOfBlocks) {
-      rowOfBlocks.asMap().forEach((int xIndex, Blocks? block) { 
+      rowOfBlocks.asMap().forEach((int xIndex, Blocks? block) {
         if (block != null) {
           add(BlockData.getParentForBlock(
-            block, 
-            Vector2((chunkIndex * chunkWidth) + xIndex.toDouble(), 
-            yIndex.toDouble()), 
+            block,
+            Vector2((chunkIndex * chunkWidth) + xIndex.toDouble(),
+                  yIndex.toDouble()),
             chunkIndex ,
           ));
         }
@@ -67,12 +70,17 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
   }
 
   @override
-  void update(double dt){ //get the dt as delta time to get every frame posible of the playerPos.x
+  void update(double dt) {
     super.update(dt);
+
+    worldData.skyTimer.updateTimer(dt);
 
     itemRenderingLogic();
 
-    //print(worldData.chunksThatShouldBeRendered);
+/*      if (worldData.skyTimer.skyTime == SkyTimerEnum.night) {
+      worldData.mobs.spawnHostileMobs();
+    }  */
+
     worldData.chunksThatShouldBeRendered.asMap().forEach((int index, int chunkIndex) {
 
       //chunk isnt rendered
@@ -84,16 +92,17 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
             GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(chunkIndex), true);
           }
 
-            renderChunk(chunkIndex);
+          renderChunk(chunkIndex);
 
-            worldData.currentlyRenderedChunks.add(chunkIndex);
+          worldData.currentlyRenderedChunks.add(chunkIndex);
             //For Left World Chunk
+          //logic for leftWorldChunks
         } else {
-          
+
         //Chunk has not been created
-        if (worldData.leftWorldChunks[0].length ~/ chunkWidth < chunkIndex.abs()) {
-          GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(chunkIndex), false);
-        }
+          if (worldData.leftWorldChunks[0].length ~/ chunkWidth < chunkIndex.abs()) {
+            GameMethods.instance.addChunkToWorldChunks(ChunkGenerationMethods.instance.generateChunk(chunkIndex), false);
+          }
 
           renderChunk(chunkIndex);
 
