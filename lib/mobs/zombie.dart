@@ -1,6 +1,5 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:minecraft2d_game/components/block_component.dart';
@@ -14,10 +13,14 @@ import 'package:minecraft2d_game/utils/game_methods.dart';
 class Zombie extends Entity{
   Vector2 dimensions = Vector2(67,99);
 
-  late SpriteSheet walkingSpriteSheet = SpriteSheet(
+  late SpriteSheet zombieSpriteSheet = SpriteSheet(
     image: Flame.images.fromCache('sprite_sheets/mobs/sprite_sheet_zombie.png'),
     srcSize: dimensions,
   );
+
+  late SpriteAnimation walkingAnimation = zombieSpriteSheet.createAnimation(row: 2, stepTime: 0.2);
+  //late SpriteAnimation idleAnimation = zombieSpriteSheet.createAnimation(row: 0, stepTime: 0.2, from: 0, to: 1);
+  late SpriteAnimation idleAnimation = SpriteAnimation.spriteList([zombieSpriteSheet.getSprite(0, 0)], stepTime: 0.2);
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
@@ -27,6 +30,7 @@ class Zombie extends Entity{
   }
 
   bool canJump = false;
+  bool isAggrevated = false;
 
   @override
   Future<void> onLoad() async {
@@ -38,7 +42,7 @@ class Zombie extends Entity{
 
     anchor = Anchor.bottomCenter;
 
-    animation = walkingSpriteSheet.createAnimation(row: 2,stepTime: 0.2,);
+    animation = idleAnimation;
   }
 
   @override
@@ -47,28 +51,41 @@ class Zombie extends Entity{
     fallingLogic(dt);
     killEntityLogic();
     jumpingLogic();
+    checkForAggro();
     zombieLogic(dt);
 
     setAllCollisionsToFalse();
   }
 
+  void checkForAggro(){
+    if (GameMethods.instance.playerIsWithinRange(GameMethods.instance.getIndexPositionFromPixels(position))){
+      isAggrevated = true;
+      animation = walkingAnimation;
+    } else {
+      isAggrevated = false;
+      animation = idleAnimation;
+    }
+  }
+
   void zombieLogic(double dt){
-    double playerXPosition = GlobalGameReference.instance.gameReference.playerComponent.position.x;
-    //if to the left
-    if ((playerXPosition - position.x).abs() > 10) {
-      if (position.x < playerXPosition){
-        if (!move(ComponentMotionState.walkingRight, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3)) {
-          if (canJump = true) {
-            jump(0.5);
-            canJump = false;
+    if (isAggrevated) {
+      double playerXPosition = GlobalGameReference.instance.gameReference.playerComponent.position.x;
+      //if to the left
+      if ((playerXPosition - position.x).abs() > 10) {
+        if (position.x < playerXPosition){
+          if (!move(ComponentMotionState.walkingRight, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3)) {
+            if (canJump = true) {
+              jump(0.5);
+              canJump = false;
+            }
           }
-        }
-        //move(ComponentMotionState.walkingRight, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3);
-      }else{
-        if (!move(ComponentMotionState.walkingLeft, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3)) {
-          if (canJump = true) {
-            jump(0.5);
-            canJump = false;
+          //move(ComponentMotionState.walkingRight, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3);
+        }else{
+          if (!move(ComponentMotionState.walkingLeft, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3)) {
+            if (canJump = true) {
+              jump(0.5);
+              canJump = false;
+            }
           }
         }
       }
