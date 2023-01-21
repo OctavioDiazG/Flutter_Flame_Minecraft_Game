@@ -6,7 +6,7 @@ import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
 class Spider extends HostileEntity{
-  Spider(/*{required super.spawnIndexPosition}*/) 
+  Spider({required super.spawnIndexPosition}) 
     : super(
       path: "sprite_sheets/mobs/sprite_sheet_spider.png",
       srcSize: Vector2(131, 60),

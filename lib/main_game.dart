@@ -46,10 +46,10 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
     add(skyComponent);
 
-    add(Zombie());
-    add(Spider());
+    //add(Zombie());
 
     Future.delayed(const Duration(seconds: 1)).then((value) {
+      add(Spider(spawnIndexPosition: GameMethods.instance.getSpawnPositionForMob()));
       worldData.inventoryManager.addBlockToInventory(Items.diamondPickaxe);
       worldData.inventoryManager.addBlockToInventory(Blocks.coalOre);
       worldData.inventoryManager.addBlockToInventory(Blocks.goldOre);

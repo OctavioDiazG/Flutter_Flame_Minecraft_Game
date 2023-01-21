@@ -14,8 +14,9 @@ import 'package:minecraft2d_game/utils/game_methods.dart';
 class HostileEntity extends Entity {
   final String path;
   final Vector2 srcSize;
+  final Vector2 spawnIndexPosition;
 
-  HostileEntity({required this.path, required this.srcSize});
+  HostileEntity({required this.path, required this.srcSize, required this.spawnIndexPosition});
 
 
   late SpriteSheet spriteSheet = SpriteSheet(
@@ -57,6 +58,8 @@ class HostileEntity extends Entity {
     anchor = Anchor.bottomCenter;
 
     animation = idleAnimation;
+
+    position = spawnIndexPosition * GameMethods.instance.blockSize.x;
   }
 
   void inflictDamageToPlayer(PlayerComponent other){
