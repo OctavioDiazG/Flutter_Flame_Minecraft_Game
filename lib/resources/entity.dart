@@ -18,9 +18,9 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
 
   double blocksFallen = 0;
 
-  bool doFallDamage = true;
-
   bool isHurt = false;
+
+  bool doFallDamage = true;
 
   @override
   Future<void> onLoad() async {
@@ -110,7 +110,7 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
         }
         return false;
       case ComponentMotionState.walkingRight:
-        print("inside move $isCollidingRight");
+        //print("inside move $isCollidingRight");
         if (!isCollidingRight) {
           position.x += speed;
           if (!isFacingRight) {
@@ -126,7 +126,6 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
   }
 
   void changeHealthBy(double value){
-
     if (value < 0) {
       isHurt = true;
     }
@@ -148,12 +147,15 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
     }
   }
 
-    void jump(double jumphight) {
+  void jump(double jumphight) {
     if (isCollidingBottom) {
       jumpForce = GameMethods.instance.blockSize.x * jumphight;
     }
   }
 
+  void climb(double climbSpeed) {
+    jumpForce += GameMethods.instance.blockSize.x * climbSpeed;
+  } //NEW
 
 }
 
