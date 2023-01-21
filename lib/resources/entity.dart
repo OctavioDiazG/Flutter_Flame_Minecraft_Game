@@ -18,9 +18,15 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
 
   double blocksFallen = 0;
 
+  bool doFallDamage = true;
+
   bool isHurt = false;
 
-  bool doFallDamage = true;
+  @override
+  Future<void> onLoad() async {
+    super.onLoad();
+    add(TimerComponent(period: 0.5, repeat: true, onTick: () {isHurt = false;}));
+  }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
@@ -120,6 +126,11 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
   }
 
   void changeHealthBy(double value){
+
+    if (value < 0) {
+      isHurt = true;
+    }
+
     if (health + value <= 10) {
       if(health + value >= 0){
         health += value;
