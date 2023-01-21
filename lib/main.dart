@@ -26,7 +26,7 @@ void main() async{
 
   //mobs
   await Flame.images.load('sprite_sheets/mobs/sprite_sheet_zombie.png'); //zombie image
-  await Flame.images.load('sprite_sheets/mobs/sprite_sheet_spider.png'); //zombie image
+  await Flame.images.load('sprite_sheets/mobs/sprite_sheet_spider.png'); //spider image
 
   
   //WidgetsFlutterBinding.ensureInitialized();
