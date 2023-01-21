@@ -244,4 +244,25 @@ class GameMethods{
     
     return Vector2((spawnXPosition.toDouble()) + (chunkIndex * chunkWidth),spawnYPosition.toDouble());
   }
+
+  Vector2 getSpawnPositionForPlayer() {
+    int chunkIndex = 0;
+
+    List<List<Blocks?>> chunk = getChunk(chunkIndex);
+
+    int spawnXPosition = 0;
+
+    int spawnYPosition = 0;
+
+    for (int rowOfBlocksIndex = 0; rowOfBlocksIndex < chunk.length; rowOfBlocksIndex++) {
+      if (chunk[rowOfBlocksIndex][spawnXPosition] is Blocks && BlockData.getBlockDataFor(chunk[rowOfBlocksIndex][spawnXPosition]!).isCollidable) {
+        spawnYPosition = rowOfBlocksIndex;
+        break;
+      }
+    }
+
+    return Vector2((spawnXPosition.toDouble()) + (chunkIndex * chunkWidth),
+        spawnYPosition.toDouble());
+  }
+
 }

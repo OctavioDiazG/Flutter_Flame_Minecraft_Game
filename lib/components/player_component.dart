@@ -45,6 +45,8 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
   Future<void> onLoad() async {
     super.onLoad();
 
+    await Future.delayed(const Duration(milliseconds: 500));
+
     add(RectangleHitbox());
 
     priority = 2;
@@ -88,6 +90,8 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
         changeHungerBy(-0.5);
       }
     ));
+
+    position = GameMethods.instance.getSpawnPositionForPlayer() * GameMethods.instance.blockSize.x;
   }
 
   @override
