@@ -18,7 +18,7 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
   // Movement Animation
   late SpriteSheet playerWalkingSpritesheet;
   late SpriteAnimation walkingAnimation = playerWalkingSpritesheet.createAnimation(row: 0, stepTime: 0.12);
-  //late SpriteAnimation walkingHurtAnimation = playerWalkingSpritesheet.createAnimation(row: 1, stepTime: 0.12);
+  late SpriteAnimation walkingHurtAnimation = playerWalkingSpritesheet.createAnimation(row: 1, stepTime: 0.12);
 
   // Idle Animation
   late SpriteSheet playerIdleSpritesheet;
@@ -160,12 +160,12 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
       } else {
         GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.idle;
       }
-      /* if (isHurt) {
+      if (isHurt) {
         animation = walkingHurtAnimation;
       } else {
         animation = walkingAnimation;
-      } */
-        animation = walkingAnimation;
+      } 
+        //animation = walkingAnimation;
     }
 
     //Moving right
@@ -175,12 +175,12 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
       } else {
         GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.idle;
       }
-      /* if (isHurt) {
+      if (isHurt) {
         animation = walkingHurtAnimation;
       } else {
         animation = walkingAnimation;
-      } */
-        animation = walkingAnimation;
+      }
+        //animation = walkingAnimation;
     }
     if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.idle) {
       if (isHurt) {
