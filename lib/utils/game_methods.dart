@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
@@ -27,8 +29,8 @@ class GameMethods{
   }
   
   Vector2 get blockSize{
-    return Vector2.all(getScreenSize().width/chunkWidth);
-    //return Vector2.all(20);
+    //return Vector2.all(getScreenSize().width/chunkWidth);
+    return Vector2.all(20);
   }
 
   double get slotSize{
@@ -220,6 +222,47 @@ class GameMethods{
       return true;
     }
     return false;
+  }
+
+  Vector2 getSpawnPositionForMob() {
+    int chunkIndex = Random().nextBool()
+      ? GlobalGameReference.instance.gameReference.worldData.currentlyRenderedChunks.first
+      : GlobalGameReference.instance.gameReference.worldData.currentlyRenderedChunks.last;
+
+    List<List<Blocks?>> chunk = getChunk(chunkIndex);
+
+    int spawnXPosition = Random().nextInt(chunkWidth);
+
+    int spawnYPosition = 0;
+
+    for (int rowOfBlocksIndex = 0; rowOfBlocksIndex < chunk.length; rowOfBlocksIndex++) {
+      if (chunk[rowOfBlocksIndex][spawnXPosition] is Blocks && BlockData.getBlockDataFor(chunk[rowOfBlocksIndex][spawnXPosition]!).isCollidable) {
+        spawnYPosition = rowOfBlocksIndex;
+        break;
+      }
+    }
+    
+    return Vector2((spawnXPosition.toDouble()) + (chunkIndex * chunkWidth),spawnYPosition.toDouble());
+  }
+
+  Vector2 getSpawnPositionForPlayer() {
+    int chunkIndex = 0;
+
+    List<List<Blocks?>> chunk = getChunk(chunkIndex);
+
+    int spawnXPosition = 0;
+
+    int spawnYPosition = 0;
+
+    for (int rowOfBlocksIndex = 0; rowOfBlocksIndex < chunk.length; rowOfBlocksIndex++) {
+      if (chunk[rowOfBlocksIndex][spawnXPosition] is Blocks && BlockData.getBlockDataFor(chunk[rowOfBlocksIndex][spawnXPosition]!).isCollidable) {
+        spawnYPosition = rowOfBlocksIndex;
+        break;
+      }
+    }
+
+    return Vector2((spawnXPosition.toDouble()) + (chunkIndex * chunkWidth),
+        spawnYPosition.toDouble());
   }
 
 }

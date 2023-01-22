@@ -10,7 +10,7 @@ enum SkyTimerEnum{
 class SkyTimer{
   double skyTimerSeconds = 0;
 
-  SkyTimerEnum skyTime = SkyTimerEnum.morning;
+  SkyTimerEnum skyTime = SkyTimerEnum.evening;
 
   void updateTimer(double dt){
     skyTimerSeconds += dt;

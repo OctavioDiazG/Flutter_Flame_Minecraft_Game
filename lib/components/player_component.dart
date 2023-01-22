@@ -18,10 +18,12 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
   // Movement Animation
   late SpriteSheet playerWalkingSpritesheet;
   late SpriteAnimation walkingAnimation = playerWalkingSpritesheet.createAnimation(row: 0, stepTime: 0.12);
+  late SpriteAnimation walkingHurtAnimation = playerWalkingSpritesheet.createAnimation(row: 1, stepTime: 0.12);
 
   // Idle Animation
   late SpriteSheet playerIdleSpritesheet;
   late SpriteAnimation idleAnimation = playerIdleSpritesheet.createAnimation(row: 0, stepTime: 0.18);
+  late SpriteAnimation idleHurtAnimation = playerIdleSpritesheet.createAnimation(row: 1, stepTime: 0.18);
 
   // Jump Animation
   //late SpriteSheet playerJumpSpritesheet;
@@ -43,6 +45,8 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
   Future<void> onLoad() async {
     super.onLoad();
 
+    await Future.delayed(const Duration(milliseconds: 500));
+
     add(RectangleHitbox());
 
     priority = 2;
@@ -51,8 +55,8 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
 
     // WalkingSprite
     playerWalkingSpritesheet = SpriteSheet(
-      image: Flame.images.fromCache('sprite_sheets/player/player_walking_sprite_sheet.png'), //tells flutter where to grab the spriteSheet
-      srcSize: playerDimensions, //the number of pixels it will be cut the spriteSheet
+      image: Flame.images.fromCache('sprite_sheets/own_imports/new_player_walk.png'), //tells flutter where to grab the spriteSheet
+      srcSize: playerDimensions + Vector2(-1, 0), //the number of pixels it will be cut the spriteSheet
     );
     // IdleSprite 
     playerIdleSpritesheet = SpriteSheet(
@@ -86,23 +90,21 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
         changeHungerBy(-0.5);
       }
     ));
+
+    position = GameMethods.instance.getSpawnPositionForPlayer() * GameMethods.instance.blockSize.x;
   }
 
   @override
   void update(double dt) {
     super.update(dt);
     movementLogic(dt);
-
     fallingLogic(dt);
-
     jumpingLogic();
-
     killEntityLogic();
-
     healthAndhungerLogic();
-
     setAllCollisionsToFalse();
 
+    print(isHurt);
 
     double hunger = GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value;
 
@@ -151,54 +153,45 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
 
 
   void movementLogic(double dt) {
-    //Moving Left
-    if(GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingLeft){
+    //Moving left
+    if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingLeft) {
       if (move(ComponentMotionState.walkingLeft, dt, localPlayerSpeed)) {
         GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.walkingRight;
       } else {
         GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.idle;
       }
-/*       if (isHurt) {
+      if (isHurt) {
         animation = walkingHurtAnimation;
       } else {
         animation = walkingAnimation;
-      } */
-      animation = walkingAnimation;
+      } 
+        //animation = walkingAnimation;
     }
 
-    //Moving Right
-    if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState ==
-        ComponentMotionState.walkingRight) {
+    //Moving right
+    if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.walkingRight) {
       if (move(ComponentMotionState.walkingRight, dt, localPlayerSpeed)) {
         GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.walkingLeft;
       } else {
         GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.idle;
       }
-/*       if (isHurt) {
+      if (isHurt) {
         animation = walkingHurtAnimation;
       } else {
         animation = walkingAnimation;
-      } */
-      animation = walkingAnimation;
+      }
+        //animation = walkingAnimation;
     }
-
-    //Idle 
     if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.idle) {
-/*       if (isHurt) {
+      if (isHurt) {
         animation = idleHurtAnimation;
       } else {
         animation = idleAnimation;
-      } */
-      animation = idleAnimation;
+      }
       GlobalGameReference.instance.gameReference.skyComponent.componentMotionState = ComponentMotionState.idle;
     }
-    //Jump
     if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.jumping && isCollidingBottom) {
-      jumpForce = GameMethods.instance.blockSize.x * 0.6; 
-      /*if (isCollidingBottom) {
-        yVelocity = -jumpForce;
-      }*/
-      //animation = jumpAnimation;
+      jump(0.6);
     }
   }
 

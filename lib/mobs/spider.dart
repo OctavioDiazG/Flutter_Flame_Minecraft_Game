@@ -5,12 +5,15 @@ import 'package:minecraft2d_game/resources/hostile_entity.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
-class Zombie extends HostileEntity{
-  Zombie({required super.spawnIndexPosition}) 
+class Spider extends HostileEntity{
+  Spider({required super.spawnIndexPosition}) 
     : super(
-      path: "sprite_sheets/mobs/sprite_sheet_zombie.png",
-      srcSize: Vector2(67, 99),
-    );
+      path: "sprite_sheets/mobs/sprite_sheet_spider.png",
+      srcSize: Vector2(131, 60),
+    ){
+      doFallDamage = false;
+    }
+
 
   @override
   void update(double dt) {
@@ -19,30 +22,24 @@ class Zombie extends HostileEntity{
     killEntityLogic();
     jumpingLogic();
     checkForAggro();
-    zombieLogic(dt);
+    spiderLogic(dt);
 
     setAllCollisionsToFalse();
   }
 
-  void zombieLogic(double dt){
+  void spiderLogic(double dt){
     if (isAggrevated) {
       double playerXPosition = GlobalGameReference.instance.gameReference.playerComponent.position.x;
       //if to the left
       if ((playerXPosition - position.x).abs() > 20) {
         if (position.x < playerXPosition){
           if (!move(ComponentMotionState.walkingRight, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3)) {
-            if (canJump = true) {
-              jump(0.5);
-              canJump = false;
-            }
+            jumpForce += GameMethods.instance.blockSize.x * 0.2;
           }
           //move(ComponentMotionState.walkingRight, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3);
         }else{
           if (!move(ComponentMotionState.walkingLeft, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3)) {
-            if (canJump = true) {
-              jump(0.5);
-              canJump = false;
-            }
+            jumpForce += GameMethods.instance.blockSize.x * 0.2;
           }
         }
       }
@@ -53,6 +50,6 @@ class Zombie extends HostileEntity{
   void onGameResize(Vector2 newScreenSize) {
     super.onGameResize(newScreenSize);
 
-    size  = srcSize * ((GameMethods.instance.blockSize.x *2) / srcSize.y);
+    size  = srcSize * ((GameMethods.instance.blockSize.y) / srcSize.y);
   }
 }

@@ -12,6 +12,7 @@ import 'package:minecraft2d_game/components/sky_component.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/global/world_data.dart';
+import 'package:minecraft2d_game/mobs/spider.dart';
 import 'package:minecraft2d_game/mobs/zombie.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/foods.dart';
@@ -45,7 +46,7 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
     add(skyComponent);
 
-    add(Zombie());
+    //add(Zombie());
 
     Future.delayed(const Duration(seconds: 1)).then((value) {
       worldData.inventoryManager.addBlockToInventory(Items.diamondPickaxe);
@@ -80,9 +81,9 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
     itemRenderingLogic();
 
-/*      if (worldData.skyTimer.skyTime == SkyTimerEnum.night) {
+    if (worldData.skyTimer.skyTime == SkyTimerEnum.night) {
       worldData.mobs.spawnHostileMobs();
-    }  */
+    }
 
     worldData.chunksThatShouldBeRendered.asMap().forEach((int index, int chunkIndex) {
 
