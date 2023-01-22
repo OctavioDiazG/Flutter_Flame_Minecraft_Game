@@ -49,7 +49,6 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
     //add(Zombie());
 
     Future.delayed(const Duration(seconds: 1)).then((value) {
-      add(Spider(spawnIndexPosition: GameMethods.instance.getSpawnPositionForMob()));
       worldData.inventoryManager.addBlockToInventory(Items.diamondPickaxe);
       worldData.inventoryManager.addBlockToInventory(Blocks.coalOre);
       worldData.inventoryManager.addBlockToInventory(Blocks.goldOre);
@@ -82,9 +81,9 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
 
     itemRenderingLogic();
 
-/*      if (worldData.skyTimer.skyTime == SkyTimerEnum.night) {
+    if (worldData.skyTimer.skyTime == SkyTimerEnum.night) {
       worldData.mobs.spawnHostileMobs();
-    }  */
+    }
 
     worldData.chunksThatShouldBeRendered.asMap().forEach((int index, int chunkIndex) {
 

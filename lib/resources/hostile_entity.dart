@@ -1,5 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:minecraft2d_game/components/block_component.dart';
@@ -16,7 +17,9 @@ class HostileEntity extends Entity {
   final Vector2 srcSize;
   final Vector2 spawnIndexPosition;
 
-  HostileEntity({required this.path, required this.srcSize, required this.spawnIndexPosition});
+  HostileEntity({required this.path, required this.srcSize, required this.spawnIndexPosition}){
+    GlobalGameReference.instance.gameReference.worldData.mobs.totalMobs++;
+  }
 
 
   late SpriteSheet spriteSheet = SpriteSheet(
@@ -77,6 +80,18 @@ class HostileEntity extends Entity {
     }
   }
 
+  void doKnockBackToSelf() {
+    double playerXPosition =
+        GlobalGameReference.instance.gameReference.playerComponent.position.x;
+
+    move(
+        position.x < playerXPosition
+            ? ComponentMotionState.walkingLeft
+            : ComponentMotionState.walkingRight,
+        1 / 45,
+        GameMethods.instance.blockSize.x * 0.6);
+  }
+
   void checkForAggro(){
     if (GameMethods.instance.playerIsWithinRange(GameMethods.instance.getIndexPositionFromPixels(position))){
       isAggrevated = true;
@@ -85,6 +100,20 @@ class HostileEntity extends Entity {
       isAggrevated = false;
       animation = idleAnimation;
     }
+  }
+
+  @override
+  bool onTapDown(TapDownInfo info) {
+    //changeHealthBy(-getDamage().toDouble());
+    doKnockBackToSelf();
+    return true;
+  }
+
+  @override
+  void onRemove() {
+    super.onRemove();
+    GlobalGameReference.instance.gameReference.worldData.mobs.totalMobs--;
+    print("decrementing total mob count");
   }
   
 }
