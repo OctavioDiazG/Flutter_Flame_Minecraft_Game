@@ -8,28 +8,22 @@ import 'package:minecraft2d_game/resources/entity.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
 class ItemComponent extends Entity {
-
   final Vector2 spawnBlockIndex;
   final dynamic item;
-  
-  ItemComponent({required this.spawnBlockIndex, required this.item});
 
+  ItemComponent({required this.spawnBlockIndex, required this.item});
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is BlockComponent && BlockData.getBlockDataFor(other.block).isCollidable) {
       super.onCollision(intersectionPoints, other);
     } else if (other is PlayerComponent) {
-
       if (GlobalGameReference.instance.gameReference.worldData.inventoryManager.addBlockToInventory(item)) {
-        //remove item from world  
         GlobalGameReference.instance.gameReference.worldData.items.remove(this);
-        //add item to inventory
         removeFromParent();
       }
     }
   }
-
 
   @override
   Future<void> onLoad() async {
@@ -38,9 +32,11 @@ class ItemComponent extends Entity {
     add(RectangleHitbox());
 
     position = (spawnBlockIndex * GameMethods.instance.blockSize.x) + GameMethods.instance.blockSize / 4;
-    animation = SpriteAnimation.spriteList([item is Blocks 
-      ? GameMethods.instance.getSpriteFromBlock(item)
-      : GameMethods.instance.getSpriteFromItem(item)], stepTime: 1);
+    animation = SpriteAnimation.spriteList([
+      item is Blocks
+          ? GameMethods.instance.getSpriteFromBlock(item)
+          : GameMethods.instance.getSpriteFromItem(item)
+    ], stepTime: 1);
   }
 
   @override

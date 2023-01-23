@@ -38,7 +38,7 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
       //Ground collision
       if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) &&
           (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
-              size.x * 0.4) {
+            size.x * 0.4) {
         if (blocksFallen > 3 && doFallDamage) {
           changeHealthBy(-(blocksFallen / 2));
         }

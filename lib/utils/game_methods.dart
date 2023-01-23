@@ -120,15 +120,28 @@ class GameMethods{
   
   List<List<Blocks?>> getChunk(int chunkIndex) {
     List<List<Blocks?>> chunk = [];
+
     if (chunkIndex >= 0) {
-      GlobalGameReference.instance.gameReference.worldData.rightWorldChunks.asMap().forEach((int index, List<Blocks?> rowOfBlocks) { 
-        chunk.add(rowOfBlocks.sublist(chunkWidth * chunkIndex, chunkWidth * (chunkIndex + 1)));
+      GlobalGameReference.instance.gameReference.worldData.rightWorldChunks
+          .asMap()
+          .forEach((int index, List<Blocks?> rowOfBlocks) {
+        chunk.add(rowOfBlocks.sublist(
+            chunkWidth * chunkIndex, chunkWidth * (chunkIndex + 1)));
       });
-    } else { //Left World Chunk
-      GlobalGameReference.instance.gameReference.worldData.leftWorldChunks.asMap().forEach((int index, List<Blocks?> rowOfBlocks) { 
-        chunk.add(rowOfBlocks.sublist(chunkWidth * (chunkIndex.abs() - 1), chunkWidth * (chunkIndex.abs())).reversed.toList());
+
+      //leftWorldChunks
+    } else {
+      GlobalGameReference.instance.gameReference.worldData.leftWorldChunks
+          .asMap()
+          .forEach((int index, List<Blocks?> rowOfBlocks) {
+        chunk.add(rowOfBlocks
+            .sublist(chunkWidth * (chunkIndex.abs() - 1),
+                chunkWidth * (chunkIndex.abs()))
+            .reversed
+            .toList());
       });
     }
+
     return chunk;
   }
 
@@ -173,54 +186,56 @@ class GameMethods{
     }
 
   }
-  Blocks? getBlocksAtDirection(Vector2 blockIndex, Direction direction){
+
+  Blocks? getBlockAtDirection(Vector2 blockIndex, Direction direction) {
     switch (direction) {
       case Direction.top:
-      try{
-        return getBlockAtIndexPosition(Vector2(blockIndex.x, blockIndex.y - 1));
-      }catch(e){
-        break;
-      }
-        //return getBlockAtIndexPosition(blockIndex + Vector2(0, -1));
+        try {
+          return getBlockAtIndexPosition(
+              Vector2(blockIndex.x, blockIndex.y - 1));
+        } catch (e) {
+          break;
+        }
+
       case Direction.bottom:
-      try{
-        return getBlockAtIndexPosition(Vector2(blockIndex.x, blockIndex.y + 1));
-      }catch(e){
-        break;
-      }
-        //return getBlockAtIndexPosition(blockIndex + Vector2(0, 1));
+        try {
+          return getBlockAtIndexPosition(
+              Vector2(blockIndex.x, blockIndex.y + 1));
+        } catch (e) {
+          break;
+        }
+
       case Direction.left:
-      try{
-        return getBlockAtIndexPosition(Vector2(blockIndex.x - 1, blockIndex.y));
-      }catch(e){
-        break;
-      }
-        //return getBlockAtIndexPosition(blockIndex + Vector2(-1, 0));
+        try {
+          return getBlockAtIndexPosition(
+              Vector2(blockIndex.x - 1, blockIndex.y));
+        } catch (e) {
+          break;
+        }
+
       case Direction.right:
-      try{
-        return getBlockAtIndexPosition(Vector2(blockIndex.x + 1, blockIndex.y));
-      }catch(e){
-        break;
-      }
-        //return getBlockAtIndexPosition(blockIndex + Vector2(1, 0));
-      default:
-        return null;
+        try {
+          return getBlockAtIndexPosition(
+              Vector2(blockIndex.x + 1, blockIndex.y));
+        } catch (e) {
+          break;
+        }
     }
+
+    return null;
   }
 
-  bool adjacentBlocksExist(Vector2 blockIndex){
-    if(getBlocksAtDirection(blockIndex, Direction.top) is Blocks){
+  bool adjacentBlocksExist(Vector2 blockIndex) {
+    if (getBlockAtDirection(blockIndex, Direction.top) is Blocks) {
       return true;
-    } 
-    else if(getBlocksAtDirection(blockIndex, Direction.bottom) is Blocks){
+    } else if (getBlockAtDirection(blockIndex, Direction.bottom) is Blocks) {
       return true;
-    }
-    else if(getBlocksAtDirection(blockIndex, Direction.left) is Blocks){
+    } else if (getBlockAtDirection(blockIndex, Direction.left) is Blocks) {
       return true;
-    }
-    else if(getBlocksAtDirection(blockIndex, Direction.right) is Blocks){
+    } else if (getBlockAtDirection(blockIndex, Direction.right) is Blocks) {
       return true;
     }
+
     return false;
   }
 
