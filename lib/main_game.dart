@@ -1,19 +1,14 @@
-import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flame/parallax.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:minecraft2d_game/components/block_component.dart';
 import 'package:minecraft2d_game/components/item_component.dart';
 import 'package:minecraft2d_game/components/player_component.dart';
 import 'package:minecraft2d_game/components/sky_component.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/global/world_data.dart';
-import 'package:minecraft2d_game/mobs/spider.dart';
-import 'package:minecraft2d_game/mobs/zombie.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/foods.dart';
 import 'package:minecraft2d_game/resources/items.dart';
@@ -49,7 +44,7 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
     //add(Zombie());
 
     Future.delayed(const Duration(seconds: 1)).then((value) {
-      worldData.inventoryManager.addBlockToInventory(Items.diamondPickaxe);
+      worldData.inventoryManager.addBlockToInventory(Items.diamondSword);
       worldData.inventoryManager.addBlockToInventory(Blocks.coalOre);
       worldData.inventoryManager.addBlockToInventory(Blocks.goldOre);
       worldData.inventoryManager.addBlockToInventory(Blocks.diamondOre);

@@ -9,10 +9,11 @@ import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/entity.dart';
+import 'package:minecraft2d_game/resources/weapons.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
 
-class HostileEntity extends Entity {
+class HostileEntity extends Entity with Tappable{
   final String path;
   final Vector2 srcSize;
   final Vector2 spawnIndexPosition;
@@ -104,7 +105,7 @@ class HostileEntity extends Entity {
 
   @override
   bool onTapDown(TapDownInfo info) {
-    //changeHealthBy(-getDamage().toDouble());
+    changeHealthBy(-getDamage().toDouble());
     doKnockBackToSelf();
     return true;
   }
