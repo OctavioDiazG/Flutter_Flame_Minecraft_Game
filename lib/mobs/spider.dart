@@ -23,7 +23,9 @@ class Spider extends HostileEntity{
     jumpingLogic();
     checkForAggro();
     spiderLogic(dt);
-
+    animationLogic();
+    despawnLogic();
+    
     setAllCollisionsToFalse();
   }
 

@@ -29,8 +29,10 @@ class HostileEntity extends Entity with Tappable{
   );
 
   late SpriteAnimation walkingAnimation = spriteSheet.createAnimation(row: 2, stepTime: 0.2);
+  late SpriteAnimation walkingHurtAnimation = spriteSheet.createAnimation(row: 3, stepTime: 0.2);
   //late SpriteAnimation idleAnimation = zombieSpriteSheet.createAnimation(row: 0, stepTime: 0.2, from: 0, to: 1);
   late SpriteAnimation idleAnimation = SpriteAnimation.spriteList([spriteSheet.getSprite(0, 0)], stepTime: 0.2);
+  late SpriteAnimation idleHurtAnimation = SpriteAnimation.spriteList([spriteSheet.getSprite(1, 0)], stepTime: 0.2);
 
 
   @override
@@ -66,6 +68,11 @@ class HostileEntity extends Entity with Tappable{
     position = spawnIndexPosition * GameMethods.instance.blockSize.x;
   }
 
+  void update(double dt) {
+    super.update(dt);
+    animationLogic();
+  }
+
   void inflictDamageToPlayer(PlayerComponent other){
     if (canDamage == true) {
       other.changeHealthBy(-1);
@@ -82,15 +89,13 @@ class HostileEntity extends Entity with Tappable{
   }
 
   void doKnockBackToSelf() {
-    double playerXPosition =
-        GlobalGameReference.instance.gameReference.playerComponent.position.x;
-
-    move(
-        position.x < playerXPosition
-            ? ComponentMotionState.walkingLeft
-            : ComponentMotionState.walkingRight,
-        1 / 45,
-        GameMethods.instance.blockSize.x * 0.6);
+    double playerXPosition = GlobalGameReference.instance.gameReference.playerComponent.position.x;
+    move(position.x < playerXPosition 
+      ? ComponentMotionState.walkingLeft
+      : ComponentMotionState.walkingRight,
+      1 / 45,
+      GameMethods.instance.blockSize.x * 0.9
+    );
   }
 
   void checkForAggro(){
@@ -116,5 +121,24 @@ class HostileEntity extends Entity with Tappable{
     GlobalGameReference.instance.gameReference.worldData.mobs.totalMobs--;
     print("decrementing total mob count");
   }
-  
+
+  void animationLogic(){
+    if(animation == walkingAnimation){
+      if (isHurt) {
+        animation = walkingHurtAnimation;
+      } 
+    }
+    else if(animation == idleAnimation){
+      if (isHurt){
+        animation = idleHurtAnimation;
+      }
+    }
+  }
+
+  void despawnLogic() {
+    int chunkIndex = GameMethods.instance.getChunkIndexFromPositionIndex(GameMethods.instance.getIndexPositionFromPixels(position));
+    if (!GlobalGameReference.instance.gameReference.worldData.chunksThatShouldBeRendered.contains(chunkIndex)) {
+      health = 0;
+    }
+  }
 }

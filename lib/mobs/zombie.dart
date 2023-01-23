@@ -20,6 +20,8 @@ class Zombie extends HostileEntity{
     jumpingLogic();
     checkForAggro();
     zombieLogic(dt);
+    animationLogic();
+    despawnLogic();
 
     setAllCollisionsToFalse();
   }
