@@ -1,22 +1,37 @@
+import 'package:hive/hive.dart';
 import 'package:minecraft2d_game/global/global_game_reference.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 
-enum SkyTimerEnum{
+part 'sky_timer.g.dart';
+
+@HiveType(typeId: 7)
+enum SkyTimerEnum {
+  @HiveField(0)
   morning,
+
+  @HiveField(1)
   evening,
+
+  @HiveField(2)
   night,
 }
 
-class SkyTimer{
+@HiveType(typeId: 6)
+class SkyTimer {
+  @HiveField(0)
   double skyTimerSeconds = 0;
 
-  SkyTimerEnum skyTime = SkyTimerEnum.evening;
+  @HiveField(1)
+  SkyTimerEnum skyTime = SkyTimerEnum.morning;
 
-  void updateTimer(double dt){
+  void updateTimer(double dt) {
     skyTimerSeconds += dt;
+
+    //every 1/3rd of the games total day time
     if (skyTimerSeconds >= totalTimeInADay / 3) {
       if (skyTime == SkyTimerEnum.morning) {
         skyTime = SkyTimerEnum.evening;
+
         GlobalGameReference.instance.gameReference.skyComponent.parallax = GlobalGameReference.instance.gameReference.skyComponent.eveningSky.parallax;
       } else if (skyTime == SkyTimerEnum.evening) {
         skyTime = SkyTimerEnum.night;
@@ -24,10 +39,9 @@ class SkyTimer{
       } else if (skyTime == SkyTimerEnum.night) {
         skyTime = SkyTimerEnum.morning;
         GlobalGameReference.instance.gameReference.skyComponent.parallax = GlobalGameReference.instance.gameReference.skyComponent.morningSky.parallax;
-      } 
-      print("SkyTime: $skyTime");
+      }
+
       skyTimerSeconds = 0;
     }
   }
 }
-

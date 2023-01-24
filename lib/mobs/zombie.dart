@@ -5,12 +5,12 @@ import 'package:minecraft2d_game/resources/hostile_entity.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
-class Zombie extends HostileEntity{
-  Zombie({required super.spawnIndexPosition}) 
-    : super(
-      path: "sprite_sheets/mobs/sprite_sheet_zombie.png",
-      srcSize: Vector2(67, 99),
-    );
+class Zombie extends HostileEntity {
+  Zombie({required super.spawnIndexPosition})
+      : super(
+          path: "sprite_sheets/mobs/sprite_sheet_zombie.png",
+          srcSize: Vector2(67, 99),
+        );
 
   @override
   void update(double dt) {
@@ -18,30 +18,33 @@ class Zombie extends HostileEntity{
     fallingLogic(dt);
     killEntityLogic();
     jumpingLogic();
-    checkForAggro();
+    checkForAggrevation();
     zombieLogic(dt);
     animationLogic();
     despawnLogic();
 
-    setAllCollisionsToFalse();
+    setAllCollisionToFalse();
   }
 
-  void zombieLogic(double dt){
+  void zombieLogic(double dt) {
     if (isAggrevated) {
       double playerXPosition = GlobalGameReference.instance.gameReference.playerComponent.position.x;
-      //if to the left
-      if ((playerXPosition - position.x).abs() > 20) {
-        if (position.x < playerXPosition){
+
+      if ((playerXPosition - position.x).abs() > 10) {
+        //if to the left
+        if (position.x < playerXPosition) {
+          //Move to the right
           if (!move(ComponentMotionState.walkingRight, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3)) {
-            if (canJump = true) {
+            if (canJump) {
               jump(0.5);
               canJump = false;
             }
           }
-          //move(ComponentMotionState.walkingRight, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3);
-        }else{
+
+          //move to the left
+        } else {
           if (!move(ComponentMotionState.walkingLeft, dt, ((playerSpeed * GameMethods.instance.blockSize.x) * dt) / 3)) {
-            if (canJump = true) {
+            if (canJump) {
               jump(0.5);
               canJump = false;
             }
@@ -55,6 +58,6 @@ class Zombie extends HostileEntity{
   void onGameResize(Vector2 newScreenSize) {
     super.onGameResize(newScreenSize);
 
-    size  = srcSize * ((GameMethods.instance.blockSize.x *2) / srcSize.y);
+    size = srcSize * ((GameMethods.instance.blockSize.x * 2) / srcSize.y);
   }
 }

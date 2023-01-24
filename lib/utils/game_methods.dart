@@ -9,83 +9,79 @@ import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/items.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 
-enum Direction { 
-  top, 
-  bottom, 
-  left, 
+enum Direction {
+  top,
+  bottom,
+  left,
   right,
 }
 
-enum SlotType { 
-  inventory, 
-  itemBar, 
-  crafting,
-  craftingOutput, 
-}
+enum SlotType { inventory, itemBar, crafting, craftingOutput }
 
-class GameMethods{
+class GameMethods {
   static GameMethods get instance {
     return GameMethods();
   }
-  
-  Vector2 get blockSize{
-    return Vector2.all(getScreenSize().width/chunkWidth);
-    //return Vector2.all(20);
+
+  Vector2 get blockSize {
+    return Vector2.all(getScreenSize().width / chunkWidth);
+    return Vector2.all(30);
   }
 
-  double get slotSize{
+  double get slotSize {
     return getScreenSize().height * 0.09;
   }
 
-  int get freeArea{
-    return(chunkHeight * 0.4).toInt();
+  int get freeArea {
+    return (chunkHeight * 0.4).toInt();
   }
 
-  int get maxSecondarySoilExtent{ //how many blocks are after the first soil (from top to down)
+  int get maxSecondarySoilExtent {
     return freeArea + 6;
   }
 
-  double get playerXIndexPosition{
-    return GlobalGameReference.instance.gameReference.playerComponent.position.x / blockSize.x;
-  }
-  
-  double get playerYIndexPosition{
-    return GlobalGameReference.instance.gameReference.playerComponent.position.y / blockSize.y;
+  double get playerXIndexPosition {
+    return GlobalGameReference
+            .instance.gameReference.playerComponent.position.x /
+        blockSize.x;
   }
 
-  int get currentChunkPlayerIndex{
-    return playerXIndexPosition >= 0 
-      ? playerXIndexPosition ~/ chunkWidth 
-      : (playerXIndexPosition ~/ chunkWidth) - 1;
+  double get playerYIndexPosition {
+    return GlobalGameReference
+            .instance.gameReference.playerComponent.position.y /
+        blockSize.x;
+  }
+
+  int get currentChunkPlayerIndex {
+    return playerXIndexPosition >= 0
+        ? playerXIndexPosition ~/ chunkWidth
+        : (playerXIndexPosition ~/ chunkWidth) - 1;
   }
 
   double get gravity {
-    return blockSize.x * 0.8; //check if it works
+    return blockSize.x * 0.8;
   }
 
-  int getChunkIndexFromPositionIndex(Vector2 positionIndex){
-    return positionIndex.x >= 0 
-      ? positionIndex.x ~/ chunkWidth 
-      : (positionIndex.x ~/ chunkWidth) - 1;
+  int getChunkIndexFromPositionIndex(Vector2 positionIndex) {
+    return positionIndex.x >= 0
+        ? positionIndex.x ~/ chunkWidth
+        : (positionIndex.x ~/ chunkWidth) - 1;
   }
 
-  Vector2 getIndexPositionFromPixels(Vector2 clickPosision){
-    return Vector2(
-      (clickPosision.x / blockSize.x).floorToDouble(), 
-      (clickPosision.y / blockSize.y).floorToDouble()
-    );
+  Vector2 getIndexPositionFromPixels(Vector2 clickPosition) {
+    return Vector2((clickPosition.x / blockSize.x).floorToDouble(),
+        (clickPosition.y / blockSize.x).floorToDouble());
   }
 
-  Size getScreenSize()
-  {
+  Size getScreenSize() {
     return MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
-  } 
+  }
 
   SpriteSheet getBlockSpriteSheet() {
     return SpriteSheet(
-      image: Flame.images.fromCache('sprite_sheets/blocks/block_sprite_sheet.png'), 
-      srcSize: Vector2.all(60), 
-    );
+        image: Flame.images
+            .fromCache("sprite_sheets/blocks/block_sprite_sheet.png"),
+        srcSize: Vector2.all(60));
   }
 
   SpriteSheet getItemSpriteSheet() {
@@ -105,19 +101,26 @@ class GameMethods{
     return spriteSheet.getSprite(0, item.index);
   }
 
-  //chunk
-  void addChunkToWorldChunks(List<List<Blocks?>> chunk, bool isInRightWorldChunk) {
-    if (isInRightWorldChunk) {
+  void addChunkToWorldChunks(
+      List<List<Blocks?>> chunk, bool isInRightWorldChunks) {
+    if (isInRightWorldChunks) {
+      //chunk
       chunk.asMap().forEach((int yIndex, List<Blocks?> value) {
-        GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[yIndex].addAll(value);
+        //
+        GlobalGameReference
+            .instance.gameReference.worldData.rightWorldChunks[yIndex]
+            .addAll(value);
       });
     } else {
       chunk.asMap().forEach((int yIndex, List<Blocks?> value) {
-        GlobalGameReference.instance.gameReference.worldData.leftWorldChunks[yIndex].addAll(value);
+        //
+        GlobalGameReference
+            .instance.gameReference.worldData.leftWorldChunks[yIndex]
+            .addAll(value);
       });
     }
   }
-  
+
   List<List<Blocks?>> getChunk(int chunkIndex) {
     List<List<Blocks?>> chunk = [];
 
@@ -145,9 +148,9 @@ class GameMethods{
     return chunk;
   }
 
-  List<List<int>> processNoise(List<List<double>> rawNoise){
+  List<List<int>> processNoise(List<List<double>> rawNoise) {
     List<List<int>> processedNoise = List.generate(
-      rawNoise.length, 
+      rawNoise.length,
       (index) => List.generate(rawNoise[0].length, (index) => 255),
     );
     for (var x = 0; x < rawNoise.length; x++) {
@@ -156,35 +159,46 @@ class GameMethods{
         processedNoise[x][y] = value;
       }
     }
+
     return processedNoise;
   }
 
   void replaceBlockAtWorldChunks(Blocks? block, Vector2 blockIndex) {
+    //Replace in the rightWorlChunks
     if (blockIndex.x >= 0) {
-      GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt()] = block;
-    } 
-    else {
-      GlobalGameReference.instance.gameReference.worldData.leftWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt().abs() - 1] = block;
+      GlobalGameReference.instance.gameReference.worldData
+          .rightWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt()] = block;
+
+      //left world chunks
+    } else {
+      //
+      GlobalGameReference.instance.gameReference.worldData
+              .leftWorldChunks[blockIndex.y.toInt()]
+          [blockIndex.x.toInt().abs() - 1] = block;
     }
   }
 
   bool playerIsWithinRange(Vector2 positionIndex) {
-    
-    if((positionIndex.x - playerXIndexPosition).abs() <= maxReach && (positionIndex.y - playerYIndexPosition).abs() <= maxReach){
+    if ((positionIndex.x - playerXIndexPosition).abs() <= maxReach &&
+        (positionIndex.y - playerYIndexPosition).abs() <= maxReach) {
       return true;
     }
+
     return false;
   }
 
-  Blocks? getBlockAtIndexPosition(Vector2 blockIndex){
-
+  Blocks? getBlockAtIndexPosition(Vector2 blockIndex) {
     if (blockIndex.x >= 0) {
-      return GlobalGameReference.instance.gameReference.worldData.rightWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt()];
-    } 
-    else {
-      return GlobalGameReference.instance.gameReference.worldData.leftWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt().abs() - 1];
-    }
+      return GlobalGameReference.instance.gameReference.worldData
+          .rightWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt()];
 
+      //left world chunks
+    } else {
+      //
+      return GlobalGameReference.instance.gameReference.worldData
+              .leftWorldChunks[blockIndex.y.toInt()]
+          [blockIndex.x.toInt().abs() - 1];
+    }
   }
 
   Blocks? getBlockAtDirection(Vector2 blockIndex, Direction direction) {
@@ -241,8 +255,10 @@ class GameMethods{
 
   Vector2 getSpawnPositionForMob() {
     int chunkIndex = Random().nextBool()
-      ? GlobalGameReference.instance.gameReference.worldData.currentlyRenderedChunks.first
-      : GlobalGameReference.instance.gameReference.worldData.currentlyRenderedChunks.last;
+        ? GlobalGameReference
+            .instance.gameReference.worldData.currentlyRenderedChunks.first
+        : GlobalGameReference
+            .instance.gameReference.worldData.currentlyRenderedChunks.last;
 
     List<List<Blocks?>> chunk = getChunk(chunkIndex);
 
@@ -250,14 +266,20 @@ class GameMethods{
 
     int spawnYPosition = 0;
 
-    for (int rowOfBlocksIndex = 0; rowOfBlocksIndex < chunk.length; rowOfBlocksIndex++) {
-      if (chunk[rowOfBlocksIndex][spawnXPosition] is Blocks && BlockData.getBlockDataFor(chunk[rowOfBlocksIndex][spawnXPosition]!).isCollidable) {
+    for (int rowOfBlocksIndex = 0;
+        rowOfBlocksIndex < chunk.length;
+        rowOfBlocksIndex++) {
+      if (chunk[rowOfBlocksIndex][spawnXPosition] is Blocks &&
+          BlockData.getBlockDataFor(chunk[rowOfBlocksIndex][spawnXPosition]!)
+              .isCollidable) {
         spawnYPosition = rowOfBlocksIndex;
         break;
       }
     }
-    
-    return Vector2((spawnXPosition.toDouble()) + (chunkIndex * chunkWidth),spawnYPosition.toDouble());
+
+    //4
+    return Vector2((spawnXPosition.toDouble()) + (chunkIndex * chunkWidth),
+        spawnYPosition.toDouble());
   }
 
   Vector2 getSpawnPositionForPlayer() {
@@ -269,15 +291,38 @@ class GameMethods{
 
     int spawnYPosition = 0;
 
-    for (int rowOfBlocksIndex = 0; rowOfBlocksIndex < chunk.length; rowOfBlocksIndex++) {
-      if (chunk[rowOfBlocksIndex][spawnXPosition] is Blocks && BlockData.getBlockDataFor(chunk[rowOfBlocksIndex][spawnXPosition]!).isCollidable) {
+    for (int rowOfBlocksIndex = 0;
+        rowOfBlocksIndex < chunk.length;
+        rowOfBlocksIndex++) {
+      if (chunk[rowOfBlocksIndex][spawnXPosition] is Blocks &&
+          BlockData.getBlockDataFor(chunk[rowOfBlocksIndex][spawnXPosition]!)
+              .isCollidable) {
         spawnYPosition = rowOfBlocksIndex;
         break;
       }
     }
 
+    //4
     return Vector2((spawnXPosition.toDouble()) + (chunkIndex * chunkWidth),
         spawnYPosition.toDouble());
   }
 
+  int getRandomSeed() {
+    int seed = 100000 + Random().nextInt(100000);
+    return seed;
+  }
+
+  TextStyle get minecraftTextStyle {
+    return const TextStyle(
+      color: Colors.white,
+      fontFamily: "MinecraftFont",
+      fontSize: 20,
+      shadows: [
+        BoxShadow(
+          color: Colors.black,
+          offset: Offset(1, 1),
+        ),
+      ],
+    );
+  }
 }

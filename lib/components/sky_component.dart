@@ -47,7 +47,6 @@ class SkyComponent extends ParallaxComponent {
         parallax = nightSky.parallax;
         break;
     }
-
   }
 
   @override

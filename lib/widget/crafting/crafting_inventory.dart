@@ -5,23 +5,22 @@ import 'package:minecraft2d_game/widget/crafting/standartd_crafting_grid.dart';
 import 'package:minecraft2d_game/widget/inventroy/inventroy_storage_widget.dart';
 
 class CraftingInventory extends StatelessWidget {
-  const CraftingInventory({super.key});
+  const CraftingInventory({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => GlobalGameReference.instance.gameReference.worldData.craftingManager.craftingInventoryIsOpen.value
-      ? Positioned.fill(
-        child: Align(
-          alignment: Alignment.center,
-          child: Stack(
-            children: const[
-              InventoryStorageWidget(),
-
-              StandardCraftingGrid(),
-            ],
-          ),
-        ),
-      ) : Container()
-    );
+        ? Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: Stack(
+                children: const [
+                  InventoryStorageWidget(),
+                  StandardCraftingGrid()
+                ],
+              ),
+            ),
+          )
+        : Container());
   }
 }

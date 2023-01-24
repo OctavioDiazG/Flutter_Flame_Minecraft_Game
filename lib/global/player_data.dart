@@ -1,20 +1,45 @@
-
-
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
-class PlayerData{
-  Rx<double> playerHealth = 10.0.obs;
-  Rx<double> playerHunger = 10.0.obs;
-  //State idle, walking
-  ComponentMotionState componentMotionState = ComponentMotionState.idle;
+part 'player_data.g.dart';
 
-  Rx<bool> playerIsDead = false.obs;
+@HiveType(typeId: 5)
+class PlayerDataSave {
+  @HiveField(0)
+  double playerHunger = 10;
+
+  @HiveField(1)
+  double playerHealth = 10;
+
+  @HiveField(2)
+  bool playerIsDead = false;
 }
 
-enum ComponentMotionState{
-  walkingLeft, 
-  walkingRight, 
+class PlayerData {
+  late Rx<double> playerHealth = playerDataSave.playerHealth.obs;
+  late Rx<double> playerHunger = playerDataSave.playerHunger.obs;
+  //hunger
+  //staate- walkingLeft, walkingRight, idle
+  ComponentMotionState componentMotionState = ComponentMotionState.idle;
+
+  late Rx<bool> playerIsDead = playerDataSave.playerIsDead.obs;
+
+  final PlayerDataSave playerDataSave;
+
+  PlayerData({required this.playerDataSave}) {
+    playerHealth.listen((value) {
+      playerDataSave.playerHealth = value;
+    });
+
+    playerHunger.listen((value) {
+      playerDataSave.playerHunger = value;
+    });
+  }
+}
+
+enum ComponentMotionState {
+  walkingLeft,
+  walkingRight,
   idle,
   jumping,
-} //compare value 
-
+}

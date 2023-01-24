@@ -1,5 +1,3 @@
-
-/* 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:minecraft2d_game/layout/game_layout.dart';
@@ -57,4 +55,4 @@ class WorldPreViewWidget extends StatelessWidget {
       ),
     );
   }
-} */
+}

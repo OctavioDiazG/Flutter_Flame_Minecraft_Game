@@ -1,4 +1,3 @@
-/* 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
@@ -29,4 +28,4 @@ class MinecraftTextField extends StatelessWidget {
       ),
     );
   }
-} */
+}

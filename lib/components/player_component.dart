@@ -10,25 +10,21 @@ import 'package:minecraft2d_game/resources/entity.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
-class PlayerComponent extends Entity {//CollisionCallbacks will give us access to a function
+class PlayerComponent extends Entity {
+  final Vector2 playerDimensions = Vector2.all(60);
 
-  final Vector2 playerDimensions = Vector2.all(60); //the number of pixels it will be cut the spriteSheet
-  final double stepTime = 0.3; //maybe use it later
+  final double stepTime = 0.3;
 
-  // Movement Animation
   late SpriteSheet playerWalkingSpritesheet;
-  late SpriteAnimation walkingAnimation = playerWalkingSpritesheet.createAnimation(row: 0, stepTime: 0.12);
-  late SpriteAnimation walkingHurtAnimation = playerWalkingSpritesheet.createAnimation(row: 1, stepTime: 0.12);
-
-  // Idle Animation
   late SpriteSheet playerIdleSpritesheet;
-  late SpriteAnimation idleAnimation = playerIdleSpritesheet.createAnimation(row: 0, stepTime: 0.18);
-  late SpriteAnimation idleHurtAnimation = playerIdleSpritesheet.createAnimation(row: 1, stepTime: 0.18);
 
-  // Jump Animation
-  //late SpriteSheet playerJumpSpritesheet;
-  //late SpriteAnimation jumpAnimation = playerJumpSpritesheet.createAnimation(row: 0, stepTime: 0.12);
+  late SpriteAnimation walkingAnimation = playerWalkingSpritesheet.createAnimation(row: 0, stepTime: stepTime);
 
+  late SpriteAnimation walkingHurtAnimation = playerWalkingSpritesheet.createAnimation(row: 1, stepTime: stepTime);
+
+  late SpriteAnimation idleAnimation = playerIdleSpritesheet.createAnimation(row: 0, stepTime: stepTime);
+
+  late SpriteAnimation idleHurtAnimation = playerIdleSpritesheet.createAnimation(row: 1, stepTime: stepTime);
 
   double localPlayerSpeed = 0;
 
@@ -47,7 +43,7 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
 
     GlobalGameReference.instance.gameReference.camera.followComponent(this);
 
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 1));
 
     health = GlobalGameReference.instance.gameReference.worldData.playerData.playerHealth.value;
 
@@ -55,45 +51,35 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
 
     priority = 2;
 
-    anchor = Anchor.bottomCenter;  
+    anchor = Anchor.bottomCenter;
 
-    // WalkingSprite
     playerWalkingSpritesheet = SpriteSheet(
-      image: Flame.images.fromCache('sprite_sheets/own_imports/new_player_walk.png'), //tells flutter where to grab the spriteSheet
-      srcSize: playerDimensions + Vector2(-1, 0), //the number of pixels it will be cut the spriteSheet
-    );
-    // IdleSprite 
+        image: Flame.images.fromCache("sprite_sheets/player/player_walking_sprite_sheet.png"),
+        srcSize: playerDimensions);
+
     playerIdleSpritesheet = SpriteSheet(
-      //image: Flame.images.fromCache('sprite_sheets/player/player_idle_sprite_sheet.png'), //tells flutter where to grab the spriteSheet
-      image: Flame.images.fromCache('sprite_sheets/own_imports/new_player_idle.png'), //tells flutter where to grab the spriteSheet
-      srcSize: playerDimensions, //the number of pixels it will be cut the spriteSheet
-    );
-    // JumpSprite
-    /*playerJumpSpritesheet = SpriteSheet(
-      image: await Flame.images.load('sprite_sheets/own_imports/RougeHeroJump.png'), 
-      srcSize: Vector2(50,45), //check the pixel numer of the cut 
-    );*/ //JUMP ANIM
+        image: Flame.images.fromCache("sprite_sheets/player/player_idle_sprite_sheet.png"),
+        srcSize: playerDimensions);
 
-    position = Vector2(100,400); //position in the world
+    position = Vector2(100, 400);
 
-    animation = idleAnimation;//set the animation row->what row it will take from the spritesheet. stepTime->time between the sprites 
-    
-    //refreshSpeed = true; every second
-    add(TimerComponent(
-      period: 1,
-      repeat: true, 
-      onTick:() {
-        refreshSpeed = true;
-      }
-    ));
+    animation = idleAnimation;
 
     add(TimerComponent(
-      period: 25,
-      repeat: true, 
-      onTick:() {
-        changeHungerBy(-0.5);
-      }
-    ));
+        period: 1,
+        repeat: true,
+        onTick: () {
+          refreshSpeed = true;
+        }
+      ));
+
+    add(TimerComponent(
+        period: 25,
+        repeat: true,
+        onTick: () {
+          changeHungerBy(-1);
+        }
+      ));
 
     position = GameMethods.instance.getSpawnPositionForPlayer() * GameMethods.instance.blockSize.x;
   }
@@ -105,37 +91,34 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
     fallingLogic(dt);
     jumpingLogic();
     killEntityLogic();
-    healthAndhungerLogic();
-    setAllCollisionsToFalse();
+    healthAndHungerLogic();
+    setAllCollisionToFalse();
 
-    print(isHurt);
-
-    double hunger = GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value;
-
+    //changing our speed
     if (refreshSpeed) {
-      if (hunger > 3) {  
+      double hunger = GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value;
+      if (hunger > 3) {
         localPlayerSpeed = (playerSpeed * GameMethods.instance.blockSize.x) * dt;
       } else {
-        localPlayerSpeed = (playerSpeed/2 * GameMethods.instance.blockSize.x) * dt;
-        localPlayerSpeed /= 1.5;
+        localPlayerSpeed = (playerSpeed * GameMethods.instance.blockSize.x) * dt;
+        localPlayerSpeed /= 2;
       }
       refreshSpeed = false;
-
     }
 
     double playerHealth = GlobalGameReference.instance.gameReference.worldData.playerData.playerHealth.value;
 
     if (playerHealth != health) {
       GlobalGameReference.instance.gameReference.worldData.playerData.playerHealth.value = health;
-      
     }
-  } 
+  }
 
-  void changeHungerBy(double value){
-    //current hunger
+  void changeHungerBy(double value) {
+    //currentHunger
     double hunger = GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value;
+
     if (hunger + value <= 10) {
-      if(hunger + value >= 0){
+      if (hunger + value >= 0) {
         GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value += value;
       } else {
         GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value = 0;
@@ -145,16 +128,12 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
     }
   }
 
-
-  void healthAndhungerLogic() {
-    //regenerationLogic
-    if(GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value > 9){
-      changeHealthBy(0.05);
+  void healthAndHungerLogic() {
+    //regeneraitionLogic
+    if (GlobalGameReference.instance.gameReference.worldData.playerData.playerHunger.value > 9) {
+      changeHealthBy(0.075);
     }
-
   }
-
-
 
   void movementLogic(double dt) {
     //Moving left
@@ -168,8 +147,7 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
         animation = walkingHurtAnimation;
       } else {
         animation = walkingAnimation;
-      } 
-        //animation = walkingAnimation;
+      }
     }
 
     //Moving right
@@ -184,7 +162,6 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
       } else {
         animation = walkingAnimation;
       }
-        //animation = walkingAnimation;
     }
     if (GlobalGameReference.instance.gameReference.worldData.playerData.componentMotionState == ComponentMotionState.idle) {
       if (isHurt) {
@@ -202,7 +179,7 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
   @override
   void onGameResize(Vector2 newGameSize) {
     super.onGameResize(newGameSize);
-    size = GameMethods.instance.blockSize * 1.5; 
+    size = GameMethods.instance.blockSize * 1.5;
   }
 
   @override
@@ -211,5 +188,4 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
 
     GlobalGameReference.instance.gameReference.worldData.playerData.playerIsDead.value = true;
   }
-
 }

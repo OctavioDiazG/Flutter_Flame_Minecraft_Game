@@ -17,6 +17,8 @@ class ItemComponent extends Entity {
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is BlockComponent && BlockData.getBlockDataFor(other.block).isCollidable) {
       super.onCollision(intersectionPoints, other);
+
+      //player collided with the item
     } else if (other is PlayerComponent) {
       if (GlobalGameReference.instance.gameReference.worldData.inventoryManager.addBlockToInventory(item)) {
         GlobalGameReference.instance.gameReference.worldData.items.remove(this);
@@ -49,6 +51,6 @@ class ItemComponent extends Entity {
   void update(double dt) {
     super.update(dt);
     fallingLogic(dt);
-    setAllCollisionsToFalse();
+    setAllCollisionToFalse();
   }
 }

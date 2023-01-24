@@ -37,11 +37,7 @@ List<Items> goldTierWeapons = [
 int getDamage() {
   WorldData worldData = GlobalGameReference.instance.gameReference.worldData;
 
-  dynamic currentHeldItem = worldData
-      .inventoryManager
-      .inventorySlots[
-          worldData.inventoryManager.currentSelectedInventorySlot.value]
-      .block;
+  dynamic currentHeldItem = worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block;
 
   //If what the player holding is a tool, and a suitable tool to be exact, pi
   if (currentHeldItem is Items) {

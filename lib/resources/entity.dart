@@ -3,13 +3,14 @@ import 'package:flame/components.dart';
 import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/utils/game_methods.dart';
 
-class Entity extends SpriteAnimationComponent with CollisionCallbacks{
+class Entity extends SpriteAnimationComponent with CollisionCallbacks {
   bool isFacingRight = true;
+
   double yVelocity = 0;
 
   bool isCollidingBottom = false;
-  bool isCollidingRight = false;
   bool isCollidingLeft = false;
+  bool isCollidingRight = false;
   bool isCollidingTop = false;
 
   double jumpForce = 0;
@@ -25,7 +26,14 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    add(TimerComponent(period: 0.5, repeat: true, onTick: () {isHurt = false;}));
+
+    add(TimerComponent(
+        period: 0.5,
+        repeat: true,
+        onTick: () {
+          isHurt = false;
+        }
+      ));
   }
 
   @override
@@ -36,23 +44,17 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
       //player is colliding with the ground
 
       //Ground collision
-      if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) &&
-          (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
-            size.x * 0.4) {
+      if (individualIntersectionPoint.y > (position.y - (size.y * 0.3)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4) {
         if (blocksFallen > 3 && doFallDamage) {
           changeHealthBy(-(blocksFallen / 2));
         }
-
         isCollidingBottom = true;
         blocksFallen = 0;
         yVelocity = 0;
       }
 
       //Top collision
-      if (individualIntersectionPoint.y < (position.y - (size.y * 0.75)) &&
-          (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
-              size.x * 0.4 &&
-          jumpForce > 0) {
+      if (individualIntersectionPoint.y < (position.y - (size.y * 0.75)) && (intersectionPoints.first.x - intersectionPoints.last.x).abs() > size.x * 0.4 && jumpForce > 0) {
         isCollidingTop = true;
       }
 
@@ -70,10 +72,10 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
     });
   }
 
-  void jumpingLogic(){
+  void jumpingLogic() {
     if (jumpForce > 0) {
       position.y -= jumpForce;
-      jumpForce -= GameMethods.instance.blockSize.x * 0.10;
+      jumpForce -= GameMethods.instance.blockSize.x * 0.15;
       if (isCollidingTop) {
         jumpForce = 0;
       }
@@ -90,14 +92,15 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
     }
   }
 
-  void setAllCollisionsToFalse(){
+  void setAllCollisionToFalse() {
     isCollidingBottom = false;
-    isCollidingRight = false;
     isCollidingLeft = false;
+    isCollidingRight = false;
     isCollidingTop = false;
   }
 
-  bool move(ComponentMotionState componentMotionState, double dt, double speed) {
+  bool move(
+      ComponentMotionState componentMotionState, double dt, double speed) {
     switch (componentMotionState) {
       case ComponentMotionState.walkingLeft:
         if (!isCollidingLeft) {
@@ -106,11 +109,13 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
             flipHorizontallyAroundCenter();
             isFacingRight = false;
           }
+
           return true;
         }
+
         return false;
       case ComponentMotionState.walkingRight:
-        //print("inside move $isCollidingRight");
+        print("inside move $isCollidingRight");
         if (!isCollidingRight) {
           position.x += speed;
           if (!isFacingRight) {
@@ -119,19 +124,21 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
           }
           return true;
         }
+
         return false;
+
       default:
         return false;
     }
   }
 
-  void changeHealthBy(double value){
+  void changeHealthBy(double value) {
     if (value < 0) {
       isHurt = true;
     }
 
     if (health + value <= 10) {
-      if(health + value >= 0){
+      if (health + value >= 0) {
         health += value;
       } else {
         health = 0;
@@ -141,15 +148,15 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks{
     }
   }
 
-  void killEntityLogic(){
+  void killEntityLogic() {
     if (health == 0) {
       removeFromParent();
     }
   }
 
-  void jump(double jumphight) {
+  void jump(double jumpHight) {
     if (isCollidingBottom) {
-      jumpForce = GameMethods.instance.blockSize.x * jumphight;
+      jumpForce = GameMethods.instance.blockSize.x * 0.7;
     }
   }
 

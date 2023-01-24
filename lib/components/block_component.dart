@@ -28,7 +28,7 @@ class BlockComponent extends SpriteComponent with Tappable {
   late BlockBreakingComponent blockBreakingComponent = BlockBreakingComponent()
     ..animation = animationBlockSpriteSheet.createAnimation(
         row: 0,
-        stepTime: (BlockData.getBlockDataFor(block).baseMiningSpeed / 6) *getMiningSpeedChange(block),
+        stepTime: (BlockData.getBlockDataFor(block).baseMiningSpeed / 6) * getMiningSpeedChange(block),
         loop: false)
     ..animation!.onComplete = onBroken;
 

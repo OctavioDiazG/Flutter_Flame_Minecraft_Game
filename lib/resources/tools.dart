@@ -4,16 +4,16 @@ import 'package:minecraft2d_game/global/world_data.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/items.dart';
 
-List<Items> woodenTools = [
-  Items.woodenAxe,
-  Items.woodenPickaxe,
-  Items.woodenShovel,
-];
-
 List<Items> stoneTools = [
   Items.stoneAxe,
   Items.stonePickaxe,
   Items.stoneShovel,
+];
+
+List<Items> woodenTools = [
+  Items.woodenAxe,
+  Items.woodenPickaxe,
+  Items.woodenShovel,
 ];
 
 List<Items> ironTools = [
@@ -34,13 +34,14 @@ List<Items> goldTools = [
   Items.goldenShovel,
 ];
 
-double getMiningSpeedChange(Blocks block){
+double getMiningSpeedChange(Blocks block) {
   WorldData worldData = GlobalGameReference.instance.gameReference.worldData;
 
   dynamic currentHeldItem = worldData.inventoryManager.inventorySlots[worldData.inventoryManager.currentSelectedInventorySlot.value].block;
 
-  //if what player holding is a suitable tool
+  //If what the player holding is a tool, and a suitable tool to be exact, pi
   if (currentHeldItem is Items && ItemData.getItemDataForItem(currentHeldItem).toolType != Tools.none && ItemData.getItemDataForItem(currentHeldItem).toolType == BlockData.getBlockDataFor(block).suitableTool) {
+    //wooden tier sitable tool
     if (woodenTools.contains(currentHeldItem)) {
       return 0.6;
     } else if (stoneTools.contains(currentHeldItem)) {

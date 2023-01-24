@@ -5,10 +5,14 @@ class Structure {
   final int maxOccurences;
   final int maxWidth;
 
-  Structure({required this.structure, required this.maxOccurences, required this.maxWidth});
+  Structure(
+      {required this.structure,
+      required this.maxOccurences,
+      required this.maxWidth});
 
-
-  factory Structure.getPlantStructureForBlock(Blocks block, ){
-    return Structure(structure: [[block]], maxOccurences: 1, maxWidth: 1);
+  factory Structure.getPlantStructureForBlock(Blocks block) {
+    return Structure(structure: [
+      [block]
+    ], maxOccurences: 1, maxWidth: 1);
   }
 }
