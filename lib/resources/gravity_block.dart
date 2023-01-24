@@ -31,14 +31,14 @@ class GravityBlock extends BlockComponent with CollisionCallbacks {
   void update(double dt) {
     super.update(dt);
 
-    if (GameMethods.instance.getBlockAtDirection(blockIndex, Direction.bottom) == null) {
-      print("No jala");
-      position.y += (blocksPerSecondSpeed * GameMethods.instance.blockSize.x) * dt;
-    } 
-/*      if (!isCollidingBottom) {
+/*     if (GameMethods.instance.getBlockAtDirection(blockIndex, Direction.bottom) == null) {
       print("No jala");
       position.y += (blocksPerSecondSpeed * GameMethods.instance.blockSize.x) * dt;
     } */
+     if (!isCollidingBottom) {
+      print("No jala");
+      position.y += (blocksPerSecondSpeed * GameMethods.instance.blockSize.x) * dt;
+    }
       
     isCollidingBottom = false; 
   }

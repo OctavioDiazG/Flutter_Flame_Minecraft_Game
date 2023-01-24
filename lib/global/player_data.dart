@@ -7,6 +7,8 @@ class PlayerData{
   Rx<double> playerHunger = 10.0.obs;
   //State idle, walking
   ComponentMotionState componentMotionState = ComponentMotionState.idle;
+
+  Rx<bool> playerIsDead = false.obs;
 }
 
 enum ComponentMotionState{
@@ -16,10 +18,3 @@ enum ComponentMotionState{
   jumping,
 } //compare value 
 
-/*
-currentHealdDownOption
-if(currentHealdDownOption == ComponentMotionState.walkingLeft){
-  movePlayerToTheLeft
-}
-
-*/

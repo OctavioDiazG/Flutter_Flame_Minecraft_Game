@@ -35,19 +35,18 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
   Future<void> onLoad() async{
     super.onLoad();
     //print(ChunkGenerationMethods.instance.generateChunk()); //ERASE
-    camera.followComponent(playerComponent);
     
     add(playerComponent);
 
     add(skyComponent);
-
-    //add(Zombie());
 
     Future.delayed(const Duration(seconds: 1)).then((value) {
       worldData.inventoryManager.addBlockToInventory(Items.diamondSword);
       worldData.inventoryManager.addBlockToInventory(Blocks.coalOre);
       worldData.inventoryManager.addBlockToInventory(Blocks.goldOre);
       worldData.inventoryManager.addBlockToInventory(Blocks.diamondOre);
+
+      //worldData.playerData.playerIsDead.value = true;
     }); //Add crafting table to inventory at the begining of the game
   }
 
@@ -158,7 +157,6 @@ class MainGame extends FlameGame with HasCollisionDetection, HasTappables, HasKe
   @override
   void onTapDown(int pointerId, TapDownInfo info) {
     super.onTapDown(pointerId, info);
-
 
     Vector2 blockPlacingPosition = GameMethods.instance.getIndexPositionFromPixels(info.eventPosition.game);
 

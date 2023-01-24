@@ -45,7 +45,11 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
   Future<void> onLoad() async {
     super.onLoad();
 
-    await Future.delayed(const Duration(milliseconds: 500));
+    GlobalGameReference.instance.gameReference.camera.followComponent(this);
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    health = GlobalGameReference.instance.gameReference.worldData.playerData.playerHealth.value;
 
     add(RectangleHitbox());
 
@@ -200,4 +204,12 @@ class PlayerComponent extends Entity {//CollisionCallbacks will give us access t
     super.onGameResize(newGameSize);
     size = GameMethods.instance.blockSize * 1.5; 
   }
+
+  @override
+  void onRemove() {
+    super.onRemove();
+
+    GlobalGameReference.instance.gameReference.worldData.playerData.playerIsDead.value = true;
+  }
+
 }
