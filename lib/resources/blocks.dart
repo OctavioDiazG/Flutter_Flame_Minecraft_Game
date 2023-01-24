@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:hive/hive.dart';
 import 'package:minecraft2d_game/blocks/birch_leaf_block.dart';
 import 'package:minecraft2d_game/blocks/coal_ore_block.dart';
 import 'package:minecraft2d_game/blocks/crafting_table_block.dart';
@@ -10,92 +11,159 @@ import 'package:minecraft2d_game/blocks/stone_block.dart';
 import 'package:minecraft2d_game/components/block_component.dart';
 import 'package:minecraft2d_game/resources/items.dart';
 
-enum Blocks{
+part 'blocks.g.dart';
+
+@HiveType(typeId: 1)
+enum Blocks {
+  @HiveField(0)
   grass,
+
+  @HiveField(1)
   dirt,
+
+  @HiveField(2)
   stone,
+
+  @HiveField(3)
   birchLog,
+
+  @HiveField(4)
   birchLeaf,
+
+  @HiveField(5)
   cactus,
+
+  @HiveField(6)
   deadBush,
+
+  @HiveField(7)
   sand,
+
+  @HiveField(8)
   coalOre,
+
+  @HiveField(9)
   ironOre,
+
+  @HiveField(10)
   diamondOre,
+
+  @HiveField(11)
   goldOre,
+
+  @HiveField(12)
   grassPlant,
+
+  @HiveField(13)
   redFlower,
+
+  @HiveField(14)
   purpleFlower,
-  drippingWhiteFlower,
-  yellowFlower,
-  whiteFlower,
-  birchPlank,
-  craftingTable,
-  cobbleStone,
-  bedrock,
   
+  @HiveField(15)
+  drippingWhiteFlower,
+
+  @HiveField(16)
+  yellowFlower,
+
+  @HiveField(17)
+  whiteFlower,
+
+  @HiveField(18)
+  birchPlank,
+
+  @HiveField(19)
+  craftingTable,
+
+  @HiveField(20)
+  cobblestone,
+
+  @HiveField(21)
+  bedrock,
 }
 
-class  BlockData {
+class BlockData {
   final bool isCollidable;
-  final double baseMiningSpeed; //seconds
+
+  //seconds
+  final double baseMiningSpeed;
   final bool breakable;
 
   final Tools suitableTool;
 
-  BlockData({
-    required this.isCollidable, 
-    required this.baseMiningSpeed, 
-    required this.suitableTool, 
-    this.breakable = true
-  });
+  BlockData(
+      {required this.isCollidable,
+      required this.baseMiningSpeed,
+      required this.suitableTool,
+      this.breakable = true});
 
-  factory BlockData.getBlockDataFor(Blocks block){
+  factory BlockData.getBlockDataFor(Blocks block) {
     switch (block) {
-      case Blocks.grass:
-        return soil;
       case Blocks.dirt:
-        return soil;
-      case Blocks.stone:
-        return stone;
-      case Blocks.birchLog:
-        return wood;
+        return BlockData.soil;
+
+      case Blocks.grass:
+        return BlockData.soil;
+
       case Blocks.birchLeaf:
-        return leaf;
+        return BlockData.leaf;
+
+      case Blocks.birchLog:
+        return BlockData.wood;
+
       case Blocks.cactus:
-        return plants;
-      case Blocks.deadBush:
-        return plants;
-      case Blocks.sand:
-        return soil;
+        return BlockData.plant;
+
       case Blocks.coalOre:
-        return stone;
+        return BlockData.stone;
+
+      case Blocks.deadBush:
+        return BlockData.plant;
+
       case Blocks.ironOre:
-        return stone;
-      case Blocks.diamondOre:
-        return stone;
-      case Blocks.goldOre:
-        return stone;
+        return BlockData.stone;
+
+      case Blocks.sand:
+        return BlockData.soil;
+
+      case Blocks.stone:
+        return BlockData.stone;
+
       case Blocks.grassPlant:
-        return plants;
+        return BlockData.plant;
+
       case Blocks.redFlower:
-        return plants;
+        return BlockData.plant;
+
       case Blocks.purpleFlower:
-        return plants;
+        return BlockData.plant;
+
       case Blocks.drippingWhiteFlower:
-        return plants;
+        return BlockData.plant;
+
       case Blocks.yellowFlower:
-        return plants;
+        return BlockData.plant;
+
       case Blocks.whiteFlower:
-        return plants;
+        return BlockData.plant;
+
+      case Blocks.diamondOre:
+        return BlockData.stone;
+
+      case Blocks.goldOre:
+        return BlockData.stone;
+
       case Blocks.birchPlank:
-        return woodPlank;
+        return BlockData.woodPlank;
+
       case Blocks.craftingTable:
-        return woodPlank;
-      case Blocks.cobbleStone:
-        return stone;
+        return BlockData.woodPlank;
+
+      case Blocks.cobblestone:
+        return BlockData.stone;
+
       case Blocks.bedrock:
-        return unbreakable;
+        return BlockData.unbreakable;
     }
   }
 
@@ -103,10 +171,9 @@ class  BlockData {
       Blocks block, Vector2 blockIndex, int chunkIndex) {
     switch (block) {
       case Blocks.craftingTable:
-        return CraftingTableBlock(
-            chunkIndex: chunkIndex, blockIndex: blockIndex);
+        return CraftingTableBlock(chunkIndex: chunkIndex, blockIndex: blockIndex);
 
-       case Blocks.birchLeaf:
+      case Blocks.birchLeaf:
         return BirchLeafBlock(blockIndex: blockIndex, chunkIndex: chunkIndex);
 
       case Blocks.stone:
@@ -128,18 +195,21 @@ class  BlockData {
         return SandBlock(blockIndex: blockIndex, chunkIndex: chunkIndex);
 
       default:
-        return BlockComponent(
-            block: block, blockIndex: blockIndex, chunkIndex: chunkIndex);
+        return BlockComponent(block: block, blockIndex: blockIndex, chunkIndex: chunkIndex);
     }
   }
 
-  static BlockData plants = BlockData(isCollidable: false, baseMiningSpeed: 0.00001, suitableTool: Tools.none);
+  static BlockData plant = BlockData(isCollidable: false, baseMiningSpeed: 0.0000001, suitableTool: Tools.none);
+
   static BlockData soil = BlockData(isCollidable: true, baseMiningSpeed: 0.75, suitableTool: Tools.shovel);
+
   static BlockData wood = BlockData(isCollidable: false, baseMiningSpeed: 3, suitableTool: Tools.axe);
+
   static BlockData leaf = BlockData(isCollidable: false, baseMiningSpeed: 0.35, suitableTool: Tools.axe);
-  static BlockData stone  = BlockData(isCollidable: true, baseMiningSpeed: 4, suitableTool: Tools.pickaxe);
-  static BlockData woodPlank  = BlockData(isCollidable: true, baseMiningSpeed: 2.5, suitableTool: Tools.axe);
-  static BlockData unbreakable  = BlockData(isCollidable: true, baseMiningSpeed: 1, breakable: false, suitableTool: Tools.none);
 
+  static BlockData stone = BlockData(isCollidable: true, baseMiningSpeed: 3.5, suitableTool: Tools.pickaxe);
 
+  static BlockData woodPlank = BlockData(isCollidable: true, baseMiningSpeed: 2.5, suitableTool: Tools.axe);
+
+  static BlockData unbreakable = BlockData(breakable: false, baseMiningSpeed: 1, isCollidable: true, suitableTool: Tools.none);
 }

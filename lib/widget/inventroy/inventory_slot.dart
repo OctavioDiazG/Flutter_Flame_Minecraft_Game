@@ -35,7 +35,7 @@ class InventorySlotWidget extends StatelessWidget {
           onLongPress: () {
             for (int i = 0; i < inventorySlot.count.value / 2; i++) {
               GlobalGameReference.instance.gameReference.worldData.inventoryManager.addBlockToInventory(inventorySlot.block!);
-              inventorySlot.decrementCount();
+              inventorySlot.decrementSlot();
             }
           },
           child: Draggable(
@@ -57,7 +57,7 @@ class InventorySlotWidget extends StatelessWidget {
           onLongPress: () {
             for (int i = 0; i < inventorySlot.count.value / 2; i++) {
               GlobalGameReference.instance.gameReference.worldData.inventoryManager.addBlockToInventory(inventorySlot.block!);
-              inventorySlot.decrementCount();
+              inventorySlot.decrementSlot();
             }
           },
           child: Draggable(
@@ -84,7 +84,7 @@ class InventorySlotWidget extends StatelessWidget {
               int interateTill = GlobalGameReference.instance.gameReference.worldData.craftingManager.playerInventoryCraftingGrid.last.count.value;
               for (int i = 0; i < interateTill; i++) {
                 if (GlobalGameReference.instance.gameReference.worldData.inventoryManager.addBlockToInventory(GlobalGameReference.instance.gameReference.worldData.craftingManager.playerInventoryCraftingGrid[4].block!)) {
-                  GlobalGameReference.instance.gameReference.worldData.craftingManager.playerInventoryCraftingGrid.last.decrementCount();
+                  GlobalGameReference.instance.gameReference.worldData.craftingManager.playerInventoryCraftingGrid.last.decrementSlot();
                 }
               }
               GlobalGameReference.instance.gameReference.worldData.craftingManager.decrementOneFromEachSlot(GlobalGameReference.instance.gameReference.worldData.craftingManager.playerInventoryCraftingGrid);
@@ -92,7 +92,7 @@ class InventorySlotWidget extends StatelessWidget {
               int interateTill = GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid.last.count.value;
               for (int i = 0; i < interateTill; i++) {
                 if (GlobalGameReference.instance.gameReference.worldData.inventoryManager.addBlockToInventory(GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid.last.block!)) {
-                  GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid.last.decrementCount();
+                  GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid.last.decrementSlot();
                 }
               }
               GlobalGameReference.instance.gameReference.worldData.craftingManager.decrementOneFromEachSlot(GlobalGameReference.instance.gameReference.worldData.craftingManager.standardCraftingGrid);

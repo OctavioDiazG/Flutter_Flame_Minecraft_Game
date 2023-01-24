@@ -11,6 +11,6 @@ class StoneBlock extends BlockComponent {
   Future<void> onLoad() async {
     super.onLoad();
 
-    itemDropped = Blocks.cobbleStone;
+    itemDropped = Blocks.cobblestone;
   }
 }

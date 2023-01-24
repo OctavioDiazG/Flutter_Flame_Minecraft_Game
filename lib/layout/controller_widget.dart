@@ -6,34 +6,31 @@ import 'package:minecraft2d_game/global/player_data.dart';
 import 'package:minecraft2d_game/widget/controller_button_widget.dart';
 
 class ControllerWidget extends StatelessWidget {
-  const ControllerWidget({super.key});
+  const ControllerWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     PlayerData playerData = GlobalGameReference.instance.gameReference.worldData.playerData;
-
     return Positioned(
-      bottom: 75,
+      bottom: 100,
       left: 20,
       child: Row(
         children: [
-          ControllerButtonWidget( //Left Movement Button
-            path: "assets/controller/left_button.png", 
-            onPressed: (){
-              playerData.componentMotionState = ComponentMotionState.walkingLeft;
-            }),
-          ControllerButtonWidget( //Center Movement Button
-            path: "assets/controller/center_button.png",
-            onPressed: (){
-              log('centerB');
-              playerData.componentMotionState = ComponentMotionState.jumping;
-            }),
-          ControllerButtonWidget( //Right Movement Button
-            path: "assets/controller/right_button.png",
-            onPressed: (){
-              playerData.componentMotionState = ComponentMotionState.walkingRight;
-            }),
+          ControllerButtonWidget(
+              path: "assets/controller/left_button.png",
+              onPressed: () {
+                playerData.componentMotionState = ComponentMotionState.walkingLeft;
+              }),
+          ControllerButtonWidget(
+              path: "assets/controller/center_button.png",
+              onPressed: () {
+                playerData.componentMotionState = ComponentMotionState.jumping;
+              }),
+          ControllerButtonWidget(
+              path: "assets/controller/right_button.png",
+              onPressed: () {
+                playerData.componentMotionState = ComponentMotionState.walkingRight;
+              }),
         ],
       ),
     );

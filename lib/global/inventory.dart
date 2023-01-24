@@ -1,73 +1,107 @@
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/items.dart';
 import 'package:minecraft2d_game/utils/constant.dart';
 
-class InventoryManager {
+part 'inventory.g.dart';
 
+@HiveType(typeId: 2)
+class InventoryManager {
   Rx<int> currentSelectedInventorySlot = 0.obs;
+
   Rx<bool> inventoryIsOpen = false.obs;
 
-  List<InventorySlot> inventorySlots = List.generate(36, (index) => InventorySlot(index: index,));
+  late List<InventorySlot> inventorySlots = List.generate(
+      36,
+      (index) => InventorySlot(index: index, inventorySlotSave: inventorySlotsSave[index]));
+
+  @HiveField(0)
+  List<InventorySlotSave> inventorySlotsSave = List.generate(36, (index) => InventorySlotSave());
 
   bool addBlockToInventory(dynamic block) {
-    //loops through all the slots
     for (InventorySlot slot in inventorySlots) {
       //item
       if (slot.block == block) {
-        //ITEM
-        if (block is Items && ItemData.getItemDataForItem(block).toolType == Tools.none){
+        //Item
+        if (block is Items && ItemData.getItemDataForItem(block).toolType == Tools.none) {
           if (slot.incrementCount()) {
             return true;
           }
+
           //block
         } else if (block is Blocks) {
-          if (slot.incrementCount()) {
+          if ((slot.incrementCount())) {
             return true;
           }
         }
-        //Slot is empty
+
+        //slot is empty
       } else if (slot.block == null) {
         slot.block = block;
         slot.count.value++;
         return true;
       }
     }
+
     return false;
   }
 }
 
-class InventorySlot{
+@HiveType(typeId: 3)
+class InventorySlotSave {
+  @HiveField(0)
+  dynamic block;
+
+  @HiveField(1)
+  int count;
+
+  InventorySlotSave({this.count = 0});
+}
+
+class InventorySlot {
   dynamic block;
   Rx<int> count = 0.obs;
+
   final int index;
 
-  InventorySlot({required this.index});
+  final InventorySlotSave inventorySlotSave;
 
-  bool incrementCount(){
-    if(count.value < stack){
+  InventorySlot({required this.index, required this.inventorySlotSave}) {
+    block = inventorySlotSave.block;
+    count.value = inventorySlotSave.count;
+
+    count.listen((value) {
+      inventorySlotSave.count = value;
+      inventorySlotSave.block = block;
+    });
+  }
+
+  bool incrementCount() {
+    if (count.value < stack) {
       count.value++;
       return true;
     }
+
     return false;
   }
 
-  void decrementCount(){
+  void decrementSlot() {
     count.value--;
-    if(count.value == 0){
+    if (count.value == 0) {
       block = null;
     }
   }
 
-
   bool get isEmpty {
     if (count.value == 0) {
-      return true;  
+      return true;
     }
-    return false;
-  } 
 
-  void emptySlot(){
+    return false;
+  }
+
+  void emptySlot() {
     count.value = 0;
     block = null;
   }

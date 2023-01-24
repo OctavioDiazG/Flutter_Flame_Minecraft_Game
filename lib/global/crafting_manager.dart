@@ -4,19 +4,25 @@ import 'package:minecraft2d_game/global/inventory.dart';
 import 'package:minecraft2d_game/resources/blocks.dart';
 import 'package:minecraft2d_game/resources/items.dart';
 
-class CraftingManager{
-
+class CraftingManager {
   Rx<bool> craftingInventoryIsOpen = false.obs;
 
-  List<InventorySlot> playerInventoryCraftingGrid = List.generate(5, (index) => InventorySlot(index: index,));
-  List<InventorySlot> standardCraftingGrid = List.generate(10, (index) => InventorySlot(index: index,));
+  List<InventorySlot> playerInventoryCraftingGrid = List.generate(
+      5,
+      (index) => InventorySlot(index: index, inventorySlotSave: InventorySlotSave())
+    );
+
+  List<InventorySlot> standardCraftingGrid = List.generate(
+      10,
+      (index) => InventorySlot(index: index, inventorySlotSave: InventorySlotSave())
+    );
 
   static bool isInPlayerInventory() {
     if (GlobalGameReference.instance.gameReference.worldData.inventoryManager.inventoryIsOpen.value) {
       return true;
     }
     return false;
-  } 
+  }
 
   bool checkForRecipe() {
     if (isInPlayerInventory()) {
@@ -52,15 +58,13 @@ class CraftingManager{
   void decrementOneFromEachSlot(List<InventorySlot> grid) {
     grid.asMap().forEach((int index, InventorySlot inventorySlot) {
       if (!inventorySlot.isEmpty) {
-        inventorySlot.decrementCount();
+        inventorySlot.decrementSlot();
       }
     });
   }
 
-  String turnCraftingGridIntoAString(
-      List<InventorySlot> craftingGrid, Map key) {
+  String turnCraftingGridIntoAString(List<InventorySlot> craftingGrid, Map key) {
     List gridString = [];
-
     craftingGrid.asMap().forEach((int index, InventorySlot inventorySlot) {
       if (inventorySlot.block == null) {
         gridString.add("E");
@@ -175,28 +179,28 @@ class Recipe {
     //Stone sword
     Recipe(
         recipe: RegExp("^E*CEECEESE*\$"),
-        key: {Blocks.cobbleStone: "C", Items.stick: "S"},
+        key: {Blocks.cobblestone: "C", Items.stick: "S"},
         product: Items.stoneSword,
         productCount: 1),
 
     //stone shovel
     Recipe(
         recipe: RegExp("^E*CEESEESE*\$"),
-        key: {Blocks.cobbleStone: "C", Items.stick: "S"},
+        key: {Blocks.cobblestone: "C", Items.stick: "S"},
         product: Items.stoneShovel,
         productCount: 1),
 
     //stone pickaxe
     Recipe(
         recipe: RegExp("CCCESEESE"),
-        key: {Blocks.cobbleStone: "C", Items.stick: "S"},
+        key: {Blocks.cobblestone: "C", Items.stick: "S"},
         product: Items.stonePickaxe,
         productCount: 1),
 
     //stone axe
     Recipe(
         recipe: RegExp("^E*CCESCESE*\$"),
-        key: {Blocks.cobbleStone: "C", Items.stick: "S"},
+        key: {Blocks.cobblestone: "C", Items.stick: "S"},
         product: Items.stoneAxe,
         productCount: 1),
 

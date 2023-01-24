@@ -14,12 +14,8 @@ class CraftingTableBlock extends BlockComponent {
   @override
   bool onTapDown(TapDownInfo info) {
     //PLayer is not holding anyhting
-    if (inventoryManager
-            .inventorySlots[inventoryManager.currentSelectedInventorySlot.value]
-            .block ==
-        null) {
-      GlobalGameReference.instance.gameReference.worldData.craftingManager
-          .craftingInventoryIsOpen.value = true;
+    if (inventoryManager.inventorySlots[inventoryManager.currentSelectedInventorySlot.value].block == null) {
+      GlobalGameReference.instance.gameReference.worldData.craftingManager.craftingInventoryIsOpen.value = true;
     } else {
       //break block
       super.onTapDown(info);
